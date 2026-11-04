@@ -1,182 +1,164 @@
 <main id="main">
 
-<!-- HERO -->
-<section class="hero" aria-labelledby="hero-title">
-  <div class="hero-blobs" aria-hidden="true"><div class="blob blob-1"></div><div class="blob blob-2"></div><div class="blob blob-3"></div></div>
-  <div class="wrap hero-grid">
-    <div>
-      <p class="eyebrow fade-up"><span class="dot" aria-hidden="true"></span>Digital Solutions Architect · Zoho Specialist · Mauritius</p>
-      <h1 id="hero-title">
-        <span class="line"><span>Architecting digital</span></span>
-        <span class="line"><span>solutions, built deep</span></span>
-        <span class="line"><span>on <em>Zoho</em>.</span></span>
-      </h1>
-      <p class="hero-sub fade-up d1">I'm <strong>Amyaaz Aumeer</strong>, a Digital Solutions Architect and Zoho developer in Mauritius. I design and build custom business applications with Zoho Creator, Deluge, Flow and Catalyst, and connect them to the systems your business already runs on.</p>
-      <div class="hero-ctas fade-up d2">
-        <a href="#contact" class="btn btn-primary magnetic">Start a project <span class="arrow">→</span></a>
-        <a href="#work" class="btn btn-ghost magnetic">See what I build</a>
-      </div>
-      <div class="trust fade-up d3">
-        <a class="chip" href="#credential"><i></i>Zoho Creator Certified Developer</a>
-        <a class="chip" href="https://www.metabox.mu/" target="_blank" rel="noopener"><i class="p"></i>MetaBox Technology · Zoho Partner</a>
-        <a class="chip" href="#recognition"><i class="k"></i>Featured in Business Magazine</a>
-      </div>
-    </div>
-    <div class="portrait fade-up d2">
-      <div class="portrait-card">
-        <picture>
-          <source type="image/webp" srcset="/assets/img/amyaaz-aumeer-portrait-480.webp 480w, /assets/img/amyaaz-aumeer-portrait.webp 800w" sizes="(max-width: 860px) 88vw, 420px" />
-          <img src="/assets/img/amyaaz-aumeer-portrait.jpg" alt="Amyaaz Aumeer, Digital Solutions Architect and Zoho developer in Mauritius" width="800" height="1000" fetchpriority="high" />
-        </picture>
-        <div class="portrait-caption">
-          <div><b>Amyaaz Aumeer</b><small>Port Louis, Mauritius</small></div>
-          <span class="status">Available</span>
+<!-- HERO: the system map -->
+<section class="hero" id="top" aria-labelledby="hero-title">
+  <div class="wrap">
+    <p class="eyebrow fade-up"><span class="dot" aria-hidden="true"></span>Digital Solutions Architect · Zoho Specialist · Mauritius</p>
+        <h1 id="hero-title" class="display">
+          <span class="line"><span>Architecting digital</span></span>
+          <span class="line"><span>solutions, built deep</span></span>
+          <span class="line"><span>on <em>Zoho</em>.</span></span>
+        </h1>
+    <div class="hero-grid">
+      <div class="hero-copy">
+        <p class="hero-sub fade-up d1">I'm <strong>Amyaaz Aumeer</strong>, a Digital Solutions Architect and Zoho developer in Mauritius. I design and build custom business applications with Zoho Creator, Deluge, Flow and Catalyst, and make them talk to every system your business runs on.</p>
+        <div class="hero-ctas fade-up d2">
+          <a href="#contact" class="btn btn-primary magnetic">Start a project <span class="arrow">→</span></a>
+          <a href="#work" class="btn btn-ghost magnetic">See the work</a>
         </div>
       </div>
-      <div class="float-tag t1" aria-hidden="true"><b>//</b> Creator</div>
-      <div class="float-tag t2" aria-hidden="true"><b>fn</b> Deluge</div>
-      <div class="float-tag t3" aria-hidden="true"><b>λ</b> Catalyst</div>
+      <div class="system fade-up d2" id="system">
+        <canvas id="system-canvas" role="img" aria-label="Animated map of a connected Zoho system: Creator at the centre, linked to CRM, Books, Flow, Catalyst, Deluge, Analytics, the MRA e-invoicing API, payments, a customer portal and mobile."></canvas>
+        <div class="system-frame" aria-hidden="true"></div>
+        <div class="system-bar">
+          <span class="kicker"><b>●</b> Live system map</span>
+          <div class="seg" id="system-mode" data-mode="system" role="group" aria-label="View">
+            <i aria-hidden="true"></i>
+            <button type="button" aria-pressed="true" data-mode="system">System</button>
+            <button type="button" aria-pressed="false" data-mode="match">Match</button>
+          </div>
+        </div>
+        <div class="system-caption" aria-hidden="true"><span id="system-caption">Hover a node to trace its connections</span><span>Good architecture works like a good formation</span></div>
+      </div>
+    </div>
+    <div class="hero-foot fade-up d3">
+      <div><b><span data-count="2">2</span><sup>+</sup></b><span>Years building on Zoho</span></div>
+      <div><b><span data-count="55">55</span><sup>+</sup></b><span>Zoho apps in the ecosystem</span></div>
+      <div><b>MRA</b><span>E-invoicing integrations</span></div>
+      <div><b>ZCCA</b><span>Zoho Creator certified</span></div>
     </div>
   </div>
-  <a class="scroll-cue" href="#services" aria-label="Scroll to services">Scroll</a>
 </section>
 
-<div class="ticker-wrap" aria-hidden="true">
-  <div class="ticker">
-    <span class="a">// Zoho Creator</span><span>Low-code applications</span>
-    <span class="a">// Deluge</span><span>Serverless business logic</span>
-    <span class="a">// Zoho Flow</span><span>Workflow automation</span>
-    <span class="a">// Catalyst</span><span>Cloud backends</span>
-    <span class="a">// MRA e-invoicing</span><span>Compliance integrations</span>
-    <span class="a">// Mauritius</span><span>Indian Ocean digital transformation</span>
-    <span class="a">// Zoho Creator</span><span>Low-code applications</span>
-    <span class="a">// Deluge</span><span>Serverless business logic</span>
-    <span class="a">// Zoho Flow</span><span>Workflow automation</span>
-    <span class="a">// Catalyst</span><span>Cloud backends</span>
-    <span class="a">// MRA e-invoicing</span><span>Compliance integrations</span>
-    <span class="a">// Mauritius</span><span>Indian Ocean digital transformation</span>
+<div class="marquee" aria-hidden="true">
+  <div class="marquee-track">
+    <span>Zoho <em>Creator</em></span><span>Deluge</span><span>Zoho <em>Flow</em></span><span>Catalyst</span><span>Zoho <em>CRM</em></span><span>Zoho Books</span><span>MRA <em>e-invoicing</em></span><span>REST APIs</span>
+    <span>Zoho <em>Creator</em></span><span>Deluge</span><span>Zoho <em>Flow</em></span><span>Catalyst</span><span>Zoho <em>CRM</em></span><span>Zoho Books</span><span>MRA <em>e-invoicing</em></span><span>REST APIs</span>
   </div>
 </div>
 
 <!-- SERVICES -->
 <section id="services" class="section">
   <div class="wrap">
-    <div class="section-head">
+    <div class="sec-head">
+      <div class="sec-index"><b>01</b> Services</div>
       <div>
-        <div class="label" data-reveal>What I do</div>
-        <h2 class="title" data-reveal>Full-spectrum solutions,<br/><em>Zoho</em> at the core.</h2>
+        <h2 class="display h2" data-reveal>Full-spectrum solutions,<br/><em>Zoho</em> at the core.</h2>
+        <p class="lead" data-reveal>From the first whiteboard sketch to the system your team relies on every day.</p>
       </div>
-      <p class="lead" data-reveal>From the first whiteboard sketch to the system your team uses every day: architecture, build, integration and support.</p>
     </div>
-    <div class="services">
-      <article class="card service" data-reveal style="--i:0">
-        <div class="num">01</div>
-        <div class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 3 8l9 5 9-5-9-5Z"/><path d="m3 13 9 5 9-5"/><path d="m3 17.5 9 5 9-5" opacity=".5"/></svg></div>
-        <h3>Digital solutions architecture</h3>
-        <p>Blueprints for how your apps, data and people fit together. Stack assessment, integration design, scalability and security planned before a line of code is written.</p>
-        <div class="tags"><span class="tag">Solution design</span><span class="tag">Integration architecture</span><span class="tag">Process mapping</span></div>
-      </article>
-      <article class="card service c2" data-reveal style="--i:1">
-        <div class="num">02</div>
-        <div class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="m8 7-5 5 5 5M16 7l5 5-5 5M14 4l-4 16"/></svg></div>
+    <div class="svc">
+      <div class="svc-row" data-reveal>
+        <span class="svc-num">01</span>
+        <h3>Solution architecture</h3>
+        <div class="svc-desc"><p>Blueprints for how your apps, data and people fit together: stack assessment, integration design, scalability and security, planned before a line of code is written.</p><div class="tags"><span class="tag">Solution design</span><span class="tag">Integration architecture</span><span class="tag">Process mapping</span></div></div>
+        <span class="svc-arrow" aria-hidden="true">→</span>
+      </div>
+      <div class="svc-row" data-reveal>
+        <span class="svc-num">02</span>
         <h3>Zoho platform development</h3>
-        <p>Custom Zoho Creator applications, Deluge business logic, Flow automations, Catalyst serverless backends, CRM customisation and Zoho Books extensions.</p>
-        <div class="tags"><span class="tag">Creator</span><span class="tag">Deluge</span><span class="tag">Flow</span><span class="tag">Catalyst</span><span class="tag">CRM</span><span class="tag">Books</span></div>
-      </article>
-      <article class="card service c3" data-reveal style="--i:0">
-        <div class="num">03</div>
-        <div class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="4" width="13" height="10" rx="1.5"/><path d="M6 18h6"/><rect x="16.5" y="8" width="5" height="12" rx="1.2"/></svg></div>
-        <h3>Web &amp; mobile applications</h3>
-        <p>Portals, dashboards, widgets and mobile experiences around your business data, built to work across every device your customers and staff use.</p>
-        <div class="tags"><span class="tag">Web apps</span><span class="tag">Customer portals</span><span class="tag">Mobile</span><span class="tag">REST APIs</span></div>
-      </article>
-      <article class="card service c4" data-reveal style="--i:1">
-        <div class="num">04</div>
-        <div class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 4 6v6c0 4.5 3.4 8.1 8 9 4.6-.9 8-4.5 8-9V6l-8-3Z"/><path d="m8.5 12 2.5 2.5 4.5-5"/></svg></div>
-        <h3>Integrations &amp; Mauritius compliance</h3>
-        <p>Getting your software to talk: third-party APIs, legacy migration, and local requirements like MRA e-invoicing and VAT return preparation built into your workflow.</p>
-        <div class="tags"><span class="tag">MRA e-invoicing</span><span class="tag">VAT / MNS</span><span class="tag">Webhooks</span><span class="tag">Data migration</span></div>
-      </article>
-    </div>
-  </div>
-</section>
-
-<!-- GAME PLAN -->
-<section id="approach" class="section">
-  <div class="wrap">
-    <div class="section-head">
-      <div>
-        <div class="label" data-reveal>How I work</div>
-        <h2 class="title" data-reveal>Every project needs<br/>a <em>game plan</em>.</h2>
+        <div class="svc-desc"><p>Custom Creator applications, Deluge business logic, Flow automations, Catalyst serverless backends, CRM customisation and Zoho Books extensions.</p><div class="tags"><span class="tag">Creator</span><span class="tag">Deluge</span><span class="tag">Flow</span><span class="tag">Catalyst</span><span class="tag">CRM</span><span class="tag">Books</span></div></div>
+        <span class="svc-arrow" aria-hidden="true">→</span>
       </div>
-      <p class="lead" data-reveal>The same discipline I use on the training pitch: read the situation, set the structure, execute, then review and improve.</p>
-    </div>
-    <div class="plan">
-      <div class="plan-line" aria-hidden="true"></div>
-      <div class="step" data-reveal style="--i:0"><div class="node">01</div><div class="k">Scout</div><h3>Discovery</h3><p>Understand the business, the bottlenecks and the people who will use the system every day.</p></div>
-      <div class="step" data-reveal style="--i:1"><div class="node">02</div><div class="k">Tactics</div><h3>Architecture</h3><p>Choose the right tools, map data flows and integrations, and agree on what success looks like.</p></div>
-      <div class="step" data-reveal style="--i:2"><div class="node">03</div><div class="k">Match day</div><h3>Build &amp; launch</h3><p>Iterative delivery with working demos, testing against real data, and a clean go-live.</p></div>
-      <div class="step" data-reveal style="--i:3"><div class="node">04</div><div class="k">Review</div><h3>Support &amp; improve</h3><p>Training, documentation and ongoing improvements as your business and processes evolve.</p></div>
-    </div>
-  </div>
-</section>
-
-<!-- STACK -->
-<section id="stack" class="section">
-  <div class="wrap">
-    <div class="label" data-reveal>Technical stack</div>
-    <h2 class="title" data-reveal>Deep in the Zoho ecosystem,<br/>fluent around it.</h2>
-    <p class="lead" data-reveal style="margin-bottom: 3rem">Zoho is where my technical depth lies. The surrounding web and integration skills are what make the solutions complete.</p>
-    <div class="stack">
-      <div class="card" data-reveal style="--i:0"><span class="stack-ico">CREATOR</span><h3>Zoho Creator</h3><p>Custom low-code applications, from multi-form workflows to role-based portals, report dashboards and ERP extensions.</p><div class="tags"><span class="tag">Forms &amp; pages</span><span class="tag">Reports</span><span class="tag">Portals</span><span class="tag">Workflows</span></div></div>
-      <div class="card" data-reveal style="--i:1"><span class="stack-ico">DELUGE</span><h3>Deluge scripting</h3><p>Complex business logic, scheduled tasks, API integrations and data transformation pipelines inside the Zoho platform.</p><div class="tags"><span class="tag">Functions</span><span class="tag">Schedulers</span><span class="tag">API calls</span></div></div>
-      <div class="card" data-reveal style="--i:2"><span class="stack-ico purple">FLOW</span><h3>Zoho Flow</h3><p>Automation pipelines connecting Zoho apps with third-party services: triggers, conditional branches and data sync.</p><div class="tags"><span class="tag">Triggers</span><span class="tag">Webhooks</span><span class="tag">Integrations</span></div></div>
-      <div class="card" data-reveal style="--i:0"><span class="stack-ico pink">CATALYST</span><h3>Zoho Catalyst</h3><p>Serverless functions, datastores, caches and queues on Catalyst 2.0 for pro-code backends in the Zoho cloud.</p><div class="tags"><span class="tag">Functions</span><span class="tag">Datastore</span><span class="tag">Cache</span><span class="tag">Queues</span></div></div>
-      <div class="card" data-reveal style="--i:1"><span class="stack-ico yellow">CRM / BOOKS</span><h3>Zoho CRM &amp; Finance</h3><p>Custom modules, Blueprints, Canvas views and Zoho Books automation bridging sales pipelines and back-office finance.</p><div class="tags"><span class="tag">Blueprints</span><span class="tag">Custom modules</span><span class="tag">Books</span></div></div>
-      <div class="card" data-reveal style="--i:2"><span class="stack-ico">WEB</span><h3>Web &amp; integration</h3><p>HTML, CSS, JavaScript and REST APIs for custom widgets, embedded views and external integrations around the Zoho stack.</p><div class="tags"><span class="tag">JavaScript</span><span class="tag">REST</span><span class="tag">Webhooks</span></div></div>
+      <div class="svc-row" data-reveal>
+        <span class="svc-num">03</span>
+        <h3>Web &amp; mobile applications</h3>
+        <div class="svc-desc"><p>Portals, dashboards, widgets and mobile experiences around your business data, built to work on every device your customers and staff use.</p><div class="tags"><span class="tag">Web apps</span><span class="tag">Customer portals</span><span class="tag">Mobile</span><span class="tag">REST APIs</span></div></div>
+        <span class="svc-arrow" aria-hidden="true">→</span>
+      </div>
+      <div class="svc-row" data-reveal>
+        <span class="svc-num">04</span>
+        <h3>Integrations &amp; compliance</h3>
+        <div class="svc-desc"><p>Getting your software to talk: third-party APIs, legacy migration, and Mauritius requirements like MRA e-invoicing and VAT returns built into the workflow.</p><div class="tags"><span class="tag">MRA e-invoicing</span><span class="tag">VAT / MNS</span><span class="tag">Webhooks</span><span class="tag">Data migration</span></div></div>
+        <span class="svc-arrow" aria-hidden="true">→</span>
+      </div>
     </div>
   </div>
 </section>
 
 <!-- WORK -->
-<section id="work" class="section">
+<section id="work" class="section section-alt">
   <div class="wrap">
-    <div class="section-head">
+    <div class="sec-head">
+      <div class="sec-index"><b>02</b> Selected work</div>
       <div>
-        <div class="label" data-reveal>Selected solutions</div>
-        <h2 class="title" data-reveal>Problems I solve<br/>for <em>real businesses</em>.</h2>
+        <h2 class="display h2" data-reveal>Software that finally<br/><em>talks</em> to each other.</h2>
+        <p class="lead" data-reveal>Solution patterns from real implementations, each written up in detail.</p>
       </div>
-      <p class="lead" data-reveal>Patterns from the solutions I design and build, each written up in detail.</p>
     </div>
     <div class="work">
       <a class="card" href="/articles/mra-e-invoicing-compliance-with-zoho-a-technical-overview/" data-reveal style="--i:0">
-        <div class="k">Compliance · Zoho Books &amp; Creator</div>
+        <div class="k"><span>Compliance</span><span>Books · Creator</span></div>
         <h3>MRA e-invoicing, built into the invoice flow</h3>
         <p>Invoices are packaged, sent to the MRA in real time and returned with a fiscal receipt number and QR code before the PDF is generated.</p>
-        <div class="flow" aria-hidden="true"><span>Invoice</span><i></i><span>Deluge</span><i></i><span>MRA API</span><i></i><span>QR + PDF</span></div>
-        <div class="more">Read the architecture <span>→</span></div>
+        <div class="pipe" aria-hidden="true"><span>Invoice</span><i></i><span>Deluge</span><i></i><span>MRA API</span><i></i><span>QR + PDF</span></div>
       </a>
       <a class="card" href="/articles/building-a-custom-zoho-books-extension-for-mns-tax-return-filing/" data-reveal style="--i:1">
-        <div class="k">Extension · Zoho Books</div>
-        <h3>VAT returns in the MRA's format, one click</h3>
-        <p>A Books extension that classifies every transaction for the period and generates a ready-to-submit return file without leaving Books.</p>
-        <div class="flow" aria-hidden="true"><span>Period</span><i></i><span>Books API</span><i></i><span>Classify</span><i></i><span>Export</span></div>
-        <div class="more">Read the build <span>→</span></div>
+        <div class="k"><span>Extension</span><span>Zoho Books</span></div>
+        <h3>VAT returns in the MRA's format, in one click</h3>
+        <p>A Books extension that classifies every transaction for the period and produces a ready-to-submit return without leaving Books.</p>
+        <div class="pipe" aria-hidden="true"><span>Period</span><i></i><span>Books API</span><i></i><span>Classify</span><i></i><span>Export</span></div>
       </a>
       <a class="card" href="/articles/building-a-multi-step-approval-workflow-in-zoho-creator/" data-reveal style="--i:0">
-        <div class="k">Workflow · Zoho Creator</div>
+        <div class="k"><span>Workflow</span><span>Zoho Creator</span></div>
         <h3>Paper approvals to multi-step digital workflows</h3>
         <p>Role-based approval chains with notifications, deep links and a full audit trail, deployable in days rather than weeks.</p>
-        <div class="flow" aria-hidden="true"><span>Request</span><i></i><span>Manager</span><i></i><span>HR</span><i></i><span>Finance</span></div>
-        <div class="more">Read the pattern <span>→</span></div>
+        <div class="pipe" aria-hidden="true"><span>Request</span><i></i><span>Manager</span><i></i><span>HR</span><i></i><span>Finance</span></div>
       </a>
       <a class="card" href="/articles/using-zoho-catalyst-cache-to-speed-up-deluge-api-calls/" data-reveal style="--i:1">
-        <div class="k">Performance · Catalyst</div>
+        <div class="k"><span>Performance</span><span>Catalyst</span></div>
         <h3>From rate limits to single-digit milliseconds</h3>
-        <p>Caching expensive API data in Catalyst so every Deluge call reads in milliseconds instead of hitting an external service.</p>
-        <div class="flow" aria-hidden="true"><span>Scheduler</span><i></i><span>Cache</span><i></i><span>Deluge</span><i></i><span>&lt;10ms</span></div>
-        <div class="more">Read the approach <span>→</span></div>
+        <p>Caching expensive API data in Catalyst so every Deluge call reads in milliseconds instead of waiting on an external service.</p>
+        <div class="pipe" aria-hidden="true"><span>Scheduler</span><i></i><span>Cache</span><i></i><span>Deluge</span><i></i><span>&lt;10 ms</span></div>
       </a>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section id="process" class="section">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-index"><b>03</b> Process</div>
+      <div>
+        <h2 class="display h2" data-reveal>Clear structure,<br/>no <em>surprises</em>.</h2>
+      </div>
+    </div>
+    <div class="process" data-reveal>
+      <div class="step"><div class="step-top"><span>01</span><i></i></div><h3>Discover</h3><p>Understand the business, the bottlenecks and the people who will use the system every day.</p><div class="step-bar"></div></div>
+      <div class="step"><div class="step-top"><span>02</span><i></i></div><h3>Architect</h3><p>Choose the right tools, map data flows and integrations, and agree on what success looks like.</p><div class="step-bar"></div></div>
+      <div class="step"><div class="step-top"><span>03</span><i></i></div><h3>Build</h3><p>Iterative delivery with working demos, testing against real data, and a clean go-live.</p><div class="step-bar"></div></div>
+      <div class="step"><div class="step-top"><span>04</span><i></i></div><h3>Evolve</h3><p>Training, documentation and ongoing improvements as your business and processes change.</p><div class="step-bar"></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- STACK -->
+<section id="stack" class="section section-alt">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-index"><b>04</b> Stack</div>
+      <div>
+        <h2 class="display h2" data-reveal>Deep in Zoho,<br/><em>fluent</em> around it.</h2>
+      </div>
+    </div>
+    <div class="stack">
+      <div class="card" data-reveal style="--i:0"><div class="stack-head"><span class="stack-ico">CREATOR</span><span class="stack-dot"></span></div><h3>Zoho Creator</h3><p>Low-code applications, from multi-form workflows to role-based portals, dashboards and ERP extensions.</p><div class="tags"><span class="tag">Forms &amp; pages</span><span class="tag">Reports</span><span class="tag">Portals</span></div></div>
+      <div class="card" data-reveal style="--i:1"><div class="stack-head"><span class="stack-ico">DELUGE</span><span class="stack-dot"></span></div><h3>Deluge scripting</h3><p>Business logic, scheduled tasks, API integrations and data transformation inside the Zoho platform.</p><div class="tags"><span class="tag">Functions</span><span class="tag">Schedulers</span><span class="tag">API calls</span></div></div>
+      <div class="card" data-reveal style="--i:2"><div class="stack-head"><span class="stack-ico purple">FLOW</span><span class="stack-dot"></span></div><h3>Zoho Flow</h3><p>Automation pipelines connecting Zoho apps with third-party services: triggers, branches and data sync.</p><div class="tags"><span class="tag">Triggers</span><span class="tag">Webhooks</span><span class="tag">Integrations</span></div></div>
+      <div class="card" data-reveal style="--i:0"><div class="stack-head"><span class="stack-ico pink">CATALYST</span><span class="stack-dot"></span></div><h3>Zoho Catalyst</h3><p>Serverless functions, datastores, caches and queues for pro-code backends in the Zoho cloud.</p><div class="tags"><span class="tag">Functions</span><span class="tag">Datastore</span><span class="tag">Cache</span></div></div>
+      <div class="card" data-reveal style="--i:1"><div class="stack-head"><span class="stack-ico yellow">CRM / BOOKS</span><span class="stack-dot"></span></div><h3>Zoho CRM &amp; Finance</h3><p>Custom modules, Blueprints and Books automation bridging sales pipelines and back-office finance.</p><div class="tags"><span class="tag">Blueprints</span><span class="tag">Custom modules</span><span class="tag">Books</span></div></div>
+      <div class="card" data-reveal style="--i:2"><div class="stack-head"><span class="stack-ico">WEB</span><span class="stack-dot"></span></div><h3>Web &amp; integration</h3><p>HTML, CSS, JavaScript and REST APIs for widgets, embedded views and integrations around Zoho.</p><div class="tags"><span class="tag">JavaScript</span><span class="tag">REST</span><span class="tag">Webhooks</span></div></div>
     </div>
   </div>
 </section>
@@ -184,42 +166,40 @@
 <!-- RECOGNITION -->
 <section id="recognition" class="section">
   <div class="wrap">
-    <div class="label" data-reveal>Recognition</div>
-    <h2 class="title" data-reveal style="margin-bottom: 3rem">Credentials &amp; press.</h2>
+    <div class="sec-head">
+      <div class="sec-index"><b>05</b> Recognition</div>
+      <div><h2 class="display h2" data-reveal>Credentials &amp; <em>press</em>.</h2></div>
+    </div>
     <div class="recog">
       <a class="card press" href="{{PRESS_URL}}" target="_blank" rel="noopener" data-reveal style="--i:0">
         <div class="src"><span>Business Magazine · Mauritius</span><span>↗</span></div>
         <blockquote>MetaBox Technology&nbsp;: quand les logiciels <em>se parlent enfin</em>.</blockquote>
         <p>Business Magazine's feature on MetaBox Technology, the certified Zoho partner where I build the integrations that get business software talking to each other.</p>
-        <span class="more">Read the feature</span>
+        <span class="text-link">Read the feature ↗</span>
       </a>
       <div class="card" id="credential" data-reveal style="--i:1">
         <div class="cert-top"><span class="cert-logo">ZOHO</span><span class="cert-id">ID: ZCCA2474</span></div>
         <div class="cert-name">Amyaaz Aumeer</div>
         <div class="cert-title">Certified Creator Developer — Associate</div>
-        <div class="cert-meta">
-          <div><span>Issued</span><b>21 Jan 2025</b></div>
-          <div><span>Validity</span><b>2 years</b></div>
-          <div><span>Issued by</span><b>Zoho</b></div>
-        </div>
-        <a class="text-link" href="{{CERT_URL}}" target="_blank" rel="noopener">Verify credential →</a>
+        <div class="cert-meta"><div><span>Issued</span><b>21 Jan 2025</b></div><div><span>Validity</span><b>2 years</b></div><div><span>Issued by</span><b>Zoho</b></div></div>
+        <a class="text-link" href="{{CERT_URL}}" target="_blank" rel="noopener">Verify credential ↗</a>
       </div>
     </div>
   </div>
 </section>
 
 <!-- ARTICLES -->
-<section id="articles" class="section">
+<section id="articles" class="section section-alt">
   <div class="wrap">
-    <div class="section-head">
+    <div class="sec-head">
+      <div class="sec-index"><b>06</b> Writing</div>
       <div>
-        <div class="label" data-reveal>Technical writing</div>
-        <h2 class="title" data-reveal>Articles on building<br/>with the <em>Zoho</em> stack.</h2>
+        <h2 class="display h2" data-reveal>Articles on building<br/>with the <em>Zoho</em> stack.</h2>
+        <p class="lead" data-reveal><a class="text-link" href="/articles/">All articles →</a></p>
       </div>
-      <a class="text-link" href="/articles/" data-reveal>All articles →</a>
     </div>
-    <div class="articles">
-      {{ARTICLE_CARDS}}
+    <div class="alist">
+      {{ARTICLE_ROWS}}
     </div>
     {{MORE_ARTICLES}}
   </div>
@@ -231,9 +211,10 @@
     <div class="about-photo" data-reveal>
       <div class="frame">
         <picture>
-          <source type="image/webp" srcset="/assets/img/amyaaz-aumeer-headshot.webp" />
-          <img src="/assets/img/amyaaz-aumeer-headshot.jpg" alt="Portrait of Amyaaz Aumeer" width="480" height="480" loading="lazy" />
+          <source type="image/webp" srcset="/assets/img/amyaaz-aumeer-portrait-480.webp 480w, /assets/img/amyaaz-aumeer-portrait.webp 800w" sizes="(max-width: 900px) 90vw, 480px" />
+          <img src="/assets/img/amyaaz-aumeer-portrait.jpg" alt="Amyaaz Aumeer, Digital Solutions Architect and Zoho developer in Mauritius" width="800" height="1000" loading="lazy" />
         </picture>
+        <div class="tagline"><span>Amyaaz Aumeer</span><span class="avail">Available</span></div>
       </div>
       <div class="facts">
         <div><span>Based in</span><b>Port Louis, Mauritius</b></div>
@@ -243,37 +224,32 @@
       </div>
     </div>
     <div class="about-text">
-      <div class="label" data-reveal>About</div>
-      <h2 class="title" data-reveal>Digital Solutions<br/><em>Architect</em>.</h2>
+      <div class="sec-index" style="margin-bottom: 1.5rem"><b>07</b> About</div>
+      <h2 class="display h2" data-reveal style="margin-bottom: 1.6rem">Digital Solutions <em>Architect</em>.</h2>
+      <p class="big" data-reveal>I connect the <em>business problem</em> to the system that solves it, then build that system myself.</p>
       <p data-reveal>I'm <strong>Amyaaz Aumeer</strong>, a digital solutions architect based in Mauritius with deep specialisation in the Zoho platform. My work spans both the functional and technical sides of enterprise digital transformation: understanding business problems, designing the solution architecture, and building the actual implementation.</p>
       <p data-reveal>While I work across the full digital solutions landscape, my technical depth in Zoho is where I stand apart: real applications with custom Deluge logic, complex Creator workflows, Flow automations and Catalyst serverless functions. Not just configuring what exists, but engineering what does not yet.</p>
       <p data-reveal>At <strong>MetaBox Technology</strong>, a certified Zoho partner in Mauritius, I work directly with businesses undergoing digital transformation. Zoho is expanding fast here, with a new regional hub at Ebene Cybercity, and the combination of <strong>deep Zoho expertise and broader solution architecture</strong> is the position I am building.</p>
-      <p data-reveal>I'm completing a BSc in Web and Multimedia Development at the University of Mauritius, grounding practical platform engineering in formal computer science.</p>
-      <div class="hero-ctas" data-reveal style="margin: 2rem 0 0">
+      <p data-reveal>I'm completing a BSc in Web and Multimedia Development at the University of Mauritius. Away from the keyboard, I'm passionate about football.</p>
+      <div class="hero-ctas" data-reveal style="margin-top: 2rem">
         <a class="btn btn-primary magnetic" href="{{LINKEDIN}}" target="_blank" rel="noopener">Connect on LinkedIn <span class="arrow">↗</span></a>
       </div>
     </div>
   </div>
 </section>
 
-<!-- COACH -->
-<section id="coach" class="section">
-  <div class="wrap coach">
-    <div class="coach-copy">
-      <div class="label" data-reveal>Off the clock</div>
-      <h2 class="title" data-reveal>I also coach <em>football</em>.</h2>
-      <p data-reveal>Coaching and solution architecture are the same game. You read the situation, build a structure people can execute under pressure, and keep refining it after every match.</p>
-      <p data-reveal>Fancy a break? Take a penalty.</p>
-      <div class="parallels" data-reveal>
-        <div><span>Reading the game</span><i></i><span>Requirements</span></div>
-        <div><span>Formation</span><i></i><span>Architecture</span></div>
-        <div><span>Team drills</span><i></i><span>Training users</span></div>
-      </div>
+<!-- FOOTBALL -->
+<section id="football" class="section section-alt">
+  <div class="wrap pitch-band">
+    <div>
+      <div class="sec-index"><b>⚽</b> Half-time</div>
+      <h2 class="display h2" data-reveal style="margin-top: 1.2rem">Passionate about <em>football</em>.</h2>
+      <p data-reveal>Take a penalty before you go. Aim, then click or tap to shoot.</p>
     </div>
     <div class="card game" data-reveal>
-      <div class="game-head"><span>Penalty shoot-out</span><span>Goals <b id="score">0</b> / <b id="shots">0</b> · Best streak <b id="best">0</b></span></div>
+      <div class="game-head"><span>Penalty</span><span>Goals <b id="score">0</b> / <b id="shots">0</b> · Best streak <b id="best">0</b></span></div>
       <canvas id="pitch" tabindex="0" role="img" aria-label="Penalty mini-game. Use arrow keys to aim and Space to shoot."></canvas>
-      <div class="game-foot"><span>Arrow keys + Space also work</span><button type="button" class="btn btn-ghost" id="pk-reset">Reset</button></div>
+      <div class="game-foot"><span>Keyboard: arrows to aim, Space to shoot</span><button type="button" class="btn btn-ghost btn-sm" id="pk-reset">Reset</button></div>
     </div>
   </div>
 </section>
@@ -282,9 +258,9 @@
 <section id="contact" class="section">
   <div class="wrap contact">
     <div>
-      <div class="label" data-reveal>Contact</div>
-      <h2 data-reveal>Let's build something with <em>Zoho</em>.</h2>
-      <p class="lead" data-reveal>Need a custom Creator app, a Deluge automation, an MRA e-invoicing integration or a full Zoho implementation? Tell me about it. Based in Mauritius, available for local and remote projects.</p>
+      <div class="sec-index"><b>08</b> Contact</div>
+      <h2 class="display" data-reveal>Let's make your systems <em>talk</em>.</h2>
+      <p class="lead" data-reveal>A custom Creator app, a Deluge automation, an MRA e-invoicing integration or a full Zoho implementation. Tell me what you need. Based in Mauritius, available for local and remote projects.</p>
       <div class="links" data-reveal>
         <a class="link-row" href="{{LINKEDIN}}" target="_blank" rel="noopener"><span class="li">in</span>linkedin.com/in/amyaaz-aumeer<span class="go">↗</span></a>
         <a class="link-row" href="mailto:{{EMAIL}}"><span class="li">@</span>{{EMAIL}}<span class="go">↗</span></a>

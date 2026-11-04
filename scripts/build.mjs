@@ -49,7 +49,7 @@ ${extra}<meta name="author" content="Amyaaz Aumeer" />
 <meta name="twitter:title" content="${esc(title)}" />
 <meta name="twitter:description" content="${esc(description)}" />
 <meta name="twitter:image" content="${ORIGIN}${image}" />
-<meta name="theme-color" content="#0a0a0f" />
+<meta name="theme-color" content="#08080c" />
 <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
 <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png" />
 <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
@@ -74,11 +74,9 @@ ${site.gaMeasurementId ? `<script async src="https://www.googletagmanager.com/gt
 
 function nav(home) {
   const h = home ? '' : '/';
-  const links = [['services', 'Services'], ['work', 'Work'], ['articles', 'Articles'], ['about', 'About'], ['contact', 'Contact']];
-  return `<body class="noise">
+  const links = [['services', 'Services'], ['work', 'Work'], ['articles', 'Writing'], ['about', 'About'], ['contact', 'Contact']];
+  return `<body>
 <a class="skip-link" href="#main">Skip to content</a>
-<div id="cursor" aria-hidden="true"></div><div id="cursor-ring" aria-hidden="true"></div>
-<div class="grid-bg" aria-hidden="true"></div>
 <header class="nav">
   <div class="wrap nav-inner">
     <a class="brand" href="/" aria-label="Amyaaz Aumeer — home">${MARK}<span class="brand-name">amyaaz<b>.com</b></span></a>
@@ -122,6 +120,7 @@ function footer(home) {
         <div><span>Contact</span><a href="mailto:${site.email}">Email</a><a href="${h}#contact">Project enquiry</a></div>
       </div>
     </div>
+    <div class="foot-big" aria-hidden="true">amyaaz.com</div>
     <div class="foot-bottom">
       <span class="avail">Available for projects · Port Louis, Mauritius</span>
       <span>© ${new Date().getFullYear()} Amyaaz Aumeer</span>
@@ -149,21 +148,21 @@ const person = {
 const website = { '@type': 'WebSite', '@id': ORIGIN + '/#website', url: ORIGIN + '/', name: 'Amyaaz Aumeer', publisher: { '@id': ORIGIN + '/#person' }, inLanguage: 'en' };
 
 // ---------- Article cards ----------
-function card(a, i, hidden) {
-  return `<a class="card article-card${hidden ? ' hide' : ''}" href="/articles/${a.slug}/" data-reveal style="--i:${i % 3}">
-        <div class="article-meta"><span class="pill ${a.color}">${esc(a.tag)}</span><time datetime="${a.isoDate}">${esc(a.date)}</time></div>
-        <h3>${esc(a.title)}</h3>
-        <p>${esc(a.excerpt)}</p>
-        <div class="foot"><span>${esc(a.readTime)}</span><b>Read →</b></div>
+function row(a, i, hidden) {
+  return `<a class="arow${hidden ? ' hide' : ''}" href="/articles/${a.slug}/" data-reveal style="--i:${i % 4}">
+        <span class="pill ${a.color}">${esc(a.tag)}</span>
+        <div><h3>${esc(a.title)}</h3><p>${esc(a.excerpt)}</p></div>
+        <span class="meta"><time datetime="${a.isoDate}">${esc(a.date)}</time><br/>${esc(a.readTime)}</span>
+        <span class="go" aria-hidden="true">→</span>
       </a>`;
 }
 
 // ---------- Home ----------
 {
-  const cards = articles.map((a, i) => card(a, i, i >= 6)).join('\n      ');
+  const rows = articles.map((a, i) => row(a, i, i >= 5)).join('\n      ');
   const body = homeBody
-    .replace('{{ARTICLE_CARDS}}', cards)
-    .replace('{{MORE_ARTICLES}}', articles.length > 6 ? `<div class="center"><button type="button" class="btn btn-ghost magnetic" id="more-articles">Show all ${articles.length} articles</button></div>` : '')
+    .replace('{{ARTICLE_ROWS}}', rows)
+    .replace('{{MORE_ARTICLES}}', articles.length > 5 ? `<div class="center"><button type="button" class="btn btn-ghost magnetic" id="more-articles">Show all ${articles.length} articles</button></div>` : '')
     .replaceAll('{{EMAIL}}', site.email).replaceAll('{{LINKEDIN}}', site.linkedin).replaceAll('{{GITHUB}}', site.github)
     .replaceAll('{{YOUTUBE}}', site.youtube).replaceAll('{{PRESS_URL}}', site.pressUrl).replaceAll('{{CERT_URL}}', site.certUrl);
   const html = head({
@@ -193,7 +192,7 @@ articles.forEach((a, i) => {
   const html = head({ title: `${a.title} | Amyaaz Aumeer`, description: a.excerpt, path, type: 'article', jsonld,
     extra: `<meta property="article:published_time" content="${a.isoDate}" />\n<meta property="article:author" content="Amyaaz Aumeer" />\n` }) + '\n' + nav(false) + `
 <main id="main" class="article-page">
-  <article class="wrap">
+  <article class="wrap narrow">
     <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a><span>/</span><a href="/articles/">Articles</a><span>/</span><span>${esc(a.tag)}</span></nav>
     <span class="pill ${a.color}">${esc(a.tag)}</span>
     <h1>${a.heading}</h1>
@@ -230,11 +229,11 @@ ${a.body.split('\n').map((l) => '      ' + l).join('\n')}
 <main id="main" class="article-page">
   <div class="wrap" style="max-width: var(--maxw)">
     <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a><span>/</span><span>Articles</span></nav>
-    <div class="label">Technical writing</div>
-    <h1 class="title">Articles on building<br/>with the <em>Zoho</em> stack.</h1>
+    <div class="sec-index"><b>06</b> Writing</div>
+    <h1 class="display" style="font-size: clamp(2.4rem, 6vw, 4.6rem); margin: 1.2rem 0">Articles on building<br/>with the <em>Zoho</em> stack.</h1>
     <p class="lead" style="margin-bottom: 3rem">Notes from real implementations: Creator architecture, Deluge behaviour, Flow orchestration, Catalyst, and Mauritius compliance.</p>
-    <div class="articles">
-      ${articles.map((a, i) => card(a, i, false)).join('\n      ')}
+    <div class="alist">
+      ${articles.map((a, i) => row(a, i, false)).join('\n      ')}
     </div>
   </div>
 </main>
@@ -246,7 +245,7 @@ ${a.body.split('\n').map((l) => '      ' + l).join('\n')}
 write('404.html', head({ title: 'Page not found | Amyaaz Aumeer', description: 'This page could not be found.', path: '/404.html', extra: '' }).replace('index, follow, max-image-preview:large', 'noindex') + '\n' + nav(false) + `
 <main id="main" class="notfound">
   <div>
-    <div class="label">Error 404</div>
+    <div class="sec-index" style="justify-content:center"><b>404</b> Off target</div>
     <h1>Off <em>target</em>.</h1>
     <p>That page went wide of the post. Let's get you back in play.</p>
     <a class="btn btn-primary magnetic" href="/">Back to home <span class="arrow">→</span></a>
