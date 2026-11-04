@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Building a Custom Zoho Books Extension for MNS Tax Return Filing | Amyaaz Aumeer</title>
+<meta name="description" content="Zoho Books handles VAT well, but filing returns in the MRA's MNS format requires a custom extension. Here's the architecture for building one that exports correctly structured tax data." />
+<meta property="article:published_time" content="2024-10" />
+<meta property="article:author" content="Amyaaz Aumeer" />
+<meta name="author" content="Amyaaz Aumeer" />
+<meta name="robots" content="index, follow, max-image-preview:large" />
+<link rel="canonical" href="https://amyaaz.com/articles/building-a-custom-zoho-books-extension-for-mns-tax-return-filing/" />
+<meta property="og:site_name" content="Amyaaz Aumeer" />
+<meta property="og:locale" content="en_GB" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Building a Custom Zoho Books Extension for MNS Tax Return Filing | Amyaaz Aumeer" />
+<meta property="og:description" content="Zoho Books handles VAT well, but filing returns in the MRA's MNS format requires a custom extension. Here's the architecture for building one that exports correctly structured tax data." />
+<meta property="og:url" content="https://amyaaz.com/articles/building-a-custom-zoho-books-extension-for-mns-tax-return-filing/" />
+<meta property="og:image" content="https://amyaaz.com/assets/img/og-image.jpg" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content="Amyaaz Aumeer, Digital Solutions Architect and Zoho Developer in Mauritius" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Building a Custom Zoho Books Extension for MNS Tax Return Filing | Amyaaz Aumeer" />
+<meta name="twitter:description" content="Zoho Books handles VAT well, but filing returns in the MRA's MNS format requires a custom extension. Here's the architecture for building one that exports correctly structured tax data." />
+<meta name="twitter:image" content="https://amyaaz.com/assets/img/og-image.jpg" />
+<meta name="theme-color" content="#0a0a0f" />
+<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+<link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png" />
+<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+<link rel="manifest" href="/site.webmanifest" />
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"BlogPosting","headline":"Building a Custom Zoho Books Extension for MNS Tax Return Filing","description":"Zoho Books handles VAT well, but filing returns in the MRA's MNS format requires a custom extension. Here's the architecture for building one that exports correctly structured tax data.","datePublished":"2024-10","dateModified":"2024-10","author":{"@id":"https://amyaaz.com/#person"},"publisher":{"@id":"https://amyaaz.com/#person"},"mainEntityOfPage":"https://amyaaz.com/articles/building-a-custom-zoho-books-extension-for-mns-tax-return-filing/","image":"https://amyaaz.com/assets/img/og-image.jpg","keywords":["Zoho","Books","Mauritius"],"inLanguage":"en"},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://amyaaz.com/"},{"@type":"ListItem","position":2,"name":"Articles","item":"https://amyaaz.com/articles/"},{"@type":"ListItem","position":3,"name":"Building a Custom Zoho Books Extension for MNS Tax Return Filing","item":"https://amyaaz.com/articles/building-a-custom-zoho-books-extension-for-mns-tax-return-filing/"}]},{"@type":"Person","@id":"https://amyaaz.com/#person","name":"Amyaaz Aumeer","url":"https://amyaaz.com/","email":"mailto:aumeeramyaaz@gmail.com","image":"https://amyaaz.com/assets/img/amyaaz-aumeer-headshot.jpg","jobTitle":"Digital Solutions Architect","description":"Digital Solutions Architect and Zoho Creator Certified Developer specialising in Zoho Creator, Deluge, Flow and Catalyst in Mauritius.","worksFor":{"@type":"Organization","name":"MetaBox Technology","url":"https://www.metabox.mu/"},"address":{"@type":"PostalAddress","addressLocality":"Port Louis","addressCountry":"MU"},"hasCredential":{"@type":"EducationalOccupationalCredential","name":"Zoho Creator Certified Developer - Associate","credentialCategory":"certification","recognizedBy":{"@type":"Organization","name":"Zoho"}},"sameAs":["https://www.linkedin.com/in/amyaaz-aumeer-8b84261b6/","https://github.com/amyaaz22","https://www.youtube.com/@AmyaazAumeer"],"knowsAbout":["Zoho Creator","Deluge scripting","Zoho Flow","Zoho Catalyst","Zoho CRM","Zoho Books","Digital Solution Architecture","Low-code development","Digital Transformation","MRA e-invoicing"]}]}</script>
+<script>
+  (function () {
+    var t = null;
+    try { t = localStorage.getItem('theme'); } catch (e) {}
+    document.documentElement.setAttribute('data-theme', t === 'light' ? 'light' : 'dark');
+  })();
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700&display=swap" />
+<link rel="stylesheet" href="/assets/css/site.css?v=mw2o3op7" />
+<script src="/assets/js/site.js?v=mw2o3op7" defer></script>
+</head>
+<body class="noise">
+<a class="skip-link" href="#main">Skip to content</a>
+<div id="cursor" aria-hidden="true"></div><div id="cursor-ring" aria-hidden="true"></div>
+<div class="grid-bg" aria-hidden="true"></div>
+<header class="nav">
+  <div class="wrap nav-inner">
+    <a class="brand" href="/" aria-label="Amyaaz Aumeer — home"><svg viewBox="0 0 48 48" fill="none" aria-hidden="true"><path class="mark-stroke" d="M9 39 L24 9 L39 39" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/><path class="mark-stroke" d="M15.5 30 H20.2 M27.8 30 H32.5" stroke-width="4.5" stroke-linecap="round"/><circle class="mark-node" cx="24" cy="30" r="3.6"/></svg><span class="brand-name">amyaaz<b>.com</b></span></a>
+    <nav aria-label="Primary"><ul class="nav-links">
+      <li><a href="/#services">Services</a></li>
+      <li><a href="/#work">Work</a></li>
+      <li><a href="/#articles">Articles</a></li>
+      <li><a href="/#about">About</a></li>
+      <li><a href="/#contact">Contact</a></li>
+    </ul></nav>
+    <div class="nav-actions">
+      <button type="button" class="icon-btn theme-toggle" aria-label="Switch to light mode">
+        <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+        <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+      </button>
+      <a class="btn btn-primary nav-cta magnetic" href="/#contact">Let's talk</a>
+      <button type="button" class="icon-btn menu-btn" aria-expanded="false" aria-controls="mobile-menu" aria-label="Open menu"><span class="menu-btn-inner"><span></span><span></span></span></button>
+    </div>
+  </div>
+  <div class="progress" aria-hidden="true"><div class="progress-line"></div><div class="progress-ball"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="11" fill="#f4f4f8" stroke="#1a1a22" stroke-width="1.5"/><path d="M12 7.2l4.6 3.3-1.8 5.4H9.2l-1.8-5.4z" fill="#1a1a22"/></svg></div></div>
+</header>
+<div class="mobile-menu" id="mobile-menu">
+  <ul>
+    <li><a href="/#services">Services<span>01</span></a></li>
+    <li><a href="/#work">Work<span>02</span></a></li>
+    <li><a href="/#articles">Articles<span>03</span></a></li>
+    <li><a href="/#about">About<span>04</span></a></li>
+    <li><a href="/#contact">Contact<span>05</span></a></li>
+  </ul>
+  <div class="meta">
+    <a href="mailto:aumeeramyaaz@gmail.com">aumeeramyaaz@gmail.com</a>
+    <span>Port Louis, Mauritius</span>
+  </div>
+</div>
+<main id="main" class="article-page">
+  <article class="wrap">
+    <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a><span>/</span><a href="/articles/">Articles</a><span>/</span><span>Books</span></nav>
+    <span class="pill yellow">Books</span>
+    <h1>Building a Custom Zoho Books Extension for MNS Tax Return Filing</h1>
+    <div class="byline">
+      <img src="/assets/img/amyaaz-aumeer-headshot.webp" alt="" width="40" height="40" />
+      <div><b>Amyaaz Aumeer</b><time datetime="2024-10">October 2024</time> · 9 min read</div>
+    </div>
+    <div class="prose">
+      <p>Zoho Books handles VAT accounting correctly for Mauritius, but when it comes to preparing returns in the MRA's specific MNS (Monthly/Quarterly Nil Statement) format, there is no out-of-the-box export. This is exactly the kind of gap a custom Zoho Books extension is designed to fill.</p>
+      
+      <h2>What a Zoho Books Extension Is</h2>
+      <p>A Zoho Books extension is a package that adds custom functionality to Books - new tabs, buttons, sidebar widgets, and Deluge-backed actions - without modifying the core application. Extensions are deployed through the Zoho Marketplace or as private extensions for a specific organisation. They run inside the Books context, with access to Books data through the Zoho Finance APIs and Deluge's native Books integration functions.</p>
+      
+      <h2>Understanding the MNS Format</h2>
+      <p>The MRA's MNS format for VAT returns requires output data organised by tax period, broken down by standard-rated supplies, zero-rated supplies, exempt supplies, and input tax credits. Each line item must reference the original invoice or purchase record. The format is structured and specific - it cannot be approximated by a generic Books report export.</p>
+      
+      <h2>The Extension Architecture</h2>
+      <p>The extension adds a dedicated "Tax Returns" tab inside the Books interface. A Deluge function fetches all invoices and bills for the selected tax period using the Zoho Books API. It then categorises each transaction by VAT treatment, aggregates the totals per MNS field definition, and generates a downloadable file in the correct format. The user selects the period, clicks Generate, and receives a ready-to-submit file without leaving Books.</p>
+      
+      <ul>
+        <li>Custom tab added to Books navigation via the extension manifest</li>
+        <li>Period selector widget lets the user define the tax quarter</li>
+        <li>Deluge function queries Books API for all transactions in range</li>
+        <li>Classification logic maps each transaction to its MNS field</li>
+        <li>Output file generated client-side and downloaded directly</li>
+      </ul>
+      
+      <h2>Handling Edge Cases</h2>
+      <p>The classification logic is where most of the complexity lives. Credit notes must offset the original supply. Transactions that span VAT periods due to payment date vs invoice date differences need specific handling. Purchases from non-VAT-registered suppliers must be excluded from input tax claims. Building this logic in Deluge requires careful reading of MRA's technical specification, and testing against real historical data before any production deployment.</p>
+      
+      <h2>Why This Is a Niche Worth Owning</h2>
+      <p>This type of localisation work sits at the intersection of Zoho technical knowledge and Mauritius regulatory understanding. Very few developers hold both. An extension like this, once built and validated, is reusable across every VAT-registered business on Zoho Books in Mauritius - and that is a significant and growing market.</p>
+    </div>
+    <aside class="card article-cta">
+      <div><h2>Need this built for your business?</h2><p>I design and build Zoho solutions for companies in Mauritius and beyond.</p></div>
+      <a class="btn btn-primary magnetic" href="/#contact">Start a project <span class="arrow">→</span></a>
+    </aside>
+    <nav class="pager" aria-label="More articles">
+      <a class="card" href="/articles/mra-e-invoicing-compliance-with-zoho-a-technical-overview/"><span>← Newer</span><b>MRA E-Invoicing Compliance with Zoho: A Technical Overview</b></a>
+      <a class="card next" href="/articles/using-zoho-catalyst-cache-to-speed-up-deluge-api-calls/"><span>Older →</span><b>Using Zoho Catalyst Cache to Speed Up Deluge API Calls</b></a>
+    </nav>
+  </article>
+</main>
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <a class="brand" href="/" aria-label="Amyaaz Aumeer — home"><svg viewBox="0 0 48 48" fill="none" aria-hidden="true"><path class="mark-stroke" d="M9 39 L24 9 L39 39" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/><path class="mark-stroke" d="M15.5 30 H20.2 M27.8 30 H32.5" stroke-width="4.5" stroke-linecap="round"/><circle class="mark-node" cx="24" cy="30" r="3.6"/></svg><span class="brand-name">amyaaz<b>.com</b></span></a>
+        <p>Digital Solutions Architect and Zoho Developer in Mauritius. Custom Zoho Creator apps, Deluge, Flow, Catalyst and the systems around them.</p>
+      </div>
+      <div class="foot-links">
+        <div><span>Site</span><a href="/#services">Services</a><a href="/#work">Work</a><a href="/articles/">Articles</a><a href="/#about">About</a></div>
+        <div><span>Elsewhere</span><a href="https://www.linkedin.com/in/amyaaz-aumeer-8b84261b6/" target="_blank" rel="noopener me">LinkedIn</a><a href="https://github.com/amyaaz22" target="_blank" rel="noopener me">GitHub</a><a href="https://www.youtube.com/@AmyaazAumeer" target="_blank" rel="noopener me">YouTube</a><a href="https://www.facebook.com/cdimauritius/posts/pfbid0Uh9NNAUQKpwYboEGuiNtLYMKNyF125ZXBDEBQ6cGmJxQZ9uSUKv7hjvGHMeXtQzKl" target="_blank" rel="noopener">Writing</a></div>
+        <div><span>Contact</span><a href="mailto:aumeeramyaaz@gmail.com">Email</a><a href="/#contact">Project enquiry</a></div>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span class="avail">Available for projects · Port Louis, Mauritius</span>
+      <span>© 2026 Amyaaz Aumeer</span>
+    </div>
+  </div>
+</footer>
+</body>
+</html>
