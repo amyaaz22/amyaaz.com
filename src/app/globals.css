@@ -1,0 +1,83 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    @apply transition-colors duration-300;
+  }
+
+  body {
+    @apply bg-dark-950 text-dark-50;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-serif font-bold tracking-tight;
+  }
+
+  a {
+    @apply text-accent-500 hover:text-accent-600 font-medium;
+  }
+}
+
+@layer components {
+  .container-bounded {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+
+  .hero-title {
+    @apply text-4xl sm:text-6xl lg:text-7xl font-serif font-bold tracking-tight leading-tight;
+  }
+
+  .section-title {
+    @apply text-3xl sm:text-4xl lg:text-5xl font-serif font-bold;
+  }
+
+  .glass-card {
+    @apply bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl;
+  }
+
+  .gradient-text {
+    @apply bg-gradient-to-r from-accent-500 via-accent-400 to-accent-600 bg-clip-text text-transparent;
+  }
+
+  .button-primary {
+    @apply px-8 py-3 bg-accent-500 hover:bg-accent-600 text-dark-950 font-semibold rounded-lg transition-all duration-300 hover:shadow-lg hover:shadow-accent-500/30;
+  }
+
+  .button-secondary {
+    @apply px-8 py-3 border border-accent-500 text-accent-500 hover:bg-accent-500/10 font-semibold rounded-lg transition-all duration-300;
+  }
+
+  .nav-link {
+    @apply relative text-sm font-medium text-dark-300 hover:text-accent-500 transition-colors;
+  }
+
+  .nav-link::after {
+    @apply absolute bottom-0 left-0 w-0 h-0.5 bg-accent-500 transition-all duration-300 group-hover:w-full;
+    content: '';
+  }
+}
+
+/* Smooth scroll behavior */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(42, 42, 71, 0.5);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(34, 197, 94, 0.5);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(34, 197, 94, 0.8);
+}
