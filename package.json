@@ -1,0 +1,19 @@
+{
+  "name": "amyaaz-site",
+  "version": "2.0.0",
+  "private": true,
+  "description": "amyaaz.com - Next.js preview of the static site (same design, content and assets)",
+  "engines": {
+    "node": ">=18.18.0"
+  },
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
+  },
+  "dependencies": {
+    "next": "^15.5.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  }
+}
