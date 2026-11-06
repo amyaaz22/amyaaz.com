@@ -1,106 +1,43 @@
-# Amyaaz Portfolio – Premium Next.js Experience
+# amyaaz.com
 
-A high-end, sophisticated portfolio website built with **Next.js 15**, **React 19**, **Tailwind CSS**, and **Framer Motion**.
-
-## 🎯 Features
-
-- **Premium Design System**: Dark theme with sophisticated color palette and typography
-- **Smooth Animations**: Framer Motion for engaging transitions and interactions
-- **Responsive Layout**: Mobile-first design that looks perfect on all devices
-- **Fast Performance**: Next.js App Router with server & client components
-- **Logo Integration**: Your custom AA monogram throughout the site
-- **SEO Optimized**: Metadata, open graph, and structured data
-- **Accessible**: WCAG compliant with semantic HTML and ARIA labels
-
-## 📁 Project Structure
+Portfolio site for Amyaaz Aumeer, Digital Solutions Architect and Zoho Developer in Mauritius. It's a static site with no frameworks, hosted on Netlify.
 
 ```
-src/
-├── app/
-│   ├── page.tsx          # Home page
-│   ├── about/
-│   │   └── page.tsx      # About page (with photo section)
-│   ├── layout.tsx        # Root layout
-│   └── globals.css       # Global styles
-├── components/
-│   ├── Header.tsx        # Fixed navigation with logo
-│   ├── Hero.tsx          # Hero section with animated background
-│   ├── Work.tsx          # Project showcase grid
-│   ├── Services.tsx      # Services cards
-│   └── Footer.tsx        # Footer with links
+content/            <- edit these
+  site.json         links, email, Google Analytics ID, Search Console token
+  home.html         home page sections
+  articles.json     articles (title, excerpt, HTML body)
+scripts/build.mjs   generates site/ from content/ (no dependencies)
+site/               the published website (generated pages + assets)
+  assets/css, assets/js, assets/img
+docs/               private working files, never deployed
+netlify.toml        publish folder, build command, headers, redirects
 ```
 
-## 🚀 Getting Started
+## Editing
 
-### Prerequisites
-- Node.js 18+ and npm/yarn
+1. Change something in `content/`.
+2. Run `node scripts/build.mjs`. Netlify also runs this on every deploy.
+3. Preview it with `npx serve site`.
 
-### Installation
+**To add an article:** add an entry to `content/articles.json` (newest first). The build creates `/articles/<slug>/`, adds a card to the home page and updates the sitemap.
 
-```bash
-# Install dependencies
-npm install
+## Deploys
 
-# Run development server
-npm run dev
-```
+Netlify is linked to `main`. Every push to `main` goes live, and every pull request gets a preview URL.
 
-Open [http://localhost:3000](http://localhost:3000) in your browser.
+## Contact form
 
-### Build for Production
+The form uses Netlify Forms (form name `contact`). Submissions appear under **Forms**. To get them by email, go to **Forms → Form notifications → Email**.
 
-```bash
-npm run build
-npm start
-```
+## Google Search Console
 
-## 🎨 Customization
+1. In Search Console, add a **Domain** property for `amyaaz.com` and copy its TXT record.
+2. In Netlify, go to **Domain management → amyaaz.com → DNS panel** and add a TXT record with name `@` and that value.
+3. Click **Verify**, submit `https://amyaaz.com/sitemap.xml`, then use **URL inspection** to request indexing of `/` and `/articles/`.
 
-### Colors
-Edit `tailwind.config.ts` to modify the color palette:
-- `dark-*`: Background and text colors
-- `accent-*`: Primary green accent color
+If you use the "HTML tag" method instead, put the token in `googleSiteVerification` in `content/site.json`.
 
-### Typography
-Fonts are configured in `tailwind.config.ts`. Update to your preferred:
-- `--font-sans`: Body text
-- `--font-serif`: Headings
+## Google Analytics 4
 
-### Logo
-The AA monogram is defined as SVG in components. Replace with your logo file or SVG markup.
-
-### Content
-- **Home**: Edit `src/app/page.tsx`
-- **About**: Edit `src/app/about/page.tsx`
-- **Services**: Update service list in `src/components/Services.tsx`
-- **Portfolio**: Update projects in `src/components/Work.tsx`
-
-## 📦 Dependencies
-
-- `next`: React framework
-- `react`: UI library
-- `framer-motion`: Animation library
-- `tailwindcss`: Utility-first CSS
-- `clsx`: Utility for conditional classes
-
-## 🌐 Deployment
-
-### Vercel (Recommended)
-
-```bash
-npm install -g vercel
-vercel
-```
-
-### Other Platforms
-- **Netlify**: Push to Git and connect
-- **AWS Amplify**: Connect GitHub repository
-- **Docker**: Create Dockerfile with Node base image
-
-## 📄 License
-
-Private project for Amyaaz. All rights reserved.
-
----
-
-Built with premium design principles and modern web technology.
+Put the Measurement ID (`G-…`) in `gaMeasurementId` in `content/site.json`. While it's empty, no analytics script is loaded. The site sends two events: `generate_lead` when the contact form is submitted, and `penalty_goal` when a visitor scores in the mini-game.
