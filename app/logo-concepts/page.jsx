@@ -1,4 +1,4 @@
-// Preview-only page for the logo directions generated in Canva.
+// Preview-only page for logo directions under review.
 // Not linked from the navigation and marked noindex, so it stays out of search.
 export const metadata = {
   title: 'Logo concepts (preview) | Amyaaz Aumeer',
@@ -6,28 +6,25 @@ export const metadata = {
   robots: { index: false, follow: false },
 };
 
-const concepts = [
+const generated = [
   {
-    name: 'Wordmark',
-    tag: 'Name-led',
-    blurb:
-      'A heavy custom wordmark for AMYAAZ AUMEER with one considered detail. Works in one colour on signage, invoices, favicon and LinkedIn.',
-    href: 'https://canva.link/eju2objpl5xxigp',
+    name: 'Bold A',
+    blurb: 'A heavy mint A with a notch cut into the counter. Strong at any size and the most ownable of the set.',
+    png: '/assets/img/logo-concepts/concept-a.png',
+    svg: '/assets/img/logo-concepts/traced-a.svg',
   },
   {
-    name: 'Symbol',
-    tag: 'Mark-led',
-    blurb:
-      'A premium symbol with a strong silhouette and negative-space detail suggesting connected systems. Reads at favicon size and stays strong in one colour.',
-    href: 'https://canva.link/0efk8a1ac3tjohm',
+    name: 'Arch and node',
+    blurb: 'An arch built from two solid forms with a connection node. Reads as a crafted mark with a systems idea behind it.',
+    png: '/assets/img/logo-concepts/concept-arch.png',
+    svg: '/assets/img/logo-concepts/traced-arch.svg',
   },
-  {
-    name: 'Monogram',
-    tag: 'AA lockup',
-    blurb:
-      'A custom double-A monogram with editorial contrast and a tracked uppercase name. Authoritative and suited to enterprise-facing work.',
-    href: 'https://canva.link/8e3nzvcgs1p1x2v',
-  },
+];
+
+const canvaDesigns = [
+  { name: 'Wordmark (Canva)', href: 'https://canva.link/eju2objpl5xxigp' },
+  { name: 'Symbol (Canva)', href: 'https://canva.link/0efk8a1ac3tjohm' },
+  { name: 'Monogram (Canva)', href: 'https://canva.link/8e3nzvcgs1p1x2v' },
 ];
 
 export default function LogoConcepts() {
@@ -41,20 +38,34 @@ export default function LogoConcepts() {
         </nav>
         <div className="label">Preview only · not live</div>
         <h1 className="title">
-          Three logo <em>directions</em>.
+          Logo <em>directions</em>.
         </h1>
         <p className="lead" style={{ marginBottom: '3rem' }}>
-          Generated in Canva from written briefs. Open each design to review it at full size. Nothing here replaces the
-          live site until a direction is chosen.
+          Generated with an image model, then traced to vector. Nothing here replaces the live site until a direction is
+          chosen.
         </p>
+
         <div className="articles">
-          {concepts.map((c, i) => (
-            <a key={c.name} className="card article-card" href={c.href} target="_blank" rel="noopener" data-reveal style={{ '--i': i }}>
-              <div className="article-meta">
-                <span className="pill">{c.tag}</span>
-              </div>
+          {generated.map((c, i) => (
+            <article key={c.name} className="card article-card" data-reveal style={{ '--i': i }}>
+              <img src={c.png} alt={`${c.name} logo concept`} width="200" height="200" style={{ width: '100%', height: 'auto', borderRadius: 12 }} />
               <h3>{c.name}</h3>
               <p>{c.blurb}</p>
+              <div className="foot">
+                <a href={c.svg}>Traced SVG</a>
+                <a href={c.png}>PNG</a>
+              </div>
+            </article>
+          ))}
+        </div>
+
+        <h2 className="title" style={{ fontSize: '1.6rem', marginTop: '4rem' }}>
+          Earlier Canva <em>drafts</em>
+        </h2>
+        <div className="articles">
+          {canvaDesigns.map((c, i) => (
+            <a key={c.name} className="card article-card" href={c.href} target="_blank" rel="noopener" data-reveal style={{ '--i': i }}>
+              <h3>{c.name}</h3>
               <div className="foot">
                 <span>Open in Canva</span>
                 <b>View →</b>
