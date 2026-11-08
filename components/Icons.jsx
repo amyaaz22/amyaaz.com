@@ -1,9 +1,12 @@
+// Bold A logo mark, traced from the generated concept (see public/assets/img/logo-concepts/traced-a.svg).
 export function Mark() {
   return (
-    <svg viewBox="0 0 48 48" fill="none" aria-hidden="true">
-      <path className="mark-stroke" d="M9 39 L24 9 L39 39" strokeWidth="4.5" strokeLinecap="round" strokeLinejoin="round" />
-      <path className="mark-stroke" d="M15.5 30 H20.2 M27.8 30 H32.5" strokeWidth="4.5" strokeLinecap="round" />
-      <circle className="mark-node" cx="24" cy="30" r="3.6" />
+    <svg viewBox="0 0 200 200" aria-hidden="true">
+      <path
+        style={{ fill: 'var(--accent)' }}
+        fillRule="evenodd"
+        d="M 77.476 71.750 C 65.521 95.263, 49.910 125.862, 42.786 139.750 L 29.833 165 44.908 165 L 59.983 165 65.500 154 C 68.534 147.950, 71.476 143, 72.038 143 C 73.792 143, 114.484 136.841, 114.802 136.528 C 115.214 136.121, 104.636 130.294, 92.257 124.107 L 82.013 118.988 90.743 101.494 C 95.545 91.872, 99.746 84, 100.078 84 C 100.411 84, 103.639 90.188, 107.252 97.750 C 110.865 105.313, 119.774 123.537, 127.051 138.250 L 140.281 165 155.222 165 L 170.164 165 155.709 136.750 C 147.759 121.213, 132.160 90.613, 121.044 68.750 C 109.928 46.887, 100.468 29, 100.023 29 C 99.577 29, 89.431 48.237, 77.476 71.750"
+      />
     </svg>
   );
 }
