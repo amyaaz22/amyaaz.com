@@ -1,6 +1,7 @@
 import Script from 'next/script';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import GuideBall from '../components/GuideBall';
 import { site, ORIGIN } from '../lib/content';
 
 export const metadata = {
@@ -42,6 +43,7 @@ export default function RootLayout({ children }) {
           href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700&display=swap"
         />
         <link rel="stylesheet" href="/assets/css/site.css" />
+        <link rel="stylesheet" href="/assets/css/preview.css" />
       </head>
       <body className="noise">
         <a className="skip-link" href="#main">
@@ -53,6 +55,7 @@ export default function RootLayout({ children }) {
         <Header email={site.email} />
         {children}
         <Footer site={site} />
+        <GuideBall />
         <Script src="/assets/js/site.js" strategy="afterInteractive" />
       </body>
     </html>

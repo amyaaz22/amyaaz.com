@@ -1,0 +1,82 @@
+/* Preview layer: guide ball, scroll progress, tour button, stack card.
+   Loaded after site.css so it can extend the existing tokens. */
+
+.scroll-progress {
+  position: fixed; top: 0; left: 0; right: 0; height: 2px; z-index: 300;
+  background: linear-gradient(90deg, var(--accent), var(--accent2), var(--accent3));
+  transform-origin: 0 50%; transform: scaleX(0); pointer-events: none;
+}
+
+.guide-wrap {
+  position: fixed; top: 0; right: clamp(10px, 2.5vw, 32px);
+  width: 96px; height: 96px; z-index: 120;
+  pointer-events: none; will-change: transform;
+}
+
+.guide-ball {
+  position: relative; display: block; width: 96px; height: 96px; padding: 0;
+  border: 0; background: none; border-radius: 50%; cursor: pointer;
+  pointer-events: auto; -webkit-tap-highlight-color: transparent;
+}
+.guide-ball:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+
+.guide-mount { display: block; width: 100%; height: 100%; pointer-events: none; }
+.guide-mount canvas { display: block; width: 100% !important; height: 100% !important; }
+
+.guide-label {
+  position: absolute; top: 50%; right: 100%; transform: translateY(-50%);
+  margin-right: 6px; padding: .45rem .75rem; border-radius: 999px;
+  background: var(--surface); border: 1px solid var(--border); box-shadow: var(--shadow);
+  font-family: var(--mono); font-size: .68rem; letter-spacing: .16em; text-transform: uppercase;
+  color: var(--text); white-space: nowrap; pointer-events: none;
+}
+
+.guide-tour {
+  position: fixed; right: clamp(10px, 2.5vw, 32px); bottom: 24px; z-index: 120;
+  padding: .72rem 1.05rem; border-radius: 999px; cursor: pointer;
+  background: var(--surface); color: var(--text); border: 1px solid var(--border);
+  box-shadow: var(--shadow); font-family: var(--mono); font-size: .7rem;
+  letter-spacing: .14em; text-transform: uppercase;
+  transition: transform .3s var(--ease), border-color .3s var(--ease), background-color .3s var(--ease);
+}
+.guide-tour:hover { transform: translateY(-2px); border-color: var(--accent); }
+.guide-tour:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+.guide-tour[aria-pressed="true"] { background: var(--accent); color: var(--on-accent); border-color: var(--accent); }
+
+/* Stack card replaces the hero portrait on the landing page (no face on home). */
+.stack-card {
+  position: relative; width: 100%; max-width: 440px; margin-left: auto;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden;
+}
+.stack-head {
+  display: flex; align-items: center; gap: .4rem; padding: .8rem 1rem;
+  border-bottom: 1px solid var(--border); font-family: var(--mono); font-size: .72rem; color: var(--muted);
+}
+.stack-head span { width: 10px; height: 10px; border-radius: 50%; background: var(--dim); }
+.stack-head span:nth-child(1) { background: var(--accent3); }
+.stack-head span:nth-child(2) { background: var(--yellow); }
+.stack-head span:nth-child(3) { background: var(--accent); }
+.stack-head b { margin-left: auto; font-weight: 400; }
+.stack-code {
+  margin: 0; padding: 1.4rem 1.3rem; font-family: var(--mono); font-size: .84rem;
+  line-height: 1.9; color: var(--text); white-space: pre-wrap; overflow-x: auto;
+}
+.stack-code .k { color: var(--accent2); }
+.stack-code .s { color: var(--accent); }
+.stack-foot {
+  display: flex; justify-content: space-between; align-items: center; gap: 1rem;
+  padding: .9rem 1.3rem; border-top: 1px solid var(--border); font-size: .9rem; color: var(--muted);
+}
+
+@media (max-width: 720px) {
+  .guide-wrap, .guide-ball { width: 68px; height: 68px; }
+  .guide-label { display: none; }
+  .guide-tour { bottom: 14px; right: 14px; padding: .6rem .85rem; font-size: .62rem; }
+  .stack-code { font-size: .76rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .guide-tour { transition: none; }
+  .guide-tour:hover { transform: none; }
+}
