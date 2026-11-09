@@ -8,7 +8,7 @@ export const metadata = {
   title,
   description,
   keywords:
-    'Zoho developer Mauritius, Zoho developer Africa, Zoho Creator developer, Zoho Creator developer Africa, remote Zoho developer Africa, Deluge scripting, digital solutions architect Mauritius, Zoho technical developer, Zoho Flow automation, Zoho Catalyst, Mauritius software developer, custom Zoho development, Zoho partner Mauritius, MetaBox Technology, amyaaz aumeer, digital transformation Mauritius, MRA e-invoicing Zoho',
+    'Zoho developer Mauritius, Zoho developer Middle East and Africa, Zoho developer Middle East, Zoho Creator developer, Zoho Creator developer Middle East and Africa, remote Zoho developer Middle East and Africa, Deluge scripting, digital solutions architect Mauritius, Zoho technical developer, Zoho Flow automation, Zoho Catalyst, Mauritius software developer, custom Zoho development, Zoho partner Mauritius, MetaBox Technology, amyaaz aumeer, digital transformation Mauritius, MRA e-invoicing Zoho',
   alternates: { canonical: ORIGIN + '/' },
   openGraph: {
     title,
@@ -46,6 +46,7 @@ export default function Home() {
         provider: { '@id': ORIGIN + '/#person' },
         areaServed: [
           { '@type': 'Country', name: 'Mauritius' },
+          { '@type': 'Place', name: 'Middle East' },
           { '@type': 'Place', name: 'Africa' },
         ],
         serviceType: ['Zoho Creator development', 'Deluge scripting', 'Zoho Flow automation', 'Zoho Catalyst'],

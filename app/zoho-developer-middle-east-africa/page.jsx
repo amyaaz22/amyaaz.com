@@ -1,16 +1,21 @@
 import { ORIGIN } from '../../lib/content';
 
-const title = 'Zoho Developer in Africa | Remote Zoho Creator, Deluge and Flow | Amyaaz Aumeer';
+const title = 'Zoho Developer for the Middle East and Africa | Remote Zoho Creator, Deluge and Flow | Amyaaz Aumeer';
 const description =
-  'Remote Zoho developer serving businesses across Africa from Mauritius. Zoho Creator apps, Deluge scripting, Zoho Flow automation and Catalyst backends, delivered remotely.';
+  'Remote Zoho developer from Mauritius serving businesses across the Middle East and Africa. Zoho Creator apps, Deluge scripting, Zoho Flow automation and Catalyst backends, delivered remotely.';
 
 export const metadata = {
   title,
   description,
   keywords:
-    'Zoho developer Africa, Zoho Creator developer Africa, remote Zoho developer Africa, Zoho partner Africa, Deluge developer Africa, Zoho Flow Africa, Zoho Catalyst Africa, Zoho consultant Africa',
-  alternates: { canonical: ORIGIN + '/zoho-developer-africa/' },
-  openGraph: { title, description, url: ORIGIN + '/zoho-developer-africa/', type: 'website' },
+    'Zoho developer Middle East and Africa, Zoho developer Middle East, Zoho developer Africa, Zoho Creator developer Middle East, remote Zoho developer Middle East and Africa, Zoho partner Middle East, Deluge developer Middle East, Zoho Flow Middle East, Zoho Catalyst Middle East, Zoho consultant Middle East and Africa',
+  alternates: { canonical: ORIGIN + '/zoho-developer-middle-east-africa/' },
+  openGraph: {
+    title,
+    description,
+    url: ORIGIN + '/zoho-developer-middle-east-africa/',
+    type: 'website',
+  },
 };
 
 const services = [
@@ -25,23 +30,31 @@ const jsonld = {
   '@graph': [
     {
       '@type': 'Service',
-      name: 'Remote Zoho development for businesses in Africa',
+      name: 'Remote Zoho development for businesses in the Middle East and Africa',
       serviceType: 'Zoho Creator, Deluge, Zoho Flow and Catalyst development',
       provider: { '@id': ORIGIN + '/#person' },
-      areaServed: [{ '@type': 'Place', name: 'Africa' }],
-      url: ORIGIN + '/zoho-developer-africa/',
+      areaServed: [
+        { '@type': 'Place', name: 'Middle East' },
+        { '@type': 'Place', name: 'Africa' },
+      ],
+      url: ORIGIN + '/zoho-developer-middle-east-africa/',
     },
     {
       '@type': 'BreadcrumbList',
       itemListElement: [
         { '@type': 'ListItem', position: 1, name: 'Home', item: ORIGIN + '/' },
-        { '@type': 'ListItem', position: 2, name: 'Zoho developer Africa', item: ORIGIN + '/zoho-developer-africa/' },
+        {
+          '@type': 'ListItem',
+          position: 2,
+          name: 'Zoho developer Middle East and Africa',
+          item: ORIGIN + '/zoho-developer-middle-east-africa/',
+        },
       ],
     },
   ],
 };
 
-export default function ZohoDeveloperAfrica() {
+export default function ZohoDeveloperMiddleEastAfrica() {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonld) }} />
@@ -50,15 +63,16 @@ export default function ZohoDeveloperAfrica() {
           <nav className="crumbs" aria-label="Breadcrumb">
             <a href="/">Home</a>
             <span>/</span>
-            <span>Zoho developer Africa</span>
+            <span>Zoho developer Middle East and Africa</span>
           </nav>
           <div className="label">Remote delivery</div>
           <h1 className="title">
-            Zoho developer for businesses <em>across Africa</em>.
+            Zoho developer for businesses across the <em>Middle East and Africa</em>.
           </h1>
           <p className="lead" style={{ marginBottom: '3rem' }}>
-            I build custom Zoho applications for companies across Africa, delivered remotely from Mauritius. Mauritius
-            runs on UTC+4, so working hours overlap with East and Southern Africa and with the start of the European day.
+            I build custom Zoho applications for companies across the Middle East and Africa, delivered remotely from
+            Mauritius. Mauritius runs on UTC+4, the same time zone as the UAE and one hour ahead of Saudi Arabia, Qatar
+            and East Africa, so working hours overlap well across the region.
           </p>
 
           <div className="articles">

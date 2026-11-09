@@ -1,6 +1,6 @@
 'use client';
 
-// Guide rail: a slim track in the right gutter (desktop only) with a 3D ball that glides
+// Guide rail: a slim track in the right gutter (desktop only) with a football that glides
 // with scroll. The ball tilts toward the cursor, clicking it advances a section, the dots
 // jump to sections, and the tour button walks the page. Three.js loads from jsDelivr at
 // runtime; if WebGL or the CDN is unavailable the rail still works without the 3D ball.
@@ -113,7 +113,7 @@ export default function GuideBall() {
     };
   }, [touring]);
 
-  // 3D ball: loaded only in the browser. Tilts toward the cursor.
+  // Football: loaded only in the browser. Tilts toward the cursor and rolls as it moves.
   useEffect(() => {
     let disposed = false;
     let raf = 0;
@@ -157,43 +157,49 @@ export default function GuideBall() {
       mount.appendChild(renderer.domElement);
 
       const scene = new THREE.Scene();
-      const camera = new THREE.PerspectiveCamera(35, 1, 0.1, 100);
-      camera.position.z = 4.4;
-      scene.add(new THREE.AmbientLight(0xffffff, 0.4));
-      const key = new THREE.DirectionalLight(0xffffff, 2.2);
+      const camera = new THREE.PerspectiveCamera(30, 1, 0.1, 100);
+      camera.position.z = 4.6;
+      scene.add(new THREE.AmbientLight(0xffffff, 0.75));
+      const key = new THREE.DirectionalLight(0xffffff, 1.6);
       key.position.set(3, 4, 5);
       scene.add(key);
-      const fill = new THREE.DirectionalLight(0x818cf8, 0.9);
-      fill.position.set(-4, -2, 2);
-      scene.add(fill);
+      const rim = new THREE.DirectionalLight(0xffffff, 0.5);
+      rim.position.set(-4, -2, -3);
+      scene.add(rim);
 
-      const ball = new THREE.Mesh(
-        new THREE.SphereGeometry(1, 64, 64),
-        new THREE.MeshPhysicalMaterial({
-          color: 0x4ade80,
-          roughness: 0.22,
-          metalness: 0.05,
-          clearcoat: 1,
-          clearcoatRoughness: 0.12,
-          emissive: 0x0a3d1f,
-          emissiveIntensity: 0.35,
-        })
-      );
+      // Classic football: a white ball with twelve black pentagons centred on the
+      // directions of an icosahedron's vertices.
+      const ball = new THREE.Group();
+      const white = new THREE.MeshPhysicalMaterial({ color: 0xf7f7f5, roughness: 0.32, clearcoat: 0.6, clearcoatRoughness: 0.2 });
+      ball.add(new THREE.Mesh(new THREE.SphereGeometry(1, 64, 64), white));
+
+      const black = new THREE.MeshStandardMaterial({ color: 0x0d0d0f, roughness: 0.42, metalness: 0.05 });
+      const shape = new THREE.Shape();
+      for (let k = 0; k < 5; k += 1) {
+        const ang = (k * Math.PI * 2) / 5 + Math.PI / 2;
+        const x = Math.cos(ang) * 0.3;
+        const y = Math.sin(ang) * 0.3;
+        if (k === 0) shape.moveTo(x, y);
+        else shape.lineTo(x, y);
+      }
+      shape.closePath();
+      const pentGeo = new THREE.ShapeGeometry(shape);
+
+      const phi = (1 + Math.sqrt(5)) / 2;
+      const dirs = [];
+      [-1, 1].forEach((a) => {
+        [-phi, phi].forEach((b) => {
+          dirs.push([0, a, b], [a, b, 0], [b, 0, a]);
+        });
+      });
+      dirs.forEach(([x, y, z]) => {
+        const v = new THREE.Vector3(x, y, z).normalize();
+        const patch = new THREE.Mesh(pentGeo, black);
+        patch.position.copy(v.clone().multiplyScalar(1.02));
+        patch.lookAt(v.clone().multiplyScalar(2));
+        ball.add(patch);
+      });
       scene.add(ball);
-
-      const TILT = Math.PI / 2.6;
-      const ring = new THREE.Mesh(
-        new THREE.TorusGeometry(1.45, 0.02, 16, 180),
-        new THREE.MeshBasicMaterial({ color: 0x818cf8 })
-      );
-      ring.rotation.x = TILT;
-      scene.add(ring);
-
-      const sat = new THREE.Mesh(
-        new THREE.SphereGeometry(0.16, 24, 24),
-        new THREE.MeshBasicMaterial({ color: 0xf472b6 })
-      );
-      scene.add(sat);
 
       let t = 0;
       let last = performance.now();
@@ -205,16 +211,8 @@ export default function GuideBall() {
 
         tilt.x += (tilt.tx - tilt.x) * 0.12;
         tilt.y += (tilt.ty - tilt.y) * 0.12;
-        ball.rotation.x = tilt.x + (reduce ? 0 : Math.sin(t) * 0.12);
-        ball.rotation.y = tilt.y + (reduce ? 0 : t * 0.4);
-        ring.rotation.z += reduce ? 0 : 0.01;
-
-        const a = t * 1.3;
-        sat.position.set(
-          Math.cos(a) * 1.45,
-          Math.sin(a) * Math.cos(TILT) * 1.45,
-          Math.sin(a) * Math.sin(TILT) * 1.45
-        );
+        ball.rotation.x = tilt.x + (reduce ? 0 : Math.sin(t * 0.9) * 0.15);
+        ball.rotation.y = tilt.y + (reduce ? 0 : t * 0.7);
 
         renderer.render(scene, camera);
         raf = requestAnimationFrame(render);
