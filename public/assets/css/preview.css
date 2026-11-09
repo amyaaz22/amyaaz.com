@@ -92,15 +92,18 @@
 .back-top svg { width: 18px; height: 18px; }
 
 /* ---------- Card spotlight and tilt (fine pointers only; set from preview.js) ---------- */
-.card { position: relative; }
-.card::after {
-  content: ''; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
-  background: radial-gradient(340px circle at var(--mx, 50%) var(--my, 50%), rgba(74, 222, 128, 0.16), transparent 62%);
-  opacity: 0; transition: opacity .4s var(--ease);
+/* The base border glow (.card::after in site.css) is kept. This only strengthens the
+   spotlight under the cursor, which follows the pointer via --mx / --my. */
+.card::before {
+  background: radial-gradient(
+    520px circle at var(--mx, 50%) var(--my, 50%),
+    color-mix(in srgb, var(--accent) 24%, transparent),
+    color-mix(in srgb, var(--accent2, var(--accent)) 6%, transparent) 45%,
+    transparent 64%
+  );
 }
 @media (hover: hover) and (pointer: fine) {
   .card:not(.form):not(.playground):hover { transform: perspective(900px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)); }
-  .card:not(.form):not(.playground):hover::after { opacity: 1; }
 }
 
 /* ---------- Stack card (landing page, replaces the portrait) ---------- */
