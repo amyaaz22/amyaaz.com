@@ -11,7 +11,7 @@
     var CARD = '.card:not(.form):not(.playground)';
     var lastCard = null;
 
-    var reset = function (card) {
+    var resetTilt = function (card) {
       if (!card) return;
       card.style.setProperty('--rx', '0deg');
       card.style.setProperty('--ry', '0deg');
@@ -22,7 +22,7 @@
       function (e) {
         var target = e.target && e.target.closest ? e.target.closest(CARD) : null;
         if (lastCard && lastCard !== target) {
-          reset(lastCard);
+          resetTilt(lastCard);
           lastCard = null;
         }
         if (!target) return;
@@ -45,13 +45,15 @@
 
   var DEFAULT_METHOD = 'GET';
   var DEFAULT_URL = '/sandbox/v1/architect/profile';
+  var PLACEHOLDER = '// The documented request returns a sample profile.';
 
   var sel = root.querySelector('.pg-method');
   var url = root.querySelector('.pg-url');
   var send = root.querySelector('.pg-send');
-  var reset = root.querySelector('.pg-reset');
+  var resetBtn = root.querySelector('.pg-reset');
   var status = root.querySelector('.pg-status');
   var out = root.querySelector('.pg-out');
+  var chips = root.querySelectorAll('.pg-chip');
 
   var SAMPLE = {
     name: 'Amyaaz Aumeer',
@@ -70,34 +72,87 @@
     hint: 'Send GET to /sandbox/v1/architect/profile to see the sample response.',
   };
 
+  var typeTimer = null;
+
+  function stopTyping() {
+    if (typeTimer) {
+      clearInterval(typeTimer);
+      typeTimer = null;
+    }
+  }
+
+  // Types the text out so a response feels live. Skipped for reduced motion.
+  function typeOut(text) {
+    stopTyping();
+    if (reduce) {
+      out.textContent = text;
+      return;
+    }
+    var i = 0;
+    out.textContent = '';
+    typeTimer = setInterval(function () {
+      i = Math.min(text.length, i + 6);
+      out.textContent = text.slice(0, i);
+      if (i >= text.length) stopTyping();
+    }, 16);
+  }
+
+  function setActiveChip(method, target) {
+    chips.forEach(function (c) {
+      var on = c.getAttribute('data-method') === method && c.getAttribute('data-url') === target;
+      c.classList.toggle('is-on', on);
+      c.setAttribute('aria-pressed', on ? 'true' : 'false');
+    });
+  }
+
   function render(state, label, body) {
     root.setAttribute('data-state', state);
     status.textContent = label;
-    out.textContent = JSON.stringify(body, null, 2);
+    typeOut(JSON.stringify(body, null, 2));
   }
 
   function run() {
     var method = sel.value;
     var target = url.value.trim();
+    setActiveChip(method, target);
     if (method === DEFAULT_METHOD && target === DEFAULT_URL) {
       render('ok', 'HTTP 200 OK  ·  ' + method + ' ' + target + '  ·  12 ms', SAMPLE);
     } else {
+      root.classList.remove('pg-shake');
+      void root.offsetWidth; // restart the shake animation
+      root.classList.add('pg-shake');
       render('denied', 'HTTP 403 Forbidden  ·  ' + method + ' ' + (target || '(empty)'), REFUSAL);
     }
   }
 
   function restore() {
+    stopTyping();
     sel.value = DEFAULT_METHOD;
     url.value = DEFAULT_URL;
     root.removeAttribute('data-state');
-    status.textContent = 'Ready. Press Send.';
-    out.textContent = '// Press Send to run the documented request.';
+    root.classList.remove('pg-shake');
+    status.textContent = 'Ready. Press Send, or pick an example above.';
+    out.textContent = PLACEHOLDER;
+    setActiveChip(DEFAULT_METHOD, DEFAULT_URL);
   }
 
   send.addEventListener('click', run);
   url.addEventListener('keydown', function (e) {
     if (e.key === 'Enter') run();
   });
-  reset.addEventListener('click', restore);
+  sel.addEventListener('change', function () {
+    setActiveChip(sel.value, url.value.trim());
+  });
+  url.addEventListener('input', function () {
+    setActiveChip(sel.value, url.value.trim());
+  });
+  chips.forEach(function (c) {
+    c.addEventListener('click', function () {
+      sel.value = c.getAttribute('data-method');
+      url.value = c.getAttribute('data-url');
+      run();
+    });
+  });
+  resetBtn.addEventListener('click', restore);
   restore();
 })();
