@@ -1,10 +1,9 @@
 'use client';
 
-// A 3D guide ball that walks the visitor down the page as they scroll.
-// Click it to jump to the next section, or start the guided tour.
-// Three.js is loaded from jsDelivr at runtime, so the static build stays small.
-// If WebGL or the CDN is unavailable, the ball simply does not render and the
-// tour button and scroll progress bar keep working.
+// Guide rail: a slim track in the right gutter (desktop only) with a 3D ball that glides
+// with scroll. The ball tilts toward the cursor, clicking it advances a section, the dots
+// jump to sections, and the tour button walks the page. Three.js loads from jsDelivr at
+// runtime; if WebGL or the CDN is unavailable the rail still works without the 3D ball.
 
 import { useEffect, useRef, useState } from 'react';
 
@@ -21,7 +20,6 @@ const STOPS = [
 
 const HEADER_OFFSET = 72;
 const TOUR_MS = 3200;
-
 const reduceMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 function topOf(id) {
@@ -30,13 +28,19 @@ function topOf(id) {
   return el ? el.getBoundingClientRect().top + window.scrollY : 0;
 }
 
-function currentIndex() {
-  const mid = window.scrollY + window.innerHeight * 0.4;
-  let idx = 0;
-  STOPS.forEach((s, i) => {
-    if (s.id && topOf(s.id) <= mid) idx = i;
+// Continuous position along the stops: 0 at Intro, 1 at Services, ... fractional in between.
+function stopPosition() {
+  const y = window.scrollY + window.innerHeight * 0.4;
+  const tops = STOPS.map((s) => topOf(s.id));
+  let i = 0;
+  tops.forEach((t, k) => {
+    if (t <= y) i = k;
   });
-  return idx;
+  if (i >= tops.length - 1) return tops.length - 1;
+  const a = tops[i];
+  const b = tops[i + 1];
+  const f = b > a ? Math.min(1, Math.max(0, (y - a) / (b - a))) : 0;
+  return i + f;
 }
 
 function goTo(i) {
@@ -46,39 +50,55 @@ function goTo(i) {
 }
 
 export default function GuideBall() {
-  const wrapRef = useRef(null);
+  const trackRef = useRef(null);
+  const ballRef = useRef(null);
+  const fillRef = useRef(null);
   const mountRef = useRef(null);
   const barRef = useRef(null);
   const indexRef = useRef(0);
+  const tiltRef = useRef({ x: 0, y: 0, tx: 0, ty: 0 });
   const [index, setIndex] = useState(0);
   const [touring, setTouring] = useState(false);
 
-  // Keep the label in sync with where the visitor is.
+  // Position the ball, fill and progress bar every frame (cheap, no React re-renders).
   useEffect(() => {
-    const onScroll = () => {
-      const i = currentIndex();
+    let raf = 0;
+    let curY = null;
+    const last = STOPS.length - 1;
+    const tick = () => {
+      const trackH = trackRef.current ? trackRef.current.clientHeight : 0;
+      const pos = stopPosition();
+      const targetY = (pos / last) * trackH;
+      curY = curY === null ? targetY : curY + (targetY - curY) * 0.14;
+      if (ballRef.current) ballRef.current.style.transform = `translate3d(0, ${curY.toFixed(1)}px, 0)`;
+      if (fillRef.current) fillRef.current.style.height = `${curY.toFixed(1)}px`;
+
+      const max = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+      if (barRef.current) barRef.current.style.transform = `scaleX(${Math.min(1, window.scrollY / max)})`;
+
+      const i = Math.min(last, Math.floor(pos + 0.0001));
       if (i !== indexRef.current) {
         indexRef.current = i;
         setIndex(i);
       }
+      raf = requestAnimationFrame(tick);
     };
-    onScroll();
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
   }, []);
 
   // Guided tour: walk section by section until the end, or until the visitor takes over.
   useEffect(() => {
     if (!touring) return undefined;
-    let i = currentIndex();
+    let i = indexRef.current;
     const stop = () => setTouring(false);
-    const step = () => {
+    const timer = setInterval(() => {
       i += 1;
       if (i >= STOPS.length) return stop();
       goTo(i);
-    };
-    const timer = setInterval(step, TOUR_MS);
-    step();
+    }, TOUR_MS);
+    i += 1;
+    if (i < STOPS.length) goTo(i);
     const onKey = (e) => {
       if (e.key === 'Escape') stop();
     };
@@ -93,12 +113,29 @@ export default function GuideBall() {
     };
   }, [touring]);
 
-  // 3D ball: loaded and animated only in the browser.
+  // 3D ball: loaded only in the browser. Tilts toward the cursor.
   useEffect(() => {
     let disposed = false;
     let raf = 0;
     let renderer = null;
     const reduce = reduceMotion();
+    const tilt = tiltRef.current;
+
+    const onMove = (e) => {
+      const el = ballRef.current;
+      if (!el) return;
+      const r = el.getBoundingClientRect();
+      const dx = (e.clientX - (r.left + r.width / 2)) / 320;
+      const dy = (e.clientY - (r.top + r.height / 2)) / 320;
+      tilt.ty = Math.max(-0.7, Math.min(0.7, dx));
+      tilt.tx = Math.max(-0.5, Math.min(0.5, dy));
+    };
+    const onLeave = () => {
+      tilt.tx = 0;
+      tilt.ty = 0;
+    };
+    window.addEventListener('pointermove', onMove, { passive: true });
+    document.addEventListener('pointerleave', onLeave);
 
     (async () => {
       let THREE;
@@ -114,7 +151,7 @@ export default function GuideBall() {
       } catch {
         return;
       }
-      const size = mount.clientWidth || 96;
+      const size = 44;
       renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
       renderer.setSize(size, size);
       mount.appendChild(renderer.domElement);
@@ -122,8 +159,7 @@ export default function GuideBall() {
       const scene = new THREE.Scene();
       const camera = new THREE.PerspectiveCamera(35, 1, 0.1, 100);
       camera.position.z = 4.4;
-
-      scene.add(new THREE.AmbientLight(0xffffff, 0.35));
+      scene.add(new THREE.AmbientLight(0xffffff, 0.4));
       const key = new THREE.DirectionalLight(0xffffff, 2.2);
       key.position.set(3, 4, 5);
       scene.add(key);
@@ -147,52 +183,32 @@ export default function GuideBall() {
 
       const TILT = Math.PI / 2.6;
       const ring = new THREE.Mesh(
-        new THREE.TorusGeometry(1.45, 0.012, 16, 180),
+        new THREE.TorusGeometry(1.45, 0.02, 16, 180),
         new THREE.MeshBasicMaterial({ color: 0x818cf8 })
       );
       ring.rotation.x = TILT;
       scene.add(ring);
 
       const sat = new THREE.Mesh(
-        new THREE.SphereGeometry(0.13, 24, 24),
+        new THREE.SphereGeometry(0.16, 24, 24),
         new THREE.MeshBasicMaterial({ color: 0xf472b6 })
       );
       scene.add(sat);
 
-      const pad = 8;
-      let curY = null;
-      let prevY = null;
       let t = 0;
       let last = performance.now();
-
-      const tick = (now) => {
+      const render = (now) => {
         if (disposed) return;
         const dt = Math.min(0.05, (now - last) / 1000);
         last = now;
         if (!reduce) t += dt;
 
-        const max = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
-        const p = Math.min(1, window.scrollY / max);
-        if (barRef.current) barRef.current.style.transform = `scaleX(${p})`;
+        tilt.x += (tilt.tx - tilt.x) * 0.12;
+        tilt.y += (tilt.ty - tilt.y) * 0.12;
+        ball.rotation.x = tilt.x + (reduce ? 0 : Math.sin(t) * 0.12);
+        ball.rotation.y = tilt.y + (reduce ? 0 : t * 0.4);
+        ring.rotation.z += reduce ? 0 : 0.01;
 
-        const travel = window.innerHeight - size - pad * 2;
-        const target = pad + p * Math.max(0, travel);
-        curY = curY === null ? target : curY + (target - curY) * 0.12;
-        const v = prevY === null ? 0 : curY - prevY;
-        prevY = curY;
-
-        if (wrapRef.current) {
-          const bob = reduce ? 0 : Math.sin(t * 3) * 3;
-          wrapRef.current.style.transform = `translate3d(0, ${(curY + bob).toFixed(1)}px, 0)`;
-        }
-
-        // Roll toward the direction of travel and squash slightly while moving.
-        ball.rotation.y += 0.008 + Math.abs(v) * 0.04;
-        ball.rotation.x = reduce ? 0 : Math.sin(t) * 0.18;
-        const sq = Math.min(0.08, Math.abs(v) * 0.5);
-        ball.scale.set(1 + sq, 1 - sq, 1 + sq * 0.5);
-
-        ring.rotation.z += reduce ? 0 : 0.005;
         const a = t * 1.3;
         sat.position.set(
           Math.cos(a) * 1.45,
@@ -201,14 +217,16 @@ export default function GuideBall() {
         );
 
         renderer.render(scene, camera);
-        raf = requestAnimationFrame(tick);
+        raf = requestAnimationFrame(render);
       };
-      raf = requestAnimationFrame(tick);
+      raf = requestAnimationFrame(render);
     })();
 
     return () => {
       disposed = true;
       cancelAnimationFrame(raf);
+      window.removeEventListener('pointermove', onMove);
+      document.removeEventListener('pointerleave', onLeave);
       if (renderer) {
         renderer.dispose();
         renderer.domElement.remove();
@@ -224,25 +242,43 @@ export default function GuideBall() {
   return (
     <>
       <div className="scroll-progress" ref={barRef} aria-hidden="true" />
-      <div className="guide-wrap" ref={wrapRef}>
+      <aside className="guide-rail" aria-label="Page guide">
+        <div className="guide-stage" ref={trackRef}>
+          <div className="guide-line" aria-hidden="true" />
+          <div className="guide-fill" ref={fillRef} aria-hidden="true" />
+          {STOPS.map((s, i) => (
+            <button
+              key={s.label}
+              type="button"
+              className={`guide-dot${i === index ? ' is-on' : ''}`}
+              style={{ top: `${(i / (STOPS.length - 1)) * 100}%` }}
+              onClick={() => goTo(i)}
+              aria-label={`Go to ${s.label}`}
+            >
+              <span>{s.label}</span>
+            </button>
+          ))}
+          <div className="guide-ball-wrap" ref={ballRef}>
+            <button
+              type="button"
+              className="guide-ball"
+              onClick={next}
+              aria-label={`Guide. You are in ${STOPS[index].label}. Activate to go to the next section.`}
+            >
+              <span className="guide-mount" ref={mountRef} aria-hidden="true" />
+            </button>
+            <span className="guide-label" aria-hidden="true">{STOPS[index].label}</span>
+          </div>
+        </div>
         <button
           type="button"
-          className="guide-ball"
-          onClick={next}
-          aria-label={`Guide. You are in ${STOPS[index].label}. Activate to go to the next section.`}
+          className="guide-tour"
+          aria-pressed={touring}
+          onClick={() => setTouring((v) => !v)}
         >
-          <span className="guide-mount" ref={mountRef} aria-hidden="true" />
-          <span className="guide-label" aria-hidden="true">{STOPS[index].label}</span>
+          {touring ? 'Stop' : 'Tour'}
         </button>
-      </div>
-      <button
-        type="button"
-        className="guide-tour"
-        aria-pressed={touring}
-        onClick={() => setTouring((v) => !v)}
-      >
-        {touring ? 'Stop tour' : 'Take the tour'}
-      </button>
+      </aside>
     </>
   );
 }

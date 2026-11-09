@@ -277,6 +277,34 @@
   </div>
 </section>
 
+<!-- PLAYGROUND -->
+<section id="playground" class="section" aria-labelledby="pg-title">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <div class="label" data-reveal>Try it</div>
+        <h2 class="title" id="pg-title" data-reveal>An API playground, <em>read-only</em>.</h2>
+      </div>
+      <p class="lead" data-reveal>Send the documented request to see a sample response. Anything else is politely refused.</p>
+    </div>
+    <div class="card playground" data-reveal data-playground>
+      <div class="pg-bar">
+        <select class="pg-method" aria-label="HTTP method">
+          <option value="GET" selected>GET</option>
+          <option value="POST">POST</option>
+          <option value="DELETE">DELETE</option>
+        </select>
+        <input class="pg-url" type="text" value="/sandbox/v1/architect/profile" aria-label="Request URL" spellcheck="false" autocomplete="off" />
+        <button type="button" class="btn btn-primary pg-btn pg-send magnetic">Send</button>
+        <button type="button" class="btn btn-ghost pg-btn pg-reset">Reset</button>
+      </div>
+      <div class="pg-status" role="status" aria-live="polite">Ready. Press Send.</div>
+      <pre class="pg-out"><code>// Press Send to run the documented request.</code></pre>
+    </div>
+    <p class="pg-note" data-reveal>Demo only. Nothing you type leaves this page.</p>
+  </div>
+</section>
+
 <!-- CONTACT -->
 <section id="contact" class="section">
   <div class="wrap contact">

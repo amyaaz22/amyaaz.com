@@ -1,49 +1,109 @@
-/* Preview layer: guide ball, scroll progress, tour button, stack card.
-   Loaded after site.css so it can extend the existing tokens. */
+/* Preview layer. Loaded after site.css so it can extend the existing tokens. */
 
+/* Scroll progress */
 .scroll-progress {
   position: fixed; top: 0; left: 0; right: 0; height: 2px; z-index: 300;
   background: linear-gradient(90deg, var(--accent), var(--accent2), var(--accent3));
   transform-origin: 0 50%; transform: scaleX(0); pointer-events: none;
 }
 
-.guide-wrap {
-  position: fixed; top: 0; right: clamp(10px, 2.5vw, 32px);
-  width: 96px; height: 96px; z-index: 120;
-  pointer-events: none; will-change: transform;
+/* Nav: the shared script slides the bar away on scroll-down. In the preview the glass bar stays put. */
+.nav.hidden { transform: none; }
+.nav.scrolled { background: var(--nav-bg); backdrop-filter: blur(18px) saturate(1.4); -webkit-backdrop-filter: blur(18px) saturate(1.4); }
+
+/* ---------- Guide rail: desktop only, in the gutter so it never covers content ---------- */
+.guide-rail {
+  position: fixed; right: 16px; top: 96px; bottom: 96px; width: 56px; z-index: 120;
+  display: none; flex-direction: column; align-items: center; gap: 14px; pointer-events: none;
+}
+@media (min-width: 1280px) { .guide-rail { display: flex; } }
+
+.guide-stage { position: relative; flex: 1; width: 100%; }
+.guide-line {
+  position: absolute; left: 50%; top: 0; bottom: 0; width: 2px; transform: translateX(-50%);
+  background: var(--border); border-radius: 2px;
+}
+.guide-fill {
+  position: absolute; left: 50%; top: 0; width: 2px; height: 0; transform: translateX(-50%);
+  background: linear-gradient(var(--accent), var(--accent2)); border-radius: 2px;
 }
 
+.guide-dot {
+  position: absolute; left: 50%; width: 22px; height: 22px; margin: -11px 0 0 -11px;
+  padding: 0; border: 0; background: transparent; cursor: pointer; pointer-events: auto;
+}
+.guide-dot::after {
+  content: ''; position: absolute; left: 50%; top: 50%; width: 8px; height: 8px; margin: -4px 0 0 -4px;
+  border-radius: 50%; background: var(--dim); transition: background-color .3s var(--ease), transform .3s var(--ease);
+}
+.guide-dot.is-on::after { background: var(--accent); transform: scale(1.4); }
+.guide-dot:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 50%; }
+.guide-dot span {
+  position: absolute; right: 100%; top: 50%; margin-right: 10px; white-space: nowrap;
+  padding: .32rem .6rem; border-radius: 999px; background: var(--surface); border: 1px solid var(--border);
+  box-shadow: var(--shadow); font-family: var(--mono); font-size: .62rem; letter-spacing: .14em; text-transform: uppercase;
+  color: var(--text); opacity: 0; transform: translate(6px, -50%); transition: opacity .25s var(--ease), transform .25s var(--ease);
+  pointer-events: none;
+}
+.guide-dot:hover span, .guide-dot:focus-visible span { opacity: 1; transform: translate(0, -50%); }
+
+.guide-ball-wrap {
+  position: absolute; left: 50%; top: 0; width: 44px; height: 44px; margin-left: -22px;
+  will-change: transform; pointer-events: none;
+}
 .guide-ball {
-  position: relative; display: block; width: 96px; height: 96px; padding: 0;
-  border: 0; background: none; border-radius: 50%; cursor: pointer;
-  pointer-events: auto; -webkit-tap-highlight-color: transparent;
+  position: relative; display: block; width: 44px; height: 44px; padding: 0; border: 0;
+  background: none; border-radius: 50%; cursor: pointer; pointer-events: auto;
+  transition: transform .35s var(--ease); -webkit-tap-highlight-color: transparent;
 }
+.guide-ball:hover, .guide-ball:focus-visible { transform: scale(1.14); }
 .guide-ball:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
-
 .guide-mount { display: block; width: 100%; height: 100%; pointer-events: none; }
 .guide-mount canvas { display: block; width: 100% !important; height: 100% !important; }
-
 .guide-label {
-  position: absolute; top: 50%; right: 100%; transform: translateY(-50%);
-  margin-right: 6px; padding: .45rem .75rem; border-radius: 999px;
-  background: var(--surface); border: 1px solid var(--border); box-shadow: var(--shadow);
-  font-family: var(--mono); font-size: .68rem; letter-spacing: .16em; text-transform: uppercase;
-  color: var(--text); white-space: nowrap; pointer-events: none;
+  position: absolute; top: 50%; right: 100%; margin-right: 10px; transform: translate(6px, -50%);
+  padding: .32rem .6rem; border-radius: 999px; background: var(--surface); border: 1px solid var(--border);
+  box-shadow: var(--shadow); font-family: var(--mono); font-size: .62rem; letter-spacing: .14em; text-transform: uppercase;
+  color: var(--text); white-space: nowrap; opacity: 0; pointer-events: none; transition: opacity .25s var(--ease), transform .25s var(--ease);
 }
+.guide-ball-wrap:hover .guide-label, .guide-ball:focus-visible + .guide-label { opacity: 1; transform: translate(0, -50%); }
 
 .guide-tour {
-  position: fixed; right: clamp(10px, 2.5vw, 32px); bottom: 24px; z-index: 120;
-  padding: .72rem 1.05rem; border-radius: 999px; cursor: pointer;
-  background: var(--surface); color: var(--text); border: 1px solid var(--border);
-  box-shadow: var(--shadow); font-family: var(--mono); font-size: .7rem;
-  letter-spacing: .14em; text-transform: uppercase;
+  width: 56px; padding: .6rem 0; border-radius: 999px; cursor: pointer; pointer-events: auto;
+  background: var(--surface); color: var(--text); border: 1px solid var(--border); box-shadow: var(--shadow);
+  font-family: var(--mono); font-size: .6rem; letter-spacing: .12em; text-transform: uppercase;
   transition: transform .3s var(--ease), border-color .3s var(--ease), background-color .3s var(--ease);
 }
 .guide-tour:hover { transform: translateY(-2px); border-color: var(--accent); }
 .guide-tour:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
 .guide-tour[aria-pressed="true"] { background: var(--accent); color: var(--on-accent); border-color: var(--accent); }
 
-/* Stack card replaces the hero portrait on the landing page (no face on home). */
+/* ---------- Back to top ---------- */
+.back-top {
+  position: fixed; left: 18px; bottom: 24px; z-index: 120; width: 46px; height: 46px; border-radius: 50%;
+  display: grid; place-items: center; cursor: pointer; padding: 0;
+  background: var(--surface); color: var(--text); border: 1px solid var(--border); box-shadow: var(--shadow);
+  opacity: 0; transform: translateY(12px); pointer-events: none;
+  transition: opacity .35s var(--ease), transform .35s var(--ease), border-color .3s var(--ease);
+}
+.back-top.is-on { opacity: 1; transform: none; pointer-events: auto; }
+.back-top:hover { border-color: var(--accent); transform: translateY(-2px); }
+.back-top:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+.back-top svg { width: 18px; height: 18px; }
+
+/* ---------- Card spotlight and tilt (fine pointers only; set from preview.js) ---------- */
+.card { position: relative; }
+.card::after {
+  content: ''; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+  background: radial-gradient(340px circle at var(--mx, 50%) var(--my, 50%), rgba(74, 222, 128, 0.16), transparent 62%);
+  opacity: 0; transition: opacity .4s var(--ease);
+}
+@media (hover: hover) and (pointer: fine) {
+  .card:not(.form):not(.playground):hover { transform: perspective(900px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)); }
+  .card:not(.form):not(.playground):hover::after { opacity: 1; }
+}
+
+/* ---------- Stack card (landing page, replaces the portrait) ---------- */
 .stack-card {
   position: relative; width: 100%; max-width: 440px; margin-left: auto;
   background: var(--surface); border: 1px solid var(--border);
@@ -69,14 +129,39 @@
   padding: .9rem 1.3rem; border-top: 1px solid var(--border); font-size: .9rem; color: var(--muted);
 }
 
+/* ---------- API playground ---------- */
+.playground { padding: 0; overflow: hidden; max-width: 860px; margin: 0 auto; }
+.pg-bar {
+  display: flex; flex-wrap: wrap; gap: .5rem; padding: .8rem; border-bottom: 1px solid var(--border);
+}
+.pg-method, .pg-url {
+  font-family: var(--mono); font-size: .85rem; color: var(--text);
+  background: var(--input-bg); border: 1px solid var(--border); border-radius: 10px; padding: .6rem .8rem;
+}
+.pg-method:focus-visible, .pg-url:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.pg-url { flex: 1 1 260px; min-width: 0; }
+.pg-btn { padding: .6rem 1rem; font-size: .7rem; cursor: pointer; }
+.pg-status {
+  font-family: var(--mono); font-size: .72rem; letter-spacing: .04em; color: var(--muted);
+  padding: .7rem 1.1rem; border-bottom: 1px solid var(--border);
+}
+.playground[data-state="ok"] .pg-status { color: var(--accent); }
+.playground[data-state="denied"] .pg-status { color: var(--accent3); }
+.pg-out {
+  margin: 0; padding: 1.2rem 1.3rem; min-height: 240px; font-family: var(--mono); font-size: .82rem;
+  line-height: 1.7; color: var(--text); white-space: pre-wrap; overflow-x: auto;
+}
+.pg-out .k { color: var(--accent2); }
+.pg-out .s { color: var(--accent); }
+.pg-note { font-family: var(--mono); font-size: .7rem; letter-spacing: .04em; color: var(--muted); text-align: center; margin-top: 1rem; }
+
 @media (max-width: 720px) {
-  .guide-wrap, .guide-ball { width: 68px; height: 68px; }
-  .guide-label { display: none; }
-  .guide-tour { bottom: 14px; right: 14px; padding: .6rem .85rem; font-size: .62rem; }
   .stack-code { font-size: .76rem; }
+  .pg-out { font-size: .74rem; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .guide-tour { transition: none; }
-  .guide-tour:hover { transform: none; }
+  .guide-ball, .guide-tour, .back-top, .guide-dot::after { transition: none; }
+  .guide-ball:hover, .guide-tour:hover, .back-top:hover { transform: none; }
+  .card:not(.form):not(.playground):hover { transform: none; }
 }

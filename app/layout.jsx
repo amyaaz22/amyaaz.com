@@ -2,6 +2,7 @@ import Script from 'next/script';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import GuideBall from '../components/GuideBall';
+import BackToTop from '../components/BackToTop';
 import { site, ORIGIN } from '../lib/content';
 
 export const metadata = {
@@ -56,6 +57,8 @@ export default function RootLayout({ children }) {
         {children}
         <Footer site={site} />
         <GuideBall />
+        <BackToTop />
+        <Script src="/assets/js/preview.js" strategy="afterInteractive" />
         <Script src="/assets/js/site.js" strategy="afterInteractive" />
       </body>
     </html>
