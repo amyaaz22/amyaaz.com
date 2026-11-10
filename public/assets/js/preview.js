@@ -39,6 +39,58 @@
     );
   }
 
+  /* ---------- Story chapter: pinned beats driven by scroll ---------- */
+  var story = document.querySelector('[data-story]');
+  if (story && !reduce) {
+    var beats = story.querySelectorAll('.beat');
+    var count = story.querySelector('.story-count');
+    var fill = story.querySelector('.story-fill');
+    var activeBeat = -1;
+    story.classList.add('is-pinned');
+    var storyTick = function () {
+      var r = story.getBoundingClientRect();
+      var travel = Math.max(1, r.height - window.innerHeight);
+      var q = Math.min(1, Math.max(0, -r.top / travel));
+      var idx = q < 0.31 ? 0 : q < 0.74 ? 1 : 2;
+      if (fill) fill.style.transform = 'scaleX(' + q.toFixed(3) + ')';
+      if (idx === activeBeat) return;
+      activeBeat = idx;
+      beats.forEach(function (b, i) {
+        b.classList.toggle('is-on', i === idx);
+      });
+      if (count) count.textContent = '0' + (idx + 1);
+    };
+    window.addEventListener('scroll', storyTick, { passive: true });
+    window.addEventListener('resize', storyTick);
+    storyTick();
+  }
+
+  /* ---------- Statement: words light up with scroll ---------- */
+  var scrub = document.querySelector('[data-scrub]');
+  if (scrub && !reduce) {
+    var words = scrub.textContent.trim().split(/\s+/);
+    scrub.setAttribute('aria-label', words.join(' '));
+    scrub.textContent = '';
+    var spans = words.map(function (w) {
+      var s = document.createElement('span');
+      s.className = 'w';
+      s.setAttribute('aria-hidden', 'true');
+      s.textContent = w + ' ';
+      scrub.appendChild(s);
+      return s;
+    });
+    var scrubTick = function () {
+      var r = scrub.getBoundingClientRect();
+      var vh = window.innerHeight;
+      var p = (vh * 0.82 - r.top) / (r.height + vh * 0.42);
+      var lit = Math.round(Math.min(1, Math.max(0, p)) * spans.length);
+      for (var i = 0; i < spans.length; i += 1) spans[i].classList.toggle('on', i < lit);
+    };
+    window.addEventListener('scroll', scrubTick, { passive: true });
+    window.addEventListener('resize', scrubTick);
+    scrubTick();
+  }
+
   /* ---------- API playground ---------- */
   var root = document.querySelector('[data-playground]');
   if (!root) return;

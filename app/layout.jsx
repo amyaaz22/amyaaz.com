@@ -3,6 +3,7 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 import GuideBall from '../components/GuideBall';
 import BackToTop from '../components/BackToTop';
+import ParticleField from '../components/ParticleField';
 import { site, ORIGIN } from '../lib/content';
 
 export const metadata = {
@@ -53,6 +54,7 @@ export default function RootLayout({ children }) {
         <div id="cursor" aria-hidden="true"></div>
         <div id="cursor-ring" aria-hidden="true"></div>
         <div className="grid-bg" aria-hidden="true"></div>
+        <ParticleField />
         <Header email={site.email} />
         {children}
         <Footer site={site} />

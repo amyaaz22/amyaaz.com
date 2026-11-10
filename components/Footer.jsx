@@ -29,6 +29,7 @@ export default function Footer({ site }) {
               <a href={`${h}#work`}>Work</a>
               <a href="/articles/">Articles</a>
               <a href={`${h}#about`}>About</a>
+              <a href="/zoho-developer-middle-east-africa/">Middle East and Africa</a>
             </div>
             <div>
               <span>Elsewhere</span>

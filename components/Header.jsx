@@ -11,6 +11,8 @@ const LINKS = [
   ['contact', 'Contact'],
 ];
 
+const MEA_PATH = '/zoho-developer-middle-east-africa/';
+
 // On the home page, links are in-page anchors; elsewhere they point back to the home page.
 export default function Header({ email }) {
   const pathname = usePathname();
@@ -33,6 +35,15 @@ export default function Header({ email }) {
                   <a href={`${h}#${id}`}>{label}</a>
                 </li>
               ))}
+              <li>
+                <a
+                  href={MEA_PATH}
+                  className={pathname.startsWith('/zoho-developer-middle-east-africa') ? 'active' : undefined}
+                  aria-label="Zoho development for the Middle East and Africa"
+                >
+                  MEA
+                </a>
+              </li>
             </ul>
           </nav>
           <div className="nav-actions">
@@ -73,6 +84,12 @@ export default function Header({ email }) {
               </a>
             </li>
           ))}
+          <li>
+            <a href={MEA_PATH}>
+              Middle East &amp; Africa
+              <span>{`0${LINKS.length + 1}`}</span>
+            </a>
+          </li>
         </ul>
         <div className="meta">
           <a href={`mailto:${email}`}>{email}</a>

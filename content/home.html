@@ -1,7 +1,7 @@
 <main id="main">
 
 <!-- HERO -->
-<section class="hero" aria-labelledby="hero-title">
+<section class="hero" aria-labelledby="hero-title" data-shape="wave">
   <div class="hero-blobs" aria-hidden="true"><div class="blob blob-1"></div><div class="blob blob-2"></div><div class="blob blob-3"></div></div>
   <div class="wrap hero-grid">
     <div>
@@ -69,8 +69,37 @@
   </div>
 </div>
 
+<!-- STORY: pinned chapter, the particle field morphs through three beats -->
+<section class="story" aria-label="How I work, in three steps" data-story>
+  <div class="story-anchor a1" data-shape="scatter" aria-hidden="true"></div>
+  <div class="story-anchor a2" data-shape="lattice" data-shape-x="0.24" aria-hidden="true"></div>
+  <div class="story-anchor a3" data-shape="mark" data-shape-x="0.24" aria-hidden="true"></div>
+  <div class="story-sticky">
+    <div class="wrap story-inner">
+      <div class="beat is-on">
+        <div class="label">The problem</div>
+        <h2 class="title">Your systems shouldn't feel like <em>this</em>.</h2>
+        <p class="lead">Spreadsheets, email approvals and apps that don't talk to each other. Every handover is a place for work to get lost.</p>
+      </div>
+      <div class="beat">
+        <div class="label">The approach</div>
+        <h2 class="title">First, a <em>structure</em>.</h2>
+        <p class="lead">I map how your data, people and processes fit together, then design one architecture on Zoho that everything plugs into.</p>
+      </div>
+      <div class="beat">
+        <div class="label">The result</div>
+        <h2 class="title">One system, built <em>end to end</em>.</h2>
+        <p class="lead">Creator apps, Deluge logic, Flow automation and Catalyst backends, designed, built and handed over with documentation.</p>
+        <a href="#contact" class="btn btn-primary magnetic">Start a project <span class="arrow">→</span></a>
+      </div>
+      <div class="story-steps" aria-hidden="true"><b class="story-count">01</b><span class="story-track"><i class="story-fill"></i></span><span>03</span></div>
+    </div>
+  </div>
+</section>
+
+
 <!-- SERVICES -->
-<section id="services" class="section">
+<section id="services" class="section" data-shape="ambient">
   <div class="wrap">
     <div class="section-head">
       <div>
@@ -113,7 +142,7 @@
 </section>
 
 <!-- GAME PLAN -->
-<section id="approach" class="section">
+<section id="approach" class="section" data-shape="ambient">
   <div class="wrap">
     <div class="section-head">
       <div>
@@ -133,7 +162,7 @@
 </section>
 
 <!-- STACK -->
-<section id="stack" class="section">
+<section id="stack" class="section" data-shape="ambient">
   <div class="wrap">
     <div class="label" data-reveal>Technical stack</div>
     <h2 class="title" data-reveal>Deep in the Zoho ecosystem,<br/>fluent around it.</h2>
@@ -149,8 +178,15 @@
   </div>
 </section>
 
+<!-- STATEMENT: words light up as the line scrolls through -->
+<section class="section statement" data-shape="ambient" aria-label="Approach in one line">
+  <div class="wrap">
+    <p class="statement-text" data-scrub>I design the architecture first, then build it deep on Zoho, so your business runs on one connected system instead of ten disconnected ones.</p>
+  </div>
+</section>
+
 <!-- WORK -->
-<section id="work" class="section">
+<section id="work" class="section" data-shape="ambient">
   <div class="wrap">
     <div class="section-head">
       <div>
@@ -193,7 +229,7 @@
 </section>
 
 <!-- RECOGNITION -->
-<section id="recognition" class="section">
+<section id="recognition" class="section" data-shape="ambient">
   <div class="wrap">
     <div class="label" data-reveal>Recognition</div>
     <h2 class="title" data-reveal style="margin-bottom: 3rem">Credentials &amp; press.</h2>
@@ -220,7 +256,7 @@
 </section>
 
 <!-- ARTICLES -->
-<section id="articles" class="section">
+<section id="articles" class="section" data-shape="ambient">
   <div class="wrap">
     <div class="section-head">
       <div>
@@ -237,7 +273,7 @@
 </section>
 
 <!-- ABOUT -->
-<section id="about" class="section">
+<section id="about" class="section" data-shape="ambient">
   <div class="wrap about">
     <div class="about-photo" data-reveal>
       <div class="frame">
@@ -268,7 +304,7 @@
 </section>
 
 <!-- COACH -->
-<section id="coach" class="section">
+<section id="coach" class="section" data-shape="ambient">
   <div class="wrap coach">
     <div class="coach-copy">
       <div class="label" data-reveal>Off the clock</div>
@@ -289,8 +325,28 @@
   </div>
 </section>
 
+<!-- REGIONS: Middle East and Africa, with the particle globe -->
+<section id="regions" class="section regions" data-shape="globe" data-shape-x="0.24" aria-labelledby="regions-title">
+  <div class="wrap regions-grid">
+    <div>
+      <div class="label" data-reveal>Where I work</div>
+      <h2 class="title" id="regions-title" data-reveal>Based in Mauritius. Building for the <em>Middle East and Africa</em>.</h2>
+      <p class="lead" data-reveal>Projects are scoped, built and handed over remotely. Mauritius runs on UTC+4, the same time zone as the UAE and one hour ahead of Saudi Arabia, Qatar and East Africa.</p>
+      <div class="trust regions-chips" data-reveal>
+        <span class="chip"><i></i>UTC+4 · same as the UAE</span>
+        <span class="chip"><i class="p"></i>+1h on Riyadh, Doha, Nairobi</span>
+        <span class="chip"><i class="k"></i>Remote delivery</span>
+      </div>
+      <div class="hero-ctas" data-reveal style="margin: 2rem 0 0">
+        <a href="/zoho-developer-middle-east-africa/" class="btn btn-primary magnetic">Zoho development for the Middle East and Africa <span class="arrow">→</span></a>
+      </div>
+    </div>
+    <div class="regions-space" aria-hidden="true"></div>
+  </div>
+</section>
+
 <!-- CONTACT -->
-<section id="contact" class="section">
+<section id="contact" class="section" data-shape="ambient">
   <div class="wrap contact">
     <div>
       <div class="label" data-reveal>Contact</div>

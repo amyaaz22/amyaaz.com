@@ -66,7 +66,7 @@ export default function ZohoDeveloperMiddleEastAfrica() {
             <span>Zoho developer Middle East and Africa</span>
           </nav>
           <div className="label">Remote delivery</div>
-          <h1 className="title">
+          <h1 className="title" data-shape="globe" data-shape-x="0.27" data-shape-o="0.6">
             Zoho developer for businesses across the <em>Middle East and Africa</em>.
           </h1>
           <p className="lead" style={{ marginBottom: '3rem' }}>

@@ -212,3 +212,64 @@
   .guide-ball:hover, .guide-tour:hover, .back-top:hover { transform: none; }
   .card:not(.form):not(.playground):hover { transform: none; }
 }
+
+/* ---------- Particle field (fixed layer behind the page) ---------- */
+.particle-field { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
+.particle-field canvas { display: block; width: 100%; height: 100%; }
+
+/* ---------- Story chapter ---------- */
+/* Default (no JS, reduced motion): three stacked blocks. With .is-pinned it becomes a
+   300vh track with a sticky stage; preview.js switches the active beat. */
+.story { position: relative; padding: clamp(4rem, 9vw, 7rem) 0; }
+.story-anchor { display: none; }
+.story-inner { display: grid; gap: 3.5rem; }
+.beat { max-width: 36rem; }
+.beat .title { margin-bottom: 1.1rem; }
+.beat .btn { margin-top: 1.8rem; }
+.story-steps { display: none; }
+
+.story.is-pinned { height: 300vh; padding: 0; }
+.story.is-pinned .story-anchor { display: block; position: absolute; left: 0; width: 1px; pointer-events: none; }
+.story.is-pinned .a1 { top: 0; height: 100vh; }
+.story.is-pinned .a2 { top: 125vh; height: 60vh; }
+.story.is-pinned .a3 { top: 210vh; height: 90vh; }
+.story.is-pinned .story-sticky { position: sticky; top: 0; height: 100vh; display: flex; align-items: center; overflow: hidden; }
+.story.is-pinned .story-inner { position: relative; gap: 0; width: 100%; }
+.story.is-pinned .beat {
+  grid-area: 1 / 1; align-self: center; position: relative;
+  opacity: 0; transform: translateY(34px); filter: blur(6px); pointer-events: none;
+  transition: opacity .7s var(--ease), transform .9s var(--ease), filter .7s var(--ease);
+}
+.story.is-pinned .beat::before {
+  content: ''; position: absolute; inset: -4rem -5rem; z-index: -1; pointer-events: none;
+  background: radial-gradient(closest-side, color-mix(in srgb, var(--bg) 88%, transparent), transparent);
+}
+.story.is-pinned .beat.is-on { opacity: 1; transform: none; filter: none; pointer-events: auto; }
+.story.is-pinned .beat .title { font-size: clamp(2.2rem, 4.6vw, 4.2rem); line-height: 1.04; }
+.story.is-pinned .story-steps {
+  display: flex; align-items: center; gap: .9rem; position: absolute; left: var(--gutter); bottom: calc(-1 * min(22vh, 11rem));
+  font-family: var(--mono); font-size: .7rem; letter-spacing: .14em; color: var(--muted);
+}
+.story-steps b { color: var(--accent); font-weight: 400; }
+.story-track { width: 9rem; height: 1px; background: var(--border); position: relative; overflow: hidden; }
+.story-fill { position: absolute; inset: 0; background: var(--accent); transform: scaleX(0); transform-origin: left; }
+
+/* ---------- Statement ---------- */
+.statement-text {
+  font-family: var(--serif); font-size: clamp(1.7rem, 3.6vw, 3.2rem); line-height: 1.18; letter-spacing: -.01em;
+  max-width: 22em; color: var(--text);
+}
+.statement-text .w { opacity: .16; transition: opacity .45s var(--ease), color .45s var(--ease); }
+.statement-text .w.on { opacity: 1; }
+
+/* ---------- Regions (Middle East and Africa) ---------- */
+.regions-grid { display: grid; grid-template-columns: 1.1fr .9fr; gap: clamp(2rem, 5vw, 5rem); align-items: center; min-height: min(70vh, 640px); }
+.regions .lead { margin-top: 1.2rem; }
+.regions-chips { margin-top: 1.6rem; }
+.regions-chips .chip { cursor: default; }
+
+@media (max-width: 900px) {
+  .regions-grid { grid-template-columns: 1fr; min-height: 0; }
+  .regions-space { display: none; }
+  .story.is-pinned .beat .title { font-size: clamp(2rem, 9vw, 3rem); }
+}
