@@ -7,10 +7,17 @@ export default function BackToTop() {
   const [show, setShow] = useState(false);
 
   useEffect(() => {
-    const onScroll = () => setShow(window.scrollY > 700);
+    const onScroll = () => {
+      const nearBottom = window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 300;
+      setShow(window.scrollY > 700 || nearBottom);
+    };
     onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
+    window.addEventListener('resize', onScroll);
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', onScroll);
+    };
   }, []);
 
   const top = () => {

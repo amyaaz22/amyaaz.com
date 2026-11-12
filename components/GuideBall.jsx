@@ -8,6 +8,91 @@
 import { useEffect, useRef, useState } from 'react';
 
 const THREE_URL = 'https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js';
+const BALL_PX = 62; // keep in sync with .guide-ball / .guide-ball-wrap width in preview.css
+const RAIL_MIN_WIDTH = 1280; // keep in sync with the .guide-rail breakpoint in preview.css
+
+// Builds a real truncated-icosahedron ball: 12 pentagons (at the icosahedron's vertices)
+// and 20 hexagons (at its faces), each panel curved onto the sphere so the silhouette
+// stays round while the seams read as true geometry, not a flat decal.
+function buildFootballGeometry(THREE, radius) {
+  const t = (1 + Math.sqrt(5)) / 2;
+  const verts = [
+    [-1, t, 0], [1, t, 0], [-1, -t, 0], [1, -t, 0],
+    [0, -1, t], [0, 1, t], [0, -1, -t], [0, 1, -t],
+    [t, 0, -1], [t, 0, 1], [-t, 0, -1], [-t, 0, 1],
+  ].map((v) => new THREE.Vector3(...v).normalize());
+
+  const faces = [
+    [0, 11, 5], [0, 5, 1], [0, 1, 7], [0, 7, 10], [0, 10, 11],
+    [1, 5, 9], [5, 11, 4], [11, 10, 2], [10, 7, 6], [7, 1, 8],
+    [3, 9, 4], [3, 4, 2], [3, 2, 6], [3, 6, 8], [3, 8, 9],
+    [4, 9, 5], [2, 4, 11], [6, 2, 10], [8, 6, 7], [9, 8, 1],
+  ];
+
+  // Point 1/3 of the way from vertex u to vertex v, projected back onto the sphere.
+  const trunc = (u, v) => verts[u].clone().multiplyScalar(2 / 3).add(verts[v].clone().multiplyScalar(1 / 3)).normalize();
+
+  // The five faces meeting at vertex `u`, chained into cyclic order so the resulting
+  // pentagon winds the right way: each face contributes "after n1 comes n2" at u.
+  const neighborsAround = (u) => {
+    const next = new Map();
+    faces.forEach((f) => {
+      const i = f.indexOf(u);
+      if (i === -1) return;
+      next.set(f[(i + 1) % 3], f[(i + 2) % 3]);
+    });
+    const start = next.keys().next().value;
+    const order = [start];
+    for (let k = 0; k < next.size - 1; k += 1) order.push(next.get(order[order.length - 1]));
+    return order;
+  };
+
+  const positions = [];
+  const colors = [];
+  const BLACK = [0.04, 0.04, 0.05];
+  const WHITE = [0.96, 0.96, 0.94];
+
+  const addPanel = (ring, color) => {
+    const center = ring.reduce((a, p) => a.add(p), new THREE.Vector3()).normalize();
+    const n = ring.length;
+    for (let i = 0; i < n; i += 1) {
+      const a = center;
+      const b = ring[i];
+      const c = ring[(i + 1) % n];
+      [a, b, c].forEach((p, k) => {
+        positions.push(p.x * radius, p.y * radius, p.z * radius);
+        // Darken a touch toward the panel's outer ring, like a soft seam bevel.
+        const shade = k === 0 ? 1 : 0.82;
+        colors.push(color[0] * shade, color[1] * shade, color[2] * shade);
+      });
+    }
+  };
+
+  // 12 pentagons, one per original vertex.
+  for (let u = 0; u < 12; u += 1) {
+    addPanel(neighborsAround(u).map((v) => trunc(u, v)), BLACK);
+  }
+  // 20 hexagons, one per original triangular face.
+  faces.forEach(([a, b, c]) => {
+    addPanel([trunc(a, b), trunc(b, a), trunc(b, c), trunc(c, b), trunc(c, a), trunc(a, c)], WHITE);
+  });
+
+  // Normals equal to the normalized position: every panel is a patch of the same
+  // sphere, so this shades it as perfectly round instead of faceted triangle fans.
+  const normals = new Float32Array(positions.length);
+  for (let i = 0; i < positions.length; i += 3) {
+    const inv = 1 / radius;
+    normals[i] = positions[i] * inv;
+    normals[i + 1] = positions[i + 1] * inv;
+    normals[i + 2] = positions[i + 2] * inv;
+  }
+
+  const geo = new THREE.BufferGeometry();
+  geo.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
+  geo.setAttribute('normal', new THREE.Float32BufferAttribute(normals, 3));
+  geo.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
+  return geo;
+}
 
 const STOPS = [
   { id: null, label: 'Intro' },
@@ -113,8 +198,10 @@ export default function GuideBall() {
     };
   }, [touring]);
 
-  // Football: loaded only in the browser. Tilts toward the cursor and rolls as it moves.
+  // Football: loaded only in the browser, and only where the rail is actually shown —
+  // the rail is desktop-only, so there is no point spending a WebGL context on mobile.
   useEffect(() => {
+    if (!window.matchMedia(`(min-width: ${RAIL_MIN_WIDTH}px)`).matches) return undefined;
     let disposed = false;
     let raf = 0;
     let renderer = null;
@@ -147,58 +234,46 @@ export default function GuideBall() {
       const mount = mountRef.current;
       if (disposed || !mount) return;
       try {
-        renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+        renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: 'low-power' });
       } catch {
         return;
       }
-      const size = 44;
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
-      renderer.setSize(size, size);
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2.5));
+      renderer.setSize(BALL_PX, BALL_PX);
+      renderer.outputColorSpace = THREE.SRGBColorSpace;
       mount.appendChild(renderer.domElement);
 
       const scene = new THREE.Scene();
-      const camera = new THREE.PerspectiveCamera(30, 1, 0.1, 100);
-      camera.position.z = 4.6;
-      scene.add(new THREE.AmbientLight(0xffffff, 0.75));
-      const key = new THREE.DirectionalLight(0xffffff, 1.6);
-      key.position.set(3, 4, 5);
+      const camera = new THREE.PerspectiveCamera(26, 1, 0.1, 100);
+      camera.position.z = 5.2;
+
+      // A soft studio rig rather than one flat light: a cool sky/ground wash, a bright
+      // key light for the roll-off highlight, and a dim rim to separate the ball's edge.
+      scene.add(new THREE.HemisphereLight(0xeaf2ff, 0x1a1a1f, 0.65));
+      const key = new THREE.DirectionalLight(0xffffff, 2.1);
+      key.position.set(2.6, 3.4, 4.2);
       scene.add(key);
-      const rim = new THREE.DirectionalLight(0xffffff, 0.5);
-      rim.position.set(-4, -2, -3);
+      const fill = new THREE.DirectionalLight(0xcfe0ff, 0.35);
+      fill.position.set(-3, -1, 2);
+      scene.add(fill);
+      const rim = new THREE.DirectionalLight(0xffffff, 0.9);
+      rim.position.set(-2.4, 1.6, -3.2);
       scene.add(rim);
 
-      // Classic football: a white ball with twelve black pentagons centred on the
-      // directions of an icosahedron's vertices.
       const ball = new THREE.Group();
-      const white = new THREE.MeshPhysicalMaterial({ color: 0xf7f7f5, roughness: 0.32, clearcoat: 0.6, clearcoatRoughness: 0.2 });
-      ball.add(new THREE.Mesh(new THREE.SphereGeometry(1, 64, 64), white));
-
-      const black = new THREE.MeshStandardMaterial({ color: 0x0d0d0f, roughness: 0.42, metalness: 0.05 });
-      const shape = new THREE.Shape();
-      for (let k = 0; k < 5; k += 1) {
-        const ang = (k * Math.PI * 2) / 5 + Math.PI / 2;
-        const x = Math.cos(ang) * 0.3;
-        const y = Math.sin(ang) * 0.3;
-        if (k === 0) shape.moveTo(x, y);
-        else shape.lineTo(x, y);
-      }
-      shape.closePath();
-      const pentGeo = new THREE.ShapeGeometry(shape);
-
-      const phi = (1 + Math.sqrt(5)) / 2;
-      const dirs = [];
-      [-1, 1].forEach((a) => {
-        [-phi, phi].forEach((b) => {
-          dirs.push([0, a, b], [a, b, 0], [b, 0, a]);
-        });
+      const geo = buildFootballGeometry(THREE, 1);
+      const material = new THREE.MeshPhysicalMaterial({
+        vertexColors: true,
+        roughness: 0.3,
+        metalness: 0.04,
+        clearcoat: 0.85,
+        clearcoatRoughness: 0.18,
+        envMapIntensity: 0.9,
       });
-      dirs.forEach(([x, y, z]) => {
-        const v = new THREE.Vector3(x, y, z).normalize();
-        const patch = new THREE.Mesh(pentGeo, black);
-        patch.position.copy(v.clone().multiplyScalar(1.02));
-        patch.lookAt(v.clone().multiplyScalar(2));
-        ball.add(patch);
-      });
+      ball.add(new THREE.Mesh(geo, material));
+      // A thin dark seam between every panel, drawn as wireframe over the same geometry.
+      ball.add(new THREE.LineSegments(new THREE.WireframeGeometry(geo), new THREE.LineBasicMaterial({ color: 0x0a0a0a, transparent: true, opacity: 0.55 })));
+      ball.rotation.set(-0.28, 0.5, 0.1);
       scene.add(ball);
 
       let t = 0;
@@ -211,8 +286,8 @@ export default function GuideBall() {
 
         tilt.x += (tilt.tx - tilt.x) * 0.12;
         tilt.y += (tilt.ty - tilt.y) * 0.12;
-        ball.rotation.x = tilt.x + (reduce ? 0 : Math.sin(t * 0.9) * 0.15);
-        ball.rotation.y = tilt.y + (reduce ? 0 : t * 0.7);
+        ball.rotation.x = -0.28 + tilt.x + (reduce ? 0 : Math.sin(t * 0.9) * 0.1);
+        ball.rotation.y = 0.5 + tilt.y + (reduce ? 0 : t * 0.55);
 
         renderer.render(scene, camera);
         raf = requestAnimationFrame(render);
