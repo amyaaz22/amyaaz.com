@@ -53,22 +53,6 @@ export default function Header({ email }) {
                 <path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4" />
               </svg>
             </button>
-            <button
-              type="button"
-              className="icon-btn view-toggle"
-              aria-label="Switch to console view"
-              title="Console view"
-              onClick={() => {
-                try { localStorage.removeItem('view'); } catch (e) {}
-                document.documentElement.removeAttribute('data-view');
-                window.scrollTo({ top: 0, behavior: 'instant' });
-              }}
-            >
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                <rect x="3" y="6" width="18" height="12" rx="4" />
-                <path d="M8 10v4M6 12h4M15.5 11h.01M17.5 13h.01" />
-              </svg>
-            </button>
             <a className="btn btn-primary nav-cta magnetic" href={`${h}#contact`}>
               Let&apos;s talk
             </a>
