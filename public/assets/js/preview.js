@@ -169,11 +169,13 @@
     setActiveChip(method, target);
     if (method === DEFAULT_METHOD && target === DEFAULT_URL) {
       render('ok', 'HTTP 200 OK  ·  ' + method + ' ' + target + '  ·  12 ms', SAMPLE);
+      window.dispatchEvent(new CustomEvent('trophy', { detail: 'api' }));
     } else {
       root.classList.remove('pg-shake');
       void root.offsetWidth; // restart the shake animation
       root.classList.add('pg-shake');
       render('denied', 'HTTP 403 Forbidden  ·  ' + method + ' ' + (target || '(empty)'), REFUSAL);
+      window.dispatchEvent(new CustomEvent('trophy', { detail: 'fooled' }));
     }
   }
 

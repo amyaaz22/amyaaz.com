@@ -31,7 +31,7 @@ export const viewport = {
 };
 
 // Runs before first paint so the saved theme applies without a flash (same as the HTML build).
-const themeScript = `(function(){var t=null;try{t=localStorage.getItem('theme')}catch(e){}document.documentElement.setAttribute('data-theme',t==='light'?'light':'dark')})();`;
+const themeScript = `(function(){var d=document.documentElement,t=null;try{t=localStorage.getItem('theme')}catch(e){}d.setAttribute('data-theme',t==='light'?'light':'dark');try{if(localStorage.getItem('view')==='classic')d.setAttribute('data-view','classic')}catch(e){}try{if(location.pathname==='/'&&!location.hash&&!sessionStorage.getItem('booted')&&d.getAttribute('data-view')!=='classic'&&!matchMedia('(prefers-reduced-motion: reduce)').matches)d.setAttribute('data-boot','1')}catch(e){}})();`;
 
 export default function RootLayout({ children }) {
   return (
@@ -46,6 +46,7 @@ export default function RootLayout({ children }) {
         />
         <link rel="stylesheet" href="/assets/css/site.css" />
         <link rel="stylesheet" href="/assets/css/preview.css" />
+        <link rel="stylesheet" href="/assets/css/console.css" />
       </head>
       <body className="noise">
         <a className="skip-link" href="#main">
