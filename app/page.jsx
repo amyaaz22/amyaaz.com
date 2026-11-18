@@ -1,3 +1,4 @@
+import StudioRoom from '../components/StudioRoom';
 import { homeHtml, person, website, ORIGIN } from '../lib/content';
 
 const title = 'Amyaaz Aumeer | Digital Solutions Architect and Zoho Developer in Mauritius';
@@ -65,6 +66,7 @@ export default function Home() {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonld) }} />
+      <StudioRoom />
       {/* Home body comes from content/home.html, same as the HTML build. */}
       <div style={{ display: 'contents' }} dangerouslySetInnerHTML={{ __html: homeHtml() }} />
     </>

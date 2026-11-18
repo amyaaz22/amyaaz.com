@@ -46,6 +46,7 @@ export default function RootLayout({ children }) {
         />
         <link rel="stylesheet" href="/assets/css/site.css" />
         <link rel="stylesheet" href="/assets/css/preview.css" />
+        <link rel="stylesheet" href="/assets/css/studio.css" />
       </head>
       <body className="noise">
         <a className="skip-link" href="#main">
