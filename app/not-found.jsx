@@ -13,7 +13,7 @@ export default function NotFound() {
           Off <em>target</em>.
         </h1>
         <p>That page went wide of the post. Let&apos;s get you back in play.</p>
-        <a className="btn btn-primary magnetic" href="/">
+        <a className="btn btn-primary" href="/">
           Back to home <span className="arrow">→</span>
         </a>
       </div>

@@ -1,3 +1,5 @@
+import SpiralStory from '../components/SpiralStory';
+import Babyfoot from '../components/Babyfoot';
 import { homeHtml, person, website, ORIGIN } from '../lib/content';
 
 const title = 'Amyaaz Aumeer | Digital Solutions Architect and Zoho Developer in Mauritius';
@@ -66,7 +68,20 @@ export default function Home() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonld) }} />
       {/* Home body comes from content/home.html, same as the HTML build. */}
-      <div style={{ display: 'contents' }} dangerouslySetInnerHTML={{ __html: homeHtml() }} />
+      {(() => {
+        const html = homeHtml();
+        const [a, rest] = html.split('<!--SPIRAL-->');
+        const [b, c] = rest.split('<!--BABYFOOT-->');
+        return (
+          <>
+            <div style={{ display: 'contents' }} dangerouslySetInnerHTML={{ __html: a }} />
+            <SpiralStory />
+            <div style={{ display: 'contents' }} dangerouslySetInnerHTML={{ __html: b }} />
+            <Babyfoot />
+            <div style={{ display: 'contents' }} dangerouslySetInnerHTML={{ __html: c }} />
+          </>
+        );
+      })()}
     </>
   );
 }

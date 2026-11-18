@@ -98,7 +98,7 @@ export default function ZohoDeveloperMiddleEastAfrica() {
           </div>
 
           <div className="center" style={{ marginTop: '3rem' }}>
-            <a className="btn btn-primary magnetic" href="/#contact">
+            <a className="btn btn-primary" href="/#contact">
               Start a project <span className="arrow">→</span>
             </a>
           </div>

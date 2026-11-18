@@ -53,7 +53,7 @@ export default function Header({ email }) {
                 <path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4" />
               </svg>
             </button>
-            <a className="btn btn-primary nav-cta magnetic" href={`${h}#contact`}>
+            <a className="btn btn-primary nav-cta" href={`${h}#contact`}>
               Let&apos;s talk
             </a>
             <button type="button" className="icon-btn menu-btn" aria-expanded="false" aria-controls="mobile-menu" aria-label="Open menu">

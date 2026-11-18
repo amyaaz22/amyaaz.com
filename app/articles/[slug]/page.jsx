@@ -86,7 +86,7 @@ export default async function ArticlePage({ params }) {
               <h2>Need this built for your business?</h2>
               <p>I design and build Zoho solutions for companies in Mauritius and beyond.</p>
             </div>
-            <a className="btn btn-primary magnetic" href="/#contact">
+            <a className="btn btn-primary" href="/#contact">
               Start a project <span className="arrow">→</span>
             </a>
           </aside>

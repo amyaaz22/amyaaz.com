@@ -1,7 +1,6 @@
 import Script from 'next/script';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
-import GuideBall from '../components/GuideBall';
 import BackToTop from '../components/BackToTop';
 import ParticleField from '../components/ParticleField';
 import { site, ORIGIN } from '../lib/content';
@@ -46,6 +45,7 @@ export default function RootLayout({ children }) {
         />
         <link rel="stylesheet" href="/assets/css/site.css" />
         <link rel="stylesheet" href="/assets/css/preview.css" />
+        <link rel="stylesheet" href="/assets/css/spatial.css" />
       </head>
       <body className="noise">
         <a className="skip-link" href="#main">
@@ -58,7 +58,6 @@ export default function RootLayout({ children }) {
         <Header email={site.email} />
         {children}
         <Footer site={site} />
-        <GuideBall />
         <BackToTop />
         <Script src="/assets/js/preview.js" strategy="afterInteractive" />
         <Script src="/assets/js/site.js" strategy="afterInteractive" />
