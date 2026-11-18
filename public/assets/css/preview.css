@@ -234,11 +234,13 @@
 .beat .btn { margin-top: 1.8rem; }
 .story-steps { display: none; }
 
-.story.is-pinned { height: 300vh; padding: 0; }
+.story.is-pinned { height: 520vh; padding: 0; }
 .story.is-pinned .story-anchor { display: block; position: absolute; left: 0; width: 1px; pointer-events: none; }
-.story.is-pinned .a1 { top: 0; height: 100vh; }
-.story.is-pinned .a2 { top: 125vh; height: 60vh; }
-.story.is-pinned .a3 { top: 210vh; height: 90vh; }
+.story.is-pinned .a1 { top: 0; height: 110vh; }
+.story.is-pinned .a2 { top: 150vh; height: 40vh; }
+.story.is-pinned .a3 { top: 230vh; height: 40vh; }
+.story.is-pinned .a4 { top: 310vh; height: 40vh; }
+.story.is-pinned .a5 { top: 390vh; height: 110vh; }
 .story.is-pinned .story-sticky { position: sticky; top: 0; height: 100vh; display: flex; align-items: center; overflow: hidden; }
 .story.is-pinned .story-inner { position: relative; gap: 0; width: 100%; }
 .story.is-pinned .beat {
@@ -284,3 +286,34 @@
 
 /* ---------- Header: mark only, no wordmark ---------- */
 .brand-mark-only svg { width: 34px; height: 34px; }
+
+/* ---------- Opening: particles assemble into the A, then the page arrives ---------- */
+html.intro { overflow: hidden; }
+.intro-mark { position: fixed; inset: 0; z-index: 60; display: none; pointer-events: none; flex-direction: column; align-items: center; justify-content: flex-end; padding-bottom: 13vh; text-align: center; }
+html.intro .intro-mark { display: flex; }
+.intro-mark b { font: 400 .7rem var(--mono); letter-spacing: .32em; text-transform: uppercase; color: var(--text); opacity: 0; animation: introIn 1.1s .9s var(--ease) forwards; }
+.intro-mark span { margin-top: .7rem; font: 400 .6rem var(--mono); letter-spacing: .22em; text-transform: uppercase; color: var(--muted); opacity: 0; animation: introIn 1.1s 1.3s var(--ease) forwards; }
+@keyframes introIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+html.intro .hero-grid, html.intro .nav, html.intro .skip-link { opacity: 0; }
+html.intro .hero h1 .line > span { animation: none; transform: translateY(105%); }
+html.intro .fade-up { animation: none; opacity: 0; }
+.hero-grid, .nav { transition: opacity .9s var(--ease) .1s; }
+
+/* ---------- Chapter rail: where you are in the story ---------- */
+.rail { position: fixed; right: clamp(.8rem, 2vw, 1.6rem); top: 50%; transform: translateY(-50%); z-index: 40; display: flex; flex-direction: column; gap: .9rem; align-items: flex-end; opacity: 0; transition: opacity .5s var(--ease); pointer-events: none; }
+.rail.on { opacity: 1; pointer-events: auto; }
+.rail a { display: flex; align-items: center; gap: .65rem; font: .58rem var(--mono); letter-spacing: .16em; text-transform: uppercase; color: var(--muted); text-decoration: none; }
+.rail a span { opacity: 0; transform: translateX(6px); transition: opacity .3s, transform .3s; }
+.rail a i { width: 7px; height: 7px; border-radius: 50%; border: 1px solid var(--muted); transition: all .3s var(--ease); }
+.rail a:hover span, .rail a.on span { opacity: 1; transform: none; }
+.rail a.on { color: var(--text); }
+.rail a.on i { background: var(--accent); border-color: var(--accent); box-shadow: 0 0 0 4px rgba(74,222,128,.18); transform: scale(1.25); }
+@media (max-width: 1100px) { .rail { display: none; } }
+@media (prefers-reduced-motion: reduce) { .intro-mark b, .intro-mark span { animation: none; opacity: 1; } }
+
+.closing { min-height: 92vh; display: flex; align-items: center; justify-content: flex-end; padding: 0 max(var(--gutter), 9vw); }
+.closing-copy { max-width: 28rem; }
+@media (max-width: 900px) { .closing { align-items: flex-end; justify-content: center; padding-bottom: 8vh; text-align: center; } .closing-copy .label { justify-content: center; } }
+.closing-line { font: 400 clamp(1.3rem, 2.6vw, 2rem) var(--serif); margin: .4rem 0 1.6rem; color: var(--text); }
+
+footer { position: relative; z-index: 2; background: var(--bg); }

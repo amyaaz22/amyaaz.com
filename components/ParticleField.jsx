@@ -40,29 +40,40 @@ function sampleMark(n) {
   const path = document.querySelector('.brand svg path');
   const d = path ? path.getAttribute('d') : null;
   if (!d) return null;
+  const SZ = 320;
   const c = document.createElement('canvas');
-  c.width = 200;
-  c.height = 200;
+  c.width = SZ;
+  c.height = SZ;
   const ctx = c.getContext('2d', { willReadFrequently: true });
   if (!ctx) return null;
+  ctx.scale(SZ / 200, SZ / 200);
   ctx.fill(new Path2D(d), 'evenodd');
-  const data = ctx.getImageData(0, 0, 200, 200).data;
-  const filled = [];
-  for (let y = 0; y < 200; y += 1) {
-    for (let x = 0; x < 200; x += 1) {
-      if (data[(y * 200 + x) * 4 + 3] > 128) filled.push(x, y);
+  const data = ctx.getImageData(0, 0, SZ, SZ).data;
+  const on = (x, y) => x >= 0 && y >= 0 && x < SZ && y < SZ && data[(y * SZ + x) * 4 + 3] > 128;
+  const fill = [];
+  const edge = [];
+  for (let y = 0; y < SZ; y += 1) {
+    for (let x = 0; x < SZ; x += 1) {
+      if (!on(x, y)) continue;
+      fill.push(x, y);
+      if (!on(x - 1, y) || !on(x + 1, y) || !on(x, y - 1) || !on(x, y + 1)) edge.push(x, y);
     }
   }
-  if (!filled.length) return null;
+  if (!fill.length) return null;
   const out = new Float32Array(n * 3);
-  const S = 5.6 / 200;
+  const k2 = SZ / 200;
+  const S = 6.2 / SZ;
+  const flags = new Float32Array(n); // 1 = outline point
   for (let i = 0; i < n; i += 1) {
-    const k = Math.floor(Math.random() * (filled.length / 2)) * 2;
-    out[i * 3] = (filled[k] + Math.random() - 100) * S;
-    out[i * 3 + 1] = -(filled[k + 1] + Math.random() - 97) * S;
-    out[i * 3 + 2] = (Math.random() - 0.5) * 0.3;
+    const useEdge = edge.length && Math.random() < 0.38;
+    const arr = useEdge ? edge : fill;
+    const k = Math.floor(Math.random() * (arr.length / 2)) * 2;
+    out[i * 3] = (arr[k] + Math.random() - 100 * k2) * S;
+    out[i * 3 + 1] = -(arr[k + 1] + Math.random() - 97 * k2) * S;
+    out[i * 3 + 2] = (Math.random() - 0.5) * (useEdge ? 0.12 : 0.34);
+    flags[i] = useEdge ? 1 : 0;
   }
-  return out;
+  return { out, flags };
 }
 
 function buildShapes(n) {
@@ -158,15 +169,125 @@ function buildShapes(n) {
   }
   shapes.lattice = lattice;
 
-  // Mark: the logo, sampled from the header SVG.
-  const markPts = sampleMark(n);
-  if (markPts) {
-    const mark = mk({ energy: 0.02, opacity: 0.95, spin: 0.35 });
-    mark.p = markPts;
+  // Mark: the logo, sampled from the header SVG. Outline points are brighter and tinted.
+  const sm = sampleMark(n);
+  if (sm) {
+    const mark = mk({ energy: 0.012, opacity: 1, spin: 0.3 });
+    mark.p = sm.out;
+    for (let i = 0; i < n; i += 1) {
+      mark.m[i] = sm.flags[i] ? 0.0 : 0.55;
+      mark.a[i] = sm.flags[i] ? 1 : 0.7;
+    }
     shapes.mark = mark;
   } else {
     shapes.mark = lattice;
   }
+
+  // Network: nodes joined by thin dense edges, the "everything connects" beat.
+  const network = mk({ energy: 0.01, spin: 0.7, opacity: 0.95 });
+  const NODES = 46;
+  const nodes = [];
+  for (let k = 0; k < NODES; k += 1) {
+    const th = Math.acos(1 - 2 * ((k + 0.5) / NODES));
+    const ph = k * Math.PI * (3 - Math.sqrt(5));
+    const rad = 1.4 + (k % 3) * 0.55;
+    nodes.push([Math.sin(th) * Math.cos(ph) * rad, Math.cos(th) * rad * 0.85, Math.sin(th) * Math.sin(ph) * rad]);
+  }
+  const edges = [];
+  for (let a = 0; a < NODES; a += 1) {
+    const ds = nodes
+      .map((q, b) => [Math.hypot(q[0] - nodes[a][0], q[1] - nodes[a][1], q[2] - nodes[a][2]), b])
+      .filter((d) => d[1] !== a)
+      .sort((u, v) => u[0] - v[0])
+      .slice(0, 3);
+    ds.forEach((d) => edges.push([a, d[1]]));
+  }
+  for (let i = 0; i < n; i += 1) {
+    if (i % 4 === 0) {
+      const nd = nodes[i % NODES];
+      network.p[i * 3] = nd[0] + gauss() * 0.06;
+      network.p[i * 3 + 1] = nd[1] + gauss() * 0.06;
+      network.p[i * 3 + 2] = nd[2] + gauss() * 0.06;
+      network.m[i] = 0;
+      network.a[i] = 1;
+    } else {
+      const e = edges[i % edges.length];
+      const t = Math.random();
+      network.p[i * 3] = nodes[e[0]][0] + (nodes[e[1]][0] - nodes[e[0]][0]) * t;
+      network.p[i * 3 + 1] = nodes[e[0]][1] + (nodes[e[1]][1] - nodes[e[0]][1]) * t;
+      network.p[i * 3 + 2] = nodes[e[0]][2] + (nodes[e[1]][2] - nodes[e[0]][2]) * t;
+      network.m[i] = 1;
+      network.a[i] = 0.45;
+    }
+  }
+  shapes.network = network;
+
+  // Ledger: three stacked invoice sheets with text rows and an approval stamp, the
+  // "compliance" beat.
+  const ledger = mk({ energy: 0.008, spin: 0.35, opacity: 0.95 });
+  const SW = 3.1;
+  const SH = 4.1;
+  for (let i = 0; i < n; i += 1) {
+    const sheet = i % 3;
+    const zz = -sheet * 0.55;
+    const ox = sheet * 0.28 - 0.3;
+    const oy = -sheet * 0.18;
+    let x;
+    let y;
+    let mix = 1;
+    let al = 0.4;
+    const r = Math.random();
+    if (r < 0.24) {
+      // sheet outline
+      const side = Math.floor(Math.random() * 4);
+      const q = Math.random();
+      x = side === 0 ? -SW / 2 + q * SW : side === 1 ? SW / 2 : side === 2 ? SW / 2 - q * SW : -SW / 2;
+      y = side === 0 ? SH / 2 : side === 1 ? SH / 2 - q * SH : side === 2 ? -SH / 2 : -SH / 2 + q * SH;
+      al = sheet === 0 ? 0.95 : 0.5;
+      mix = 1;
+    } else if (r < 0.34) {
+      // header bar
+      x = -SW / 2 + 0.25 + Math.random() * 1.3;
+      y = SH / 2 - 0.42 + gauss() * 0.04;
+      mix = 0;
+      al = 0.95;
+    } else if (r < 0.9) {
+      // text rows
+      const row = Math.floor(Math.random() * 9);
+      const len = 1.2 + ((row * 37) % 10) / 10 * 1.4;
+      x = -SW / 2 + 0.25 + Math.random() * len;
+      y = SH / 2 - 0.95 - row * 0.28 + gauss() * 0.015;
+      mix = 1;
+      al = 0.65;
+    } else {
+      // approval stamp: ring with a tick
+      const a = Math.random() * Math.PI * 2;
+      if (Math.random() < 0.6) {
+        x = SW / 2 - 0.75 + Math.cos(a) * 0.38;
+        y = -SH / 2 + 0.75 + Math.sin(a) * 0.38;
+      } else {
+        const q = Math.random();
+        x = SW / 2 - 0.9 + (q < 0.35 ? q * 0.3 : 0.1 + (q - 0.35) * 0.45);
+        y = -SH / 2 + 0.72 + (q < 0.35 ? -q * 0.25 : -0.09 + (q - 0.35) * 0.55);
+      }
+      mix = 0;
+      al = 1;
+    }
+    ledger.p[i * 3] = x + ox + gauss() * 0.01;
+    ledger.p[i * 3 + 1] = y + oy;
+    ledger.p[i * 3 + 2] = zz + gauss() * 0.01;
+    ledger.m[i] = mix;
+    ledger.a[i] = al;
+  }
+  // bake a gentle tilt so the stack reads as 3D
+  for (let i = 0; i < n; i += 1) {
+    const x = ledger.p[i * 3];
+    const z = ledger.p[i * 3 + 2];
+    const ang = -0.42;
+    ledger.p[i * 3] = x * Math.cos(ang) + z * Math.sin(ang);
+    ledger.p[i * 3 + 2] = -x * Math.sin(ang) + z * Math.cos(ang);
+  }
+  shapes.ledger = ledger;
 
   // Globe: a dim sphere with Africa and the Middle East drawn in dense points, and a
   // bright marker on Mauritius. Outlines are rough [lon, lat] polygons.
@@ -243,7 +364,7 @@ export default function ParticleField() {
       }
 
       const small = window.innerWidth < 900;
-      const N = small ? 5000 : 13000;
+      const N = small ? 6000 : 16000;
       const shapes = buildShapes(N);
 
       const scene = new THREE.Scene();
@@ -287,7 +408,7 @@ export default function ParticleField() {
           uC2: { value: new THREE.Color('#818cf8') },
           uOpacity: { value: 0 },
           uScale: { value: 1 },
-          uSize: { value: 0.05 },
+          uSize: { value: 0.042 },
         },
         vertexShader: `
           attribute float aMix; attribute float aAlpha; attribute float aSize;
@@ -368,9 +489,24 @@ export default function ParticleField() {
         shape: shapes[el.getAttribute('data-shape')] || shapes.ambient,
         x: parseFloat(el.getAttribute('data-shape-x') || '0') || 0,
         o: parseFloat(el.getAttribute('data-shape-o') || '1') || 1,
+        s: parseFloat(el.getAttribute('data-shape-s') || '1') || 1,
       });
-      const DEFAULT = { shape: shapes.ambient, x: 0, o: 1 };
+      const DEFAULT = { shape: shapes.ambient, x: 0, o: 1, s: 1 };
+      const INTRO = { shape: shapes.mark, x: 0, o: 1, s: 1.55 };
+      let introOn = document.documentElement.classList.contains('intro');
+      const introEnd = performance.now() + 2900;
       const pick = (now) => {
+        if (introOn) {
+          if (now > introEnd) {
+            introOn = false;
+            document.documentElement.classList.remove('intro');
+            try {
+              sessionStorage.setItem('introSeen', '1');
+            } catch (e) {
+              /* storage off */
+            }
+          } else return [INTRO, INTRO, 0];
+        }
         if (now - anchorsAt > 1000) {
           anchors = Array.from(document.querySelectorAll('[data-shape]'));
           anchorsAt = now;
@@ -427,7 +563,7 @@ export default function ParticleField() {
         const waveAmt = sa.wave * u + sb.wave * t;
         const spin = sa.spin * u + sb.spin * t;
         const ox = narrow ? 0 : (A.x * u + B.x * t) * viewW;
-        const scale = Math.min(1, viewW / 9.5);
+        const scale = Math.min(1, viewW / 9.5) * (A.s * u + B.s * t);
         const rot = Math.sin(time * 0.25) * 0.45 * spin;
         const cosR = Math.cos(rot);
         const sinR = Math.sin(rot);

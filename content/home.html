@@ -69,30 +69,42 @@
   </div>
 </div>
 
-<!-- STORY: pinned chapter, the particle field morphs through three beats -->
-<section class="story" aria-label="How I work, in three steps" data-story>
+<!-- STORY: pinned chapter, the particle field morphs through five beats -->
+<section class="story" id="story" aria-label="How I work, in five steps" data-story>
   <div class="story-anchor a1" data-shape="scatter" aria-hidden="true"></div>
   <div class="story-anchor a2" data-shape="lattice" data-shape-x="0.24" aria-hidden="true"></div>
-  <div class="story-anchor a3" data-shape="mark" data-shape-x="0.24" aria-hidden="true"></div>
+  <div class="story-anchor a3" data-shape="network" data-shape-x="0.24" aria-hidden="true"></div>
+  <div class="story-anchor a4" data-shape="ledger" data-shape-x="0.24" aria-hidden="true"></div>
+  <div class="story-anchor a5" data-shape="mark" data-shape-x="0.24" aria-hidden="true"></div>
   <div class="story-sticky">
     <div class="wrap story-inner">
       <div class="beat is-on">
-        <div class="label">The problem</div>
+        <div class="label">01 · The problem</div>
         <h2 class="title">Your systems shouldn't feel like <em>this</em>.</h2>
         <p class="lead">Spreadsheets, email approvals and apps that don't talk to each other. Every handover is a place for work to get lost.</p>
       </div>
       <div class="beat">
-        <div class="label">The approach</div>
-        <h2 class="title">First, a <em>structure</em>.</h2>
-        <p class="lead">I map how your data, people and processes fit together, then design one architecture on Zoho that everything plugs into.</p>
+        <div class="label">02 · The structure</div>
+        <h2 class="title">First, one <em>architecture</em>.</h2>
+        <p class="lead">I map how your data, people and processes fit together, then design a single model on Zoho that everything plugs into.</p>
       </div>
       <div class="beat">
-        <div class="label">The result</div>
-        <h2 class="title">One system, built <em>end to end</em>.</h2>
-        <p class="lead">Creator apps, Deluge logic, Flow automation and Catalyst backends, designed, built and handed over with documentation.</p>
-        <a href="#contact" class="btn btn-primary magnetic">Start a project <span class="arrow">→</span></a>
+        <div class="label">03 · The connections</div>
+        <h2 class="title">Then everything <em>connects</em>.</h2>
+        <p class="lead">Creator apps, Deluge logic, Flow automation and Catalyst backends, joined to Books, CRM, payment gateways and the tools you already run on.</p>
       </div>
-      <div class="story-steps" aria-hidden="true"><b class="story-count">01</b><span class="story-track"><i class="story-fill"></i></span><span>03</span></div>
+      <div class="beat">
+        <div class="label">04 · The compliance</div>
+        <h2 class="title">Filed, approved, <em>audit-ready</em>.</h2>
+        <p class="lead">MRA e-invoicing, VAT returns and approval workflows built into the same system, with a trail for every decision.</p>
+      </div>
+      <div class="beat">
+        <div class="label">05 · The result</div>
+        <h2 class="title">One system, built <em>end to end</em>.</h2>
+        <p class="lead">Designed, built and handed over with documentation, for teams in Mauritius, the Middle East and Africa.</p>
+        <a href="#contact" class="btn btn-primary">Start a project <span class="arrow">→</span></a>
+      </div>
+      <div class="story-steps" aria-hidden="true"><b class="story-count">01</b><span class="story-track"><i class="story-fill"></i></span><span>05</span></div>
     </div>
   </div>
 </section>
@@ -318,9 +330,10 @@
       </div>
     </div>
     <div class="card game" data-reveal>
-      <div class="game-head"><span>Penalty shoot-out</span><span>Goals <b id="score">0</b> / <b id="shots">0</b> · Best streak <b id="best">0</b></span></div>
+      <div class="game-head"><span>Keeper: <b id="pk-rival">Dodo FC</b></span><span>Goals <b id="score">0</b> · Shots <b id="shots">0</b> / 5 · Best streak <b id="best">0</b></span></div>
       <canvas id="pitch" tabindex="0" role="img" aria-label="Penalty mini-game. Use arrow keys to aim and Space to shoot."></canvas>
-      <div class="game-foot"><span>Arrow keys + Space also work</span><button type="button" class="btn btn-ghost" id="pk-reset">Reset</button></div>
+      <ol class="pk-ladder" id="pk-ladder" aria-label="Keeper ladder (fictional)"></ol>
+      <div class="game-foot"><span>Five shots per keeper · arrow keys + Space also work · keepers are fictional</span><button type="button" class="btn btn-ghost" id="pk-reset">Reset</button></div>
     </div>
   </div>
 </section>
@@ -371,6 +384,15 @@
       <div><button type="submit" class="btn btn-primary magnetic">Send message <span class="arrow">→</span></button></div>
       <p class="form-status" id="form-status" role="status" aria-live="polite"></p>
     </form>
+  </div>
+</section>
+
+<!-- CLOSING: the A again, where the story started -->
+<section class="closing" data-shape="mark" data-shape-x="-0.2" data-shape-s="1.05" aria-label="Closing">
+  <div class="closing-copy">
+    <p class="label">Where it started</p>
+    <p class="closing-line">Every system I build starts with a conversation.</p>
+    <a href="#contact" class="btn btn-primary">Start yours <span class="arrow">→</span></a>
   </div>
 </section>
 

@@ -1,9 +1,9 @@
 import Script from 'next/script';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
-import GuideBall from '../components/GuideBall';
 import BackToTop from '../components/BackToTop';
 import ParticleField from '../components/ParticleField';
+import ChapterRail from '../components/ChapterRail';
 import { site, ORIGIN } from '../lib/content';
 
 export const metadata = {
@@ -31,6 +31,7 @@ export const viewport = {
 };
 
 // Runs before first paint so the saved theme applies without a flash (same as the HTML build).
+const introScript = `(function(){try{if(location.pathname!=='/'||matchMedia('(prefers-reduced-motion: reduce)').matches||sessionStorage.getItem('introSeen'))return;var d=document.documentElement;d.classList.add('intro');setTimeout(function(){d.classList.remove('intro')},4200)}catch(e){}})();`;
 const themeScript = `(function(){var t=null;try{t=localStorage.getItem('theme')}catch(e){}document.documentElement.setAttribute('data-theme',t==='light'?'light':'dark')})();`;
 
 export default function RootLayout({ children }) {
@@ -38,6 +39,7 @@ export default function RootLayout({ children }) {
     <html lang="en" data-theme="dark" suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+        <script dangerouslySetInnerHTML={{ __html: introScript }} />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link
@@ -58,10 +60,15 @@ export default function RootLayout({ children }) {
         <Header email={site.email} />
         {children}
         <Footer site={site} />
-        <GuideBall />
+        <ChapterRail />
+        <div className="intro-mark" aria-hidden="true">
+          <b>Amyaaz Aumeer</b>
+          <span>Digital Solutions Architect · Zoho · Mauritius</span>
+        </div>
         <BackToTop />
         <Script src="/assets/js/preview.js" strategy="afterInteractive" />
         <Script src="/assets/js/site.js" strategy="afterInteractive" />
+        <Script src="/assets/js/penalty.js" strategy="afterInteractive" />
       </body>
     </html>
   );

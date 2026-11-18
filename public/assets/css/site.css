@@ -441,9 +441,9 @@ button.btn { font: inherit; font-family: var(--mono); font-size: .76rem; }
 .parallels i { width: 22px; height: 1px; background: var(--accent); }
 .parallels span:last-child { text-align: right; }
 .game { padding: 0; }
-.game-head { display: flex; justify-content: space-between; align-items: center; padding: 1rem 1.25rem; border-bottom: 1px solid var(--border); font-family: var(--mono); font-size: .68rem; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+.game-head { flex-wrap: wrap; gap: .4rem 1rem; display: flex; justify-content: space-between; align-items: center; padding: 1rem 1.25rem; border-bottom: 1px solid var(--border); font-family: var(--mono); font-size: .68rem; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
 .game-head b { color: var(--text); font-weight: 400; }
-.game canvas { display: block; width: 100%; height: 340px; touch-action: none; cursor: crosshair; }
+.game canvas { display: block; width: 100%; height: 420px; touch-action: none; cursor: crosshair; }
 .game canvas:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
 .game-foot { display: flex; justify-content: space-between; align-items: center; gap: 1rem; padding: .9rem 1.25rem; border-top: 1px solid var(--border); font-family: var(--mono); font-size: .64rem; color: var(--muted); }
 .game-foot button { padding: .55rem 1rem; font-size: .64rem; }
@@ -584,3 +584,11 @@ footer { border-top: 1px solid var(--border); padding: 3rem 0 2rem; }
   .nav, .mobile-menu, .grid-bg, .hero-blobs, #cursor, #cursor-ring, .game, footer { display: none !important; }
   body { background: #fff; color: #000; }
 }
+
+.pk-ladder { list-style: none; margin: 0; padding: .8rem 1.25rem; display: flex; flex-wrap: wrap; gap: .4rem; border-top: 1px solid var(--border); }
+.pk-ladder li { font: .62rem var(--mono); letter-spacing: .06em; color: var(--muted); padding: .35rem .7rem; border: 1px solid var(--border); border-radius: 99px; display: flex; gap: .45rem; }
+.pk-ladder li span { color: var(--dim); }
+.pk-ladder li.on { background: var(--accent); color: var(--on-accent); border-color: var(--accent); }
+.pk-ladder li.on span { color: inherit; }
+.pk-ladder li.done { color: var(--accent); border-color: var(--accent); }
+.game-head b { margin-left: .25em; }

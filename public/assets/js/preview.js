@@ -51,7 +51,7 @@
       var r = story.getBoundingClientRect();
       var travel = Math.max(1, r.height - window.innerHeight);
       var q = Math.min(1, Math.max(0, -r.top / travel));
-      var idx = q < 0.31 ? 0 : q < 0.74 ? 1 : 2;
+      var idx = Math.min(beats.length - 1, Math.floor(q * beats.length));
       if (fill) fill.style.transform = 'scaleX(' + q.toFixed(3) + ')';
       if (idx === activeBeat) return;
       activeBeat = idx;
