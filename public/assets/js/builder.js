@@ -151,7 +151,7 @@
     grav.tx = x * 0.55; grav.ty = y * 0.55;
   }
   function enableTilt() {
-    if (tiltOn) { tiltOn = false; removeEventListener('deviceorientation', onTilt); grav.tx = grav.ty = 0; tiltBtn.setAttribute('aria-pressed', 'false'); tiltBtn.textContent = 'Tilt to swing'; return; }
+    if (tiltOn) { tiltOn = false; removeEventListener('deviceorientation', onTilt); grav.tx = grav.ty = 0; tiltBtn.setAttribute('aria-pressed', 'false'); tiltBtn.textContent = 'Tilt'; return; }
     var go = function () { tiltOn = true; addEventListener('deviceorientation', onTilt); tiltBtn.setAttribute('aria-pressed', 'true'); tiltBtn.textContent = 'Tilt on'; };
     if (window.DeviceOrientationEvent && typeof DeviceOrientationEvent.requestPermission === 'function') {
       DeviceOrientationEvent.requestPermission().then(function (r) { if (r === 'granted') go(); }).catch(function () {});
@@ -159,13 +159,22 @@
   }
   if (tiltBtn && 'DeviceOrientationEvent' in window && matchMedia('(pointer: coarse)').matches) { tiltBtn.classList.add('show'); tiltBtn.addEventListener('click', enableTilt); }
   /* autoplay a demo build when first seen */
-  var auto = true, seen = false, seq = ['creator', 'books', 'mra', 'crm', 'flow'];
+  var atlas = !!document.querySelector('[data-atlas]'); var auto = !atlas, seen = false, seq = ['creator', 'books', 'mra', 'crm', 'flow'];
   function demo() { var i = 0; (function nx() { if (!auto || i >= seq.length) return; addNode(seq[i++]); setTimeout(nx, 650); })(); }
+  var timers = [];
+  window.Builder = {
+    set: function (ids) {
+      timers.forEach(clearTimeout); timers = [];
+      nodes.filter(function (n) { return n.id !== 'hub' && ids.indexOf(n.id) < 0; }).forEach(function (n) { removeNode(n.id); });
+      var d = 0; ids.forEach(function (id) { if (!nodes.some(function (n) { return n.id === id; })) { timers.push(setTimeout(function () { addNode(id); }, d)); d += 170; } });
+    },
+    interactive: function (on) { cv.style.pointerEvents = on ? 'auto' : 'none'; }
+  };
   colors(); size(); addNode('hub', W / 2, H / 2, true);
   new IntersectionObserver(function (en) {
     en.forEach(function (x) { if (x.isIntersecting) { start(); if (!seen) { seen = true; setTimeout(demo, 500); } } else stop(); });
   }, { threshold: 0.15 }).observe(stage);
-  addEventListener('resize', function () { size(); });
+  if (window.ResizeObserver) new ResizeObserver(function () { size(); }).observe(stage); else addEventListener('resize', function () { size(); });
   new MutationObserver(colors).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
   if (reduce) { seq.forEach(function (id) { addNode(id, null, null, true); }); }
 })();

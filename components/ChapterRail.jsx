@@ -4,9 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 
 const CHAPTERS = [
   { id: 'main', label: 'Intro' },
-  { id: 'story', label: 'Approach' },
-  { id: 'services', label: 'Services' },
-  { id: 'work', label: 'Work' },
+  { id: 'atlas', label: 'Work' },
   { id: 'about', label: 'About' },
   { id: 'coach', label: 'Off the clock' },
   { id: 'regions', label: 'Reach' },

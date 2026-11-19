@@ -71,6 +71,7 @@ export default function RootLayout({ children }) {
         <Script src="/assets/js/site.js" strategy="afterInteractive" />
         <Script src="/assets/js/penalty.js" strategy="afterInteractive" />
         <Script src="/assets/js/builder.js" strategy="afterInteractive" />
+        <Script src="/assets/js/atlas.js" strategy="afterInteractive" />
       </body>
     </html>
   );
