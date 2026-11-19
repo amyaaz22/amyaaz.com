@@ -5,7 +5,7 @@ const topo = JSON.parse(fs.readFileSync('node_modules/world-atlas/countries-110m
 const fc = feature(topo, topo.objects.countries).features;
 // ISO numeric ids: Africa + Middle East
 const MEA = new Set([12,24,204,72,854,108,132,120,140,148,174,178,180,262,818,226,232,231,266,270,288,324,624,404,426,430,434,450,454,466,478,480,504,508,516,562,566,646,678,686,690,694,706,710,728,729,748,834,768,788,800,894,716,732,
- /* Middle East */ 784,682,512,634,414,48,368,760,400,422,275,376,792,364,887,792]);
+ /* Middle East */ 784,682,512,634,414,48,368,760,400,422,275,376,792,364,887,384]);
 const step = 1.7, out = [];
 for (let lat = 78; lat >= -57; lat -= step) {
   for (let lon = -170; lon <= 180; lon += step) {

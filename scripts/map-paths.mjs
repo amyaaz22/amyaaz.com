@@ -1,0 +1,15 @@
+import fs from 'fs';
+import { feature } from 'topojson-client';
+import { geoMercator, geoPath } from 'd3-geo';
+const topo = JSON.parse(fs.readFileSync('node_modules/world-atlas/countries-110m.json'));
+const fc = feature(topo, topo.objects.countries).features;
+const MEA = new Set([12,24,204,72,854,108,132,120,140,148,174,178,180,262,818,226,232,231,266,270,288,324,624,404,426,430,434,450,454,466,478,480,504,508,516,562,566,646,678,686,690,694,706,710,728,729,748,834,768,788,800,894,716,732,784,682,512,634,414,48,368,760,400,422,275,376,792,364,887,384]);
+const W = 600, H = 740;
+const box = { type: 'MultiPoint', coordinates: [[-24, -37], [74, 44]] };
+const proj = geoMercator().fitExtent([[10, 10], [W - 10, H - 10]], box);
+const path = geoPath(proj).digits(1);
+const out = fc.filter(f => f.id !== '010').map(f => ({ id: +f.id, n: f.properties.name, m: MEA.has(+f.id) ? 1 : 0, d: path(f) })).filter(o => o.d);
+const pl = proj([57.5, -20.2]);
+const HUBS = [['Dubai',55.3,25.2],['Riyadh',46.7,24.7],['Cairo',31.2,30.0],['Nairobi',36.8,-1.3],['Lagos',3.4,6.5],['Johannesburg',28.0,-26.2],['Casablanca',-7.6,33.6],['Addis Ababa',38.7,9.0],['Accra',-0.2,5.6]].map(h => ({ n: h[0], p: proj([h[1], h[2]]).map(v => +v.toFixed(1)) }));
+fs.writeFileSync('public/assets/data/map-paths.json', JSON.stringify({ w: W, h: H, mu: pl.map(v => +v.toFixed(1)), hubs: HUBS, c: out }));
+console.log(out.length, pl, fs.statSync('public/assets/data/map-paths.json').size);
