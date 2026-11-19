@@ -234,13 +234,13 @@
 .beat .btn { margin-top: 1.8rem; }
 .story-steps { display: none; }
 
-.story.is-pinned { height: 520vh; padding: 0; }
+.story.is-pinned { height: 340vh; padding: 0; }
 .story.is-pinned .story-anchor { display: block; position: absolute; left: 0; width: 1px; pointer-events: none; }
-.story.is-pinned .a1 { top: 0; height: 110vh; }
-.story.is-pinned .a2 { top: 150vh; height: 40vh; }
-.story.is-pinned .a3 { top: 230vh; height: 40vh; }
-.story.is-pinned .a4 { top: 310vh; height: 40vh; }
-.story.is-pinned .a5 { top: 390vh; height: 110vh; }
+.story.is-pinned .a1 { top: 0; height: 80vh; }
+.story.is-pinned .a2 { top: 98vh; height: 30vh; }
+.story.is-pinned .a3 { top: 150vh; height: 30vh; }
+.story.is-pinned .a4 { top: 202vh; height: 30vh; }
+.story.is-pinned .a5 { top: 254vh; height: 86vh; }
 .story.is-pinned .story-sticky { position: sticky; top: 0; height: 100vh; display: flex; align-items: center; overflow: hidden; }
 .story.is-pinned .story-inner { position: relative; gap: 0; width: 100%; }
 .story.is-pinned .beat {

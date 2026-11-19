@@ -17,7 +17,7 @@
   ];
   var byId = {}; APPS.forEach(function (a) { byId[a.id] = a; });
   var nodes = [], edges = [], parts = [], W = 0, H = 0, dpr = 1, running = false, t0 = performance.now(), last = t0, drag = null, ptr = { x: -999, y: -999, on: false };
-  var C = {};
+  var C = {}; var grav = { x: 0, y: 0, tx: 0, ty: 0 };
   function colors() {
     var cs = getComputedStyle(document.documentElement);
     C.bg = cs.getPropertyValue('--bg').trim(); C.text = cs.getPropertyValue('--text').trim(); C.acc = cs.getPropertyValue('--accent').trim();
@@ -61,7 +61,7 @@
   /* physics */
   function step(dt) {
     var cx = W / 2, cy = H * 0.5, h = hub(); if (h) { h.x += (cx - h.x) * Math.min(1, dt * 3); h.y += (cy - h.y) * Math.min(1, dt * 3); }
-    var rest = Math.min(W * 0.26, H * 0.42);
+    var rest = Math.min(W * 0.26, H * 0.42); grav.x += (grav.tx - grav.x) * Math.min(1, dt * 6); grav.y += (grav.ty - grav.y) * Math.min(1, dt * 6);
     for (var i = 0; i < nodes.length; i++) {
       var a = nodes[i]; if (a === drag) continue;
       for (var j = i + 1; j < nodes.length; j++) {
@@ -75,7 +75,7 @@
     });
     nodes.forEach(function (n) {
       if (n === drag || n === h) return;
-      n.vx *= 0.86; n.vy *= 0.86; n.x += n.vx; n.y += n.vy;
+      n.vx += grav.x * 0.9; n.vy += grav.y * 0.9; n.vx *= 0.86; n.vy *= 0.86; n.x += n.vx; n.y += n.vy;
       var m = n.r + 8; n.x = Math.max(m, Math.min(W - m, n.x)); n.y = Math.max(m + 18, Math.min(H - m - 6, n.y));
     });
   }
@@ -141,6 +141,23 @@
     var c = document.getElementById('contact'); if (c) c.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth' });
     setTimeout(function () { if (f) f.focus({ preventScroll: true }); }, 700);
   });
+  /* tilt: device orientation becomes gravity */
+  var tiltBtn = document.getElementById('bld-tilt'), tiltOn = false;
+  function onTilt(e) {
+    if (e.gamma == null) return;
+    var g = Math.max(-40, Math.min(40, e.gamma)) / 40, b = Math.max(-40, Math.min(40, (e.beta || 0) - 45)) / 40;
+    var o = (screen.orientation && screen.orientation.angle) || 0, x = g, y = b;
+    if (o === 90) { x = b; y = -g; } else if (o === 270 || o === -90) { x = -b; y = g; }
+    grav.tx = x * 0.55; grav.ty = y * 0.55;
+  }
+  function enableTilt() {
+    if (tiltOn) { tiltOn = false; removeEventListener('deviceorientation', onTilt); grav.tx = grav.ty = 0; tiltBtn.setAttribute('aria-pressed', 'false'); tiltBtn.textContent = 'Tilt to swing'; return; }
+    var go = function () { tiltOn = true; addEventListener('deviceorientation', onTilt); tiltBtn.setAttribute('aria-pressed', 'true'); tiltBtn.textContent = 'Tilt on'; };
+    if (window.DeviceOrientationEvent && typeof DeviceOrientationEvent.requestPermission === 'function') {
+      DeviceOrientationEvent.requestPermission().then(function (r) { if (r === 'granted') go(); }).catch(function () {});
+    } else go();
+  }
+  if (tiltBtn && 'DeviceOrientationEvent' in window && matchMedia('(pointer: coarse)').matches) { tiltBtn.classList.add('show'); tiltBtn.addEventListener('click', enableTilt); }
   /* autoplay a demo build when first seen */
   var auto = true, seen = false, seq = ['creator', 'books', 'mra', 'crm', 'flow'];
   function demo() { var i = 0; (function nx() { if (!auto || i >= seq.length) return; addNode(seq[i++]); setTimeout(nx, 650); })(); }
