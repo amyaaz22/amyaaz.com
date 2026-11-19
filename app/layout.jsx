@@ -1,6 +1,7 @@
 import Script from 'next/script';
 import '@fontsource-variable/bricolage-grotesque/wght.css';
 import '@fontsource-variable/hanken-grotesk/index.css';
+import '@fontsource-variable/archivo/wdth.css';
 import '@fontsource-variable/spline-sans-mono/index.css';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
@@ -32,7 +33,7 @@ export const viewport = {
 };
 
 // Runs before first paint so the saved theme applies without a flash (same as the HTML build).
-const homeScript = `if(location.pathname==='/')document.documentElement.classList.add('home');`;
+const homeScript = `try{if(location.pathname==='/'){var d=document.documentElement;d.classList.add('home');if(!sessionStorage.getItem('hi')&&!matchMedia('(prefers-reduced-motion: reduce)').matches&&!/[?&]nopre/.test(location.search))d.classList.add('pre')}}catch(e){}`;
 const themeScript = `(function(){var t=null;try{t=localStorage.getItem('theme')}catch(e){}document.documentElement.setAttribute('data-theme',t==='dark'?'dark':'light')})();`;
 
 export default function RootLayout({ children }) {
@@ -55,9 +56,13 @@ export default function RootLayout({ children }) {
         {children}
         <Footer site={site} />
         <BackToTop />
+        <Script src="/assets/js/vendor/gsap.min.js" strategy="afterInteractive" />
+        <Script src="/assets/js/vendor/ScrollTrigger.min.js" strategy="afterInteractive" />
+        <Script src="/assets/js/vendor/lenis.min.js" strategy="afterInteractive" />
         <Script src="/assets/js/preview.js" strategy="afterInteractive" />
         <Script src="/assets/js/site.js" strategy="afterInteractive" />
         <Script src="/assets/js/penalty.js" strategy="afterInteractive" />
+        <Script src="/assets/js/motion.js" strategy="afterInteractive" />
       </body>
     </html>
   );
