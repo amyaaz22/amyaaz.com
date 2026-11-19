@@ -2,7 +2,6 @@ import Script from 'next/script';
 import '@fontsource-variable/bricolage-grotesque/wght.css';
 import '@fontsource-variable/hanken-grotesk/index.css';
 import '@fontsource-variable/spline-sans-mono/index.css';
-import '@fontsource/covered-by-your-grace/latin-400.css';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import BackToTop from '../components/BackToTop';
@@ -33,7 +32,7 @@ export const viewport = {
 };
 
 // Runs before first paint so the saved theme applies without a flash (same as the HTML build).
-const gateScript = `(function(){try{var d=document.documentElement;if(location.pathname==='/')d.classList.add('home');if(location.pathname==='/'&&!matchMedia('(prefers-reduced-motion: reduce)').matches&&!localStorage.getItem('print-v1')&&!/[?&]nogate/.test(location.search)){d.classList.add('gate');setTimeout(function(){if(!window.__printReady)d.classList.remove('gate')},9000)}}catch(e){}})();`;
+const homeScript = `if(location.pathname==='/')document.documentElement.classList.add('home');`;
 const themeScript = `(function(){var t=null;try{t=localStorage.getItem('theme')}catch(e){}document.documentElement.setAttribute('data-theme',t==='dark'?'dark':'light')})();`;
 
 export default function RootLayout({ children }) {
@@ -41,11 +40,12 @@ export default function RootLayout({ children }) {
     <html lang="en" data-theme="light" suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
-        <script dangerouslySetInnerHTML={{ __html: gateScript }} />
+        <script dangerouslySetInnerHTML={{ __html: homeScript }} />
         <link rel="stylesheet" href="/assets/css/site.css" />
         <link rel="stylesheet" href="/assets/css/preview.css" />
         <link rel="stylesheet" href="/assets/css/unslop.css" />
         <link rel="stylesheet" href="/assets/css/paper.css" />
+        <link rel="stylesheet" href="/assets/css/bold.css" />
       </head>
       <body>
         <a className="skip-link" href="#main">
@@ -58,10 +58,6 @@ export default function RootLayout({ children }) {
         <Script src="/assets/js/preview.js" strategy="afterInteractive" />
         <Script src="/assets/js/site.js" strategy="afterInteractive" />
         <Script src="/assets/js/penalty.js" strategy="afterInteractive" />
-        <Script src="/assets/js/print.js" strategy="afterInteractive" />
-        <Script src="/assets/js/lang.js" strategy="afterInteractive" />
-        <Script src="/assets/js/builder.js" strategy="afterInteractive" />
-        <Script src="/assets/js/atlas.js" strategy="afterInteractive" />
       </body>
     </html>
   );

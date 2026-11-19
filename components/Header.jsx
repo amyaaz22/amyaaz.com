@@ -5,7 +5,7 @@ import { Mark, Ball } from './Icons';
 
 const LINKS = [
   ['services', 'Services'],
-  ['work', 'Work'],
+  ['process', 'Process'],
   ['articles', 'Articles'],
   ['about', 'About'],
   ['contact', 'Contact'],
