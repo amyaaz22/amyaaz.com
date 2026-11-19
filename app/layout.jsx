@@ -44,10 +44,11 @@ export default function RootLayout({ children }) {
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link
           rel="stylesheet"
-          href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300..600;1,6..72,300..600&family=Hanken+Grotesk:wght@400;500;600;700&family=Spline+Sans+Mono:wght@400;500&display=swap"
         />
         <link rel="stylesheet" href="/assets/css/site.css" />
         <link rel="stylesheet" href="/assets/css/preview.css" />
+        <link rel="stylesheet" href="/assets/css/unslop.css" />
       </head>
       <body className="noise">
         <a className="skip-link" href="#main">

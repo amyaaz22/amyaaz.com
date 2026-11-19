@@ -404,8 +404,8 @@ export default function ParticleField() {
         depthWrite: false,
         depthTest: false,
         uniforms: {
-          uC1: { value: new THREE.Color('#4ade80') },
-          uC2: { value: new THREE.Color('#818cf8') },
+          uC1: { value: new THREE.Color('#f1e8d8') },
+          uC2: { value: new THREE.Color('#e8553a') },
           uOpacity: { value: 0 },
           uScale: { value: 1 },
           uSize: { value: 0.042 },
@@ -438,8 +438,8 @@ export default function ParticleField() {
       let themeFactor = 1;
       const applyTheme = () => {
         const light = document.documentElement.getAttribute('data-theme') === 'light';
-        mat.uniforms.uC1.value.set(light ? '#15803d' : '#4ade80');
-        mat.uniforms.uC2.value.set(light ? '#4f46e5' : '#818cf8');
+        mat.uniforms.uC1.value.set(light ? '#15803d' : '#f1e8d8');
+        mat.uniforms.uC2.value.set(light ? '#4f46e5' : '#e8553a');
         mat.blending = light ? THREE.NormalBlending : THREE.AdditiveBlending;
         mat.needsUpdate = true;
         themeFactor = light ? 0.75 : 1;

@@ -84,12 +84,12 @@
     var inside = tx > g.x + 4 && tx < g.x + g.w - 4 && ty > g.y + 4 && ty < g.y + g.h;
     var kx = g.x + keeper.x * g.w, kw = g.w * 0.2;
     var saved = inside && Math.abs(tx - kx) < kw && ty > g.y + g.h * 0.1;
-    if (!inside) { msg = { text: ty <= g.y + 4 ? 'OVER THE BAR' : 'WIDE', color: '#8a8aa0', t: 0 }; streak = 0; }
-    else if (saved) { msg = { text: 'SAVED', color: '#f472b6', t: 0 }; streak = 0; }
+    if (!inside) { msg = { text: ty <= g.y + 4 ? 'OVER THE BAR' : 'WIDE', color: '#a0a5b0', t: 0 }; streak = 0; }
+    else if (saved) { msg = { text: 'SAVED', color: '#e8553a', t: 0 }; streak = 0; }
     else {
       goals++; streak++; flash = 1;
       if (streak > best) { best = streak; store('pk-best', String(best)); }
-      msg = { text: streak > 2 ? 'GOAL · ' + streak + ' IN A ROW' : 'GOAL', color: '#4ade80', t: 0 };
+      msg = { text: streak > 2 ? 'GOAL · ' + streak + ' IN A ROW' : 'GOAL', color: '#f1e8d8', t: 0 };
       if (window.gtag) window.gtag('event', 'penalty_goal', { streak: streak });
     }
     hud();
@@ -134,7 +134,7 @@
   function scene(g, by) {
     // stadium backdrop
     var sky = ctx.createLinearGradient(0, 0, 0, H);
-    sky.addColorStop(0, '#05070d'); sky.addColorStop(0.42, '#0a1220'); sky.addColorStop(0.43, '#0c2018'); sky.addColorStop(1, '#0a1914');
+    sky.addColorStop(0, '#05070d'); sky.addColorStop(0.42, '#0a1220'); sky.addColorStop(0.43, '#0c1d22'); sky.addColorStop(1, '#0a1a1f');
     ctx.fillStyle = sky; ctx.fillRect(0, 0, W, H);
     // floodlights
     [0.12, 0.88].forEach(function (fx) {
@@ -147,7 +147,7 @@
     crowd.forEach(function (c) {
       var y = cy0 + c.y * (cy1 - cy0) * 0.6;
       ctx.globalAlpha = 0.25 + c.c * 0.35;
-      ctx.fillStyle = c.c > 0.85 ? '#f472b6' : c.c > 0.6 ? '#818cf8' : '#c7d2fe';
+      ctx.fillStyle = c.c > 0.85 ? '#e8553a' : c.c > 0.6 ? '#d6b46a' : '#cfc6b4';
       ctx.fillRect(c.x * W, y, 2, 2);
     });
     ctx.globalAlpha = 1;
@@ -157,7 +157,7 @@
     for (var i = 0; i < 9; i++) {
       var t0 = i / 9, t1 = (i + 1) / 9;
       var y0 = hy + (H - hy) * t0 * t0, y1 = hy + (H - hy) * t1 * t1;
-      ctx.fillStyle = i % 2 ? 'rgba(20,70,48,0.35)' : 'rgba(10,40,28,0.35)';
+      ctx.fillStyle = i % 2 ? 'rgba(28,58,66,0.35)' : 'rgba(14,36,42,0.35)';
       ctx.fillRect(0, y0, W, y1 - y0 + 1);
     }
     // pitch markings
@@ -192,26 +192,26 @@
     ctx.translate(kcx, by); ctx.rotate(dv * 1.1); ctx.translate(0, -Math.abs(dv) * kh * 0.18);
     ctx.fillStyle = 'rgba(0,0,0,0.3)'; ctx.beginPath(); ctx.ellipse(0, 2, kw * 0.9, 4, 0, 0, Math.PI * 2); ctx.fill();
     ctx.fillStyle = '#1b1f33'; rr(-kw * 0.36, -kh * 0.36, kw * 0.3, kh * 0.36, 3); ctx.fill(); rr(kw * 0.06, -kh * 0.36, kw * 0.3, kh * 0.36, 3); ctx.fill();
-    var jg = ctx.createLinearGradient(0, -kh, 0, -kh * 0.35); jg.addColorStop(0, '#9aa8ff'); jg.addColorStop(1, '#6670e0');
+    var jg = ctx.createLinearGradient(0, -kh, 0, -kh * 0.35); jg.addColorStop(0, '#e8553a'); jg.addColorStop(1, '#b83a24');
     ctx.fillStyle = jg; rr(-kw * 0.55, -kh * 0.82, kw * 1.1, kh * 0.5, 7); ctx.fill();
-    ctx.strokeStyle = '#8a95f5'; ctx.lineCap = 'round'; ctx.lineWidth = kw * 0.2;
+    ctx.strokeStyle = '#e8553a'; ctx.lineCap = 'round'; ctx.lineWidth = kw * 0.2;
     var lift = Math.abs(dv) * kh * 0.5;
     ctx.beginPath(); ctx.moveTo(-kw * 0.5, -kh * 0.76); ctx.lineTo(-kw * 1.05, -kh * 0.7 - lift * (dv < 0 ? 1 : 0.3)); ctx.stroke();
     ctx.beginPath(); ctx.moveTo(kw * 0.5, -kh * 0.76); ctx.lineTo(kw * 1.05, -kh * 0.7 - lift * (dv > 0 ? 1 : 0.3)); ctx.stroke();
-    ctx.fillStyle = '#e8ecff';
+    ctx.fillStyle = '#f1e8d8';
     ctx.beginPath(); ctx.arc(-kw * 1.08, -kh * 0.7 - lift * (dv < 0 ? 1 : 0.3), kw * 0.2, 0, 7); ctx.fill();
     ctx.beginPath(); ctx.arc(kw * 1.08, -kh * 0.7 - lift * (dv > 0 ? 1 : 0.3), kw * 0.2, 0, 7); ctx.fill();
     ctx.fillStyle = '#e8c9a8'; ctx.beginPath(); ctx.arc(0, -kh * 0.93, kh * 0.1, 0, 7); ctx.fill();
     ctx.restore();
     // goal frame with glow
-    ctx.save(); ctx.shadowColor = flash > 0 ? 'rgba(74,222,128,' + flash + ')' : 'rgba(200,215,255,0.35)'; ctx.shadowBlur = 14 + flash * 24;
+    ctx.save(); ctx.shadowColor = flash > 0 ? 'rgba(214,180,106,' + flash + ')' : 'rgba(200,215,255,0.35)'; ctx.shadowBlur = 14 + flash * 24;
     ctx.strokeStyle = '#f4f6ff'; ctx.lineWidth = 4; ctx.lineCap = 'round'; ctx.lineJoin = 'round';
     ctx.beginPath(); ctx.moveTo(g.x, by); ctx.lineTo(g.x, g.y); ctx.lineTo(g.x + g.w, g.y); ctx.lineTo(g.x + g.w, by); ctx.stroke();
     ctx.restore();
     // aim reticle
     if (!ball && !over && (hovering || document.activeElement === cv)) {
       var ax = aim.x * W, ay = aim.y * H, s0 = spot();
-      ctx.save(); ctx.strokeStyle = '#4ade80'; ctx.lineWidth = 1.5; ctx.shadowColor = 'rgba(74,222,128,.6)'; ctx.shadowBlur = 10;
+      ctx.save(); ctx.strokeStyle = '#f1e8d8'; ctx.lineWidth = 1.5; ctx.shadowColor = 'rgba(214,180,106,.6)'; ctx.shadowBlur = 10;
       ctx.beginPath(); ctx.arc(ax, ay, 13, 0, Math.PI * 2); ctx.stroke();
       ctx.beginPath(); ctx.moveTo(ax - 21, ay); ctx.lineTo(ax - 7, ay); ctx.moveTo(ax + 7, ay); ctx.lineTo(ax + 21, ay); ctx.moveTo(ax, ay - 21); ctx.lineTo(ax, ay - 7); ctx.moveTo(ax, ay + 7); ctx.lineTo(ax, ay + 21); ctx.stroke();
       ctx.setLineDash([2, 7]); ctx.globalAlpha = 0.5; ctx.shadowBlur = 0;
@@ -239,25 +239,25 @@
       drawBall(s1.x, s1.y - r0, r0, 0);
     }
     // goal flash
-    if (flash > 0) { ctx.fillStyle = 'rgba(74,222,128,' + (flash * 0.08) + ')'; ctx.fillRect(0, 0, W, H); }
+    if (flash > 0) { ctx.fillStyle = 'rgba(214,180,106,' + (flash * 0.08) + ')'; ctx.fillRect(0, 0, W, H); }
     // message
     if (msg) {
       var a = msg.t < 180 ? msg.t / 180 : Math.max(0, 1 - (msg.t - 1000) / 500);
       ctx.save(); ctx.globalAlpha = a; ctx.fillStyle = msg.color; ctx.textAlign = 'center';
-      ctx.font = '400 ' + Math.round(Math.min(44, W * 0.07)) + 'px "DM Serif Display", Georgia, serif';
+      ctx.font = '400 ' + Math.round(Math.min(44, W * 0.07)) + 'px "Newsreader", Georgia, serif';
       ctx.fillText(msg.text, W / 2, H * 0.62 - (msg.t < 180 ? (1 - a) * 12 : 0)); ctx.restore();
     } else if (!ball && !over && shots === 0) {
-      ctx.fillStyle = 'rgba(200,210,240,0.75)'; ctx.textAlign = 'center'; ctx.font = '11px "Space Mono", monospace';
+      ctx.fillStyle = 'rgba(200,210,240,0.75)'; ctx.textAlign = 'center'; ctx.font = '11px "Spline Sans Mono", monospace';
       ctx.fillText((fine ? 'AIM AND CLICK TO SHOOT' : 'TAP THE GOAL TO SHOOT') + ' · SCORE ' + KP().need + ' OF ' + ROUND + ' TO BEAT ' + KP().n.toUpperCase(), W / 2, H * 0.62);
     }
     // round result
     if (over) {
       ctx.fillStyle = 'rgba(5,7,13,0.78)'; ctx.fillRect(0, 0, W, H);
       ctx.textAlign = 'center';
-      ctx.fillStyle = over.won ? '#4ade80' : '#f472b6'; ctx.font = '400 ' + Math.round(Math.min(40, W * 0.07)) + 'px "DM Serif Display", Georgia, serif';
+      ctx.fillStyle = over.won ? '#f1e8d8' : '#e8553a'; ctx.font = '400 ' + Math.round(Math.min(40, W * 0.07)) + 'px "Newsreader", Georgia, serif';
       ctx.fillText(over.line1, W / 2, H * 0.44);
-      ctx.fillStyle = '#c7d2fe'; ctx.font = '12px "Space Mono", monospace'; ctx.fillText(over.line2.toUpperCase(), W / 2, H * 0.52);
-      ctx.fillStyle = '#8a8aa0'; ctx.fillText((fine ? 'CLICK' : 'TAP') + ' OR PRESS SPACE FOR THE NEXT ROUND', W / 2, H * 0.6);
+      ctx.fillStyle = '#cfc6b4'; ctx.font = '12px "Spline Sans Mono", monospace'; ctx.fillText(over.line2.toUpperCase(), W / 2, H * 0.52);
+      ctx.fillStyle = '#a0a5b0'; ctx.fillText((fine ? 'CLICK' : 'TAP') + ' OR PRESS SPACE FOR THE NEXT ROUND', W / 2, H * 0.6);
     }
   }
 

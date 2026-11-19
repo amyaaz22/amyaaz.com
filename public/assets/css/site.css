@@ -2,48 +2,48 @@
 
 /* ---------- Tokens ---------- */
 :root {
-  --bg: #0a0a0f;
-  --surface: #111118;
-  --surface2: #18181f;
-  --border: #2a2a38;
-  --accent: #4ade80;
-  --accent2: #818cf8;
-  --accent3: #f472b6;
-  --yellow: #fbbf24;
-  --text: #e8e8f0;
-  --muted: #8a8aa0;
-  --dim: #3a3a4a;
-  --nav-bg: rgba(10,10,15,0.72);
-  --on-accent: #0a0a0f;
-  --input-bg: #0a0a0f;
-  --card-glow: rgba(74,222,128,0.10);
+  --bg: #0d1119;
+  --surface: #141a24;
+  --surface2: #1b2230;
+  --border: #2b3342;
+  --accent: #e8553a;
+  --accent2: #d6b46a;
+  --accent3: #e8553a;
+  --yellow: #d6b46a;
+  --text: #efe9dd;
+  --muted: #a0a5b0;
+  --dim: #3a4252;
+  --nav-bg: rgba(13,17,25,0.78);
+  --on-accent: #0d1119;
+  --input-bg: #0d1119;
+  --card-glow: rgba(232,85,58,0.06);
   --shadow: 0 30px 60px -30px rgba(0,0,0,0.8);
   --ease: cubic-bezier(.2,.7,.2,1);
   --radius: 14px;
   --maxw: 1200px;
   --gutter: clamp(1rem, 4vw, 2.5rem);
-  --serif: 'DM Serif Display', Georgia, serif;
-  --mono: 'Space Mono', ui-monospace, monospace;
-  --sans: 'Syne', system-ui, sans-serif;
+  --serif: 'Newsreader', Georgia, serif;
+  --mono: 'Spline Sans Mono', ui-monospace, monospace;
+  --sans: 'Hanken Grotesk', system-ui, sans-serif;
   color-scheme: dark;
 }
 
 :root[data-theme="light"] {
-  --bg: #f6f6f9;
-  --surface: #ffffff;
-  --surface2: #eeeef4;
-  --border: #dadae4;
-  --accent: #15803d;
-  --accent2: #4f46e5;
-  --accent3: #db2777;
-  --yellow: #b45309;
-  --text: #14141c;
-  --muted: #55556a;
-  --dim: #b8b8c8;
-  --nav-bg: rgba(246,246,249,0.78);
+  --bg: #f4efe6;
+  --surface: #fbf8f2;
+  --surface2: #ebe5d8;
+  --border: #d9d1c0;
+  --accent: #c2391f;
+  --accent2: #8a6a1f;
+  --accent3: #c2391f;
+  --yellow: #8a6a1f;
+  --text: #1a1712;
+  --muted: #5d584d;
+  --dim: #bdb5a2;
+  --nav-bg: rgba(244,239,230,0.82);
   --on-accent: #ffffff;
-  --input-bg: #ffffff;
-  --card-glow: rgba(79,70,229,0.08);
+  --input-bg: #fbf8f2;
+  --card-glow: rgba(194,57,31,0.05);
   --shadow: 0 30px 60px -34px rgba(20,20,40,0.35);
   color-scheme: light;
 }
