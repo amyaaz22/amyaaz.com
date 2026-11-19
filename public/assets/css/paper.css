@@ -5,7 +5,6 @@
   --mono: 'Spline Sans Mono Variable', ui-monospace, monospace;
   --hand: 'Covered By Your Grace', 'Segoe Print', cursive;
 }
-:root[data-theme="light"] { --bg: #f4f0e8; --surface: #fbf8f2; --surface2: #ece6d9; --border: #d9d1c0; --text: #17140f; --muted: #5a554a; --accent: #c2391f; }
 .ink { --bg: #0d1119; --surface: #141a24; --surface2: #1b2230; --border: #2b3342; --text: #efe9dd; --muted: #a0a5b0; --dim: #3a4252; --accent: #e8553a; --accent2: #d6b46a; --on-accent: #0d1119; --input-bg: #0d1119; background: var(--bg); color: var(--text); }
 body { font-family: var(--sans); }
 .hand { font-family: var(--hand); font-weight: 400; letter-spacing: 0; }
