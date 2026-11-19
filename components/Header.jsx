@@ -22,7 +22,7 @@ export default function Header({ email }) {
     <>
       <header className="nav">
         <div className="wrap nav-inner">
-          <a className="brand brand-mark-only" href="/" aria-label="Amyaaz Aumeer — home">
+          <a className="brand brand-mark-only" href="/" aria-label="Amyaaz Aumeer, home">
             <Mark />
           </a>
           <nav aria-label="Primary">

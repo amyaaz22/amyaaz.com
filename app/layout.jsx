@@ -1,9 +1,11 @@
 import Script from 'next/script';
+import '@fontsource-variable/bricolage-grotesque/wght.css';
+import '@fontsource-variable/hanken-grotesk/index.css';
+import '@fontsource-variable/spline-sans-mono/index.css';
+import '@fontsource/covered-by-your-grace/latin-400.css';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import BackToTop from '../components/BackToTop';
-import ParticleField from '../components/ParticleField';
-import ChapterRail from '../components/ChapterRail';
 import { site, ORIGIN } from '../lib/content';
 
 export const metadata = {
@@ -27,49 +29,37 @@ export const viewport = {
   width: 'device-width',
   initialScale: 1,
   viewportFit: 'cover',
-  themeColor: '#08080c',
+  themeColor: '#f4efe6',
 };
 
 // Runs before first paint so the saved theme applies without a flash (same as the HTML build).
-const introScript = `(function(){try{if(location.pathname!=='/'||matchMedia('(prefers-reduced-motion: reduce)').matches||sessionStorage.getItem('introSeen'))return;var d=document.documentElement;d.classList.add('intro');setTimeout(function(){d.classList.remove('intro')},4200)}catch(e){}})();`;
-const themeScript = `(function(){var t=null;try{t=localStorage.getItem('theme')}catch(e){}document.documentElement.setAttribute('data-theme',t==='light'?'light':'dark')})();`;
+const gateScript = `(function(){try{var d=document.documentElement;if(location.pathname==='/')d.classList.add('home');if(location.pathname==='/'&&!matchMedia('(prefers-reduced-motion: reduce)').matches&&!localStorage.getItem('print-v1')&&!/[?&]nogate/.test(location.search)){d.classList.add('gate');setTimeout(function(){if(!window.__printReady)d.classList.remove('gate')},9000)}}catch(e){}})();`;
+const themeScript = `(function(){var t=null;try{t=localStorage.getItem('theme')}catch(e){}document.documentElement.setAttribute('data-theme',t==='dark'?'dark':'light')})();`;
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" data-theme="dark" suppressHydrationWarning>
+    <html lang="en" data-theme="light" suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
-        <script dangerouslySetInnerHTML={{ __html: introScript }} />
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link
-          rel="stylesheet"
-          href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300..600;1,6..72,300..600&family=Hanken+Grotesk:wght@400;500;600;700&family=Spline+Sans+Mono:wght@400;500&display=swap"
-        />
+        <script dangerouslySetInnerHTML={{ __html: gateScript }} />
         <link rel="stylesheet" href="/assets/css/site.css" />
         <link rel="stylesheet" href="/assets/css/preview.css" />
         <link rel="stylesheet" href="/assets/css/unslop.css" />
+        <link rel="stylesheet" href="/assets/css/paper.css" />
       </head>
-      <body className="noise">
+      <body>
         <a className="skip-link" href="#main">
           Skip to content
         </a>
-        <div id="cursor" aria-hidden="true"></div>
-        <div id="cursor-ring" aria-hidden="true"></div>
-        <div className="grid-bg" aria-hidden="true"></div>
-        <ParticleField />
         <Header email={site.email} />
         {children}
         <Footer site={site} />
-        <ChapterRail />
-        <div className="intro-mark" aria-hidden="true">
-          <b>Amyaaz Aumeer</b>
-          <span>Digital Solutions Architect · Zoho · Mauritius</span>
-        </div>
         <BackToTop />
         <Script src="/assets/js/preview.js" strategy="afterInteractive" />
         <Script src="/assets/js/site.js" strategy="afterInteractive" />
         <Script src="/assets/js/penalty.js" strategy="afterInteractive" />
+        <Script src="/assets/js/print.js" strategy="afterInteractive" />
+        <Script src="/assets/js/lang.js" strategy="afterInteractive" />
         <Script src="/assets/js/builder.js" strategy="afterInteractive" />
         <Script src="/assets/js/atlas.js" strategy="afterInteractive" />
       </body>

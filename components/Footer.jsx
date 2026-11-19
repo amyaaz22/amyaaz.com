@@ -8,11 +8,11 @@ export default function Footer({ site }) {
   const h = pathname === '/' ? '' : '/';
 
   return (
-    <footer>
+    <footer className="ink">
       <div className="wrap">
         <div className="foot-grid">
           <div>
-            <a className="brand" href="/" aria-label="Amyaaz Aumeer — home">
+            <a className="brand" href="/" aria-label="Amyaaz Aumeer, home">
               <Mark />
               <span className="brand-name">
                 amyaaz<b>.com</b>
@@ -25,11 +25,11 @@ export default function Footer({ site }) {
           <div className="foot-links">
             <div>
               <span>Site</span>
-              <a href={`${h}#services`}>Services</a>
-              <a href={`${h}#work`}>Work</a>
+              <a href={`${h}#atlas`}>Work</a>
               <a href="/articles/">Articles</a>
               <a href={`${h}#about`}>About</a>
               <a href="/zoho-developer-middle-east-africa/">Middle East and Africa</a>
+              <a href="/half-time/">Half time</a>
             </div>
             <div>
               <span>Elsewhere</span>
